@@ -21,8 +21,6 @@ gulp.task('compile', ['clean'], function () {
 });
 
 gulp.task('upload-sim', ['compile'], function () {
-  gutil.log('Starting upload...');
-
   var screeps = {
     email: config.email,
     password: config.password,
