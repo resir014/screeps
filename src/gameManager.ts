@@ -32,6 +32,8 @@ export namespace GameManager {
     MemoryManager.loadMemory();
     CreepManager.loadCreeps();
 
+    // This creep garbage collection logic has to exist BEFORE the spawn logic,
+    // else it would break the entire spawning logic.
     for (var name in Memory.creeps) {
       if (!Game.creeps[name]) {
         if (Config.VERBOSE) {
