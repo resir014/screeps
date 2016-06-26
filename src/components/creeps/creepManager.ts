@@ -24,7 +24,7 @@ export namespace CreepManager {
     _loadCreepNames();
 
     if (Config.VERBOSE) {
-      console.log(this.creepCount + ' creeps found in the playground.');
+      console.log('[CreepManager] ' + this.creepCount + ' creeps found in the playground.');
     }
   }
 
@@ -49,7 +49,7 @@ export namespace CreepManager {
       status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
 
       if (Config.VERBOSE) {
-        console.log('Started creating new Harvester');
+        console.log('[CreepManager] Started creating new Harvester');
       }
     }
 
@@ -77,7 +77,7 @@ export namespace CreepManager {
       status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
 
       if (Config.VERBOSE) {
-        console.log('Started creating new Upgrader');
+        console.log('[CreepManager] Started creating new Upgrader');
       }
     }
 
@@ -105,7 +105,7 @@ export namespace CreepManager {
     });
 
     if (Config.VERBOSE) {
-      console.log(harvesters.length + ' harvesters reported on duty today!');
+      console.log('[CreepManager] ' + harvesters.length + ' harvesters reported on duty today!');
     }
 
   }
@@ -131,7 +131,7 @@ export namespace CreepManager {
     });
 
     if (Config.VERBOSE) {
-      console.log(upgraders.length + ' upgraders reported on duty today!');
+      console.log('[CreepManager] ' + upgraders.length + ' upgraders reported on duty today!');
     }
 
   }

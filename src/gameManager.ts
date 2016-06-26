@@ -37,7 +37,7 @@ export namespace GameManager {
     for (var name in Memory.creeps) {
       if (!Game.creeps[name]) {
         if (Config.VERBOSE) {
-          console.log('Clearing non-existing creep memory: ', name);
+          console.log('[GameManager] Clearing non-existing creep memory: ', name);
         }
         delete Memory.creeps[name];
       }
@@ -45,10 +45,10 @@ export namespace GameManager {
 
     if (Config.VERBOSE) {
       if (!CreepManager.isHarvesterLimitFull()) {
-        console.log('Need more harvesters!');
+        console.log('[GameManager] Need more harvesters!');
       }
       if (!CreepManager.isUpgraderLimitFull()) {
-        console.log('Need more upgraders!');
+        console.log('[GameManager] Need more upgraders!');
       }
     }
 

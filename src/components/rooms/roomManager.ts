@@ -12,7 +12,7 @@ export namespace RoomManager {
 
     if (Config.VERBOSE) {
       let count = _.size(this.rooms);
-      console.log(count + ' rooms found.');
+      console.log('[RoomManager] ' + count + ' rooms found.');
     }
   }
 

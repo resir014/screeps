@@ -11,7 +11,7 @@ export namespace SourceManager {
     this.sourceCount = _.size(this.sources);
 
     if (Config.VERBOSE) {
-      console.log(this.sourceCount + ' sources in room.');
+      console.log('[SourceManager] ' + this.sourceCount + ' sources in room.');
     }
   }
 

@@ -13,7 +13,7 @@ export namespace SpawnManager {
     _loadSpawnNames();
 
     if (Config.VERBOSE) {
-      console.log(this.spawnCount + ' spawns in room.');
+      console.log('[SpawnManager] ' + this.spawnCount + ' spawns in room.');
     }
   }
 
