@@ -176,11 +176,9 @@ export namespace CreepManager {
       }
     });
 
-    if (Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraderCount) {
+    if ((Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraderCount) && (harvesterCount > 0)) {
       // We still have enough room for the current controller.
-      return true;
-    } else if (harvesterCount > 0) {
-      // We already have a harvester.
+      // We also already have a harvester.
       return true;
     } else {
       return false;
