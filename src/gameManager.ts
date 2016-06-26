@@ -43,20 +43,19 @@ export namespace GameManager {
       }
     }
 
-    if (!CreepManager.isHarvesterLimitFull()) {
-      CreepManager.createHarvester();
-
-      if (Config.VERBOSE) {
+    if (Config.VERBOSE) {
+      if (!CreepManager.isHarvesterLimitFull()) {
         console.log('Need more harvesters!');
+      }
+      if (!CreepManager.isUpgraderLimitFull()) {
+        console.log('Need more upgraders!');
       }
     }
 
-    if (!CreepManager.isUpgraderLimitFull()) {
+    if (!CreepManager.isHarvesterLimitFull()) {
+      CreepManager.createHarvester();
+    } else if (!CreepManager.isUpgraderLimitFull()) {
       CreepManager.createUpgrader();
-
-      if (Config.VERBOSE) {
-        console.log('Need more upgraders!');
-      }
     }
 
     CreepManager.harvestersGoToWork();
