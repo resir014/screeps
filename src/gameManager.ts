@@ -4,6 +4,7 @@ import { RoomManager } from './components/rooms/roomManager';
 import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
 import { CreepManager } from './components/creeps/creepManager';
+import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
 
 /**
  * Singleton object.
@@ -23,6 +24,7 @@ export namespace GameManager {
     RoomManager.loadRooms();
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
+    ConstructionSiteManager.loadConstructionSites();
   }
 
   export function loop() {
@@ -37,7 +39,7 @@ export namespace GameManager {
     for (var name in Memory.creeps) {
       if (!Game.creeps[name]) {
         if (Config.VERBOSE) {
-          console.log('[GameManager] Clearing non-existing creep memory: ', name);
+          console.log('[GameManager] Clearing non-existing creep memory:', name);
         }
         delete Memory.creeps[name];
       }
@@ -55,8 +57,13 @@ export namespace GameManager {
       CreepManager.createUpgrader();
     }
 
+    if (CreepManager.canCreateBuilder()) {
+      CreepManager.createBuilder();
+    }
+
     CreepManager.harvestersGoToWork();
     CreepManager.upgradersGoToWork();
+    CreepManager.buildersGoToWork();
   }
 
 }

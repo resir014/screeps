@@ -5,6 +5,7 @@ import { SpawnManager } from './../spawns/spawnManager';
 import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './harvester';
 import { Upgrader } from './upgrader';
+import { Builder } from './builder';
 
 export namespace CreepManager {
 
@@ -34,7 +35,7 @@ export namespace CreepManager {
    * @export
    * @returns {number}
    */
-  export function createHarvester(): number {
+  export function createHarvester(): number | string {
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
@@ -44,7 +45,7 @@ export namespace CreepManager {
       renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
-    var status: number = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
     if (status == OK) {
       status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
 
@@ -62,7 +63,7 @@ export namespace CreepManager {
    * @export
    * @returns {number}
    */
-  export function createUpgrader(): number {
+  export function createUpgrader(): number | string {
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
@@ -72,7 +73,7 @@ export namespace CreepManager {
       renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
-    var status: number = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
     if (status == OK) {
       status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
 
@@ -82,6 +83,28 @@ export namespace CreepManager {
     }
 
     return status;
+  }
+
+  export function createBuilder(): number | string {
+    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
+    let name: string = null;
+    let properties: any = {
+      role: 'builder',
+      target_source_id: SourceManager.getFirstSource().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      building: false
+    }
+
+    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    if (status == OK) {
+      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+
+      if (Config.VERBOSE) {
+        console.log('[CreepManager] Started creating new Builder');
+      }
+    }
+
+    return 0;
   }
 
   /**
@@ -96,10 +119,8 @@ export namespace CreepManager {
       if (creep.memory.role == 'harvester') {
         let harvester = new Harvester();
         harvester.setCreep(creep);
-        // Next move for harvester
         harvester.action();
 
-        // Save harvester to collection
         harvesters.push(harvester);
       }
     });
@@ -132,6 +153,25 @@ export namespace CreepManager {
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + upgraders.length + ' upgraders reported on duty today!');
+    }
+
+  }
+
+  export function buildersGoToWork(): void {
+
+    let builders: Builder[] = [];
+    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'builder') {
+        let builder = new Builder();
+        builder.setCreep(creep);
+        builder.action();
+
+        builders.push(builder);
+      }
+    });
+
+    if (Config.VERBOSE) {
+      console.log('[CreepManager] ' + builders.length + ' builders reported on duty today!');
     }
 
   }
@@ -176,9 +216,30 @@ export namespace CreepManager {
       }
     });
 
-    if ((Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraders.length) && (harvesters.length != 0)) {
+    if ((Config.MAX_UPGRADERS_PER_CONTROLLER > upgraders.length) && (harvesters.length != 0)) {
       // We still have enough room for the current controller.
       // We also already have a harvester.
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  export function canCreateBuilder(): boolean {
+    let builders: Creep[] = [];
+    let harvesters: Creep[] = [];
+
+    _.forEach(creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'harvester') {
+        harvesters.push(creep);
+      }
+      if (creep.memory.role == 'builder') {
+        builders.push(creep);
+      }
+    });
+
+    if ((Config.MAX_BUILDERS_IN_ROOM > builders.length) && (harvesters.length != 0)) {
+      // Same deal, haven't reached builder limit, already have at least one harvester.
       return true;
     } else {
       return false;

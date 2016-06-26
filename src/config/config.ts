@@ -10,12 +10,17 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MAX_HARVESTERS_PER_SOURCE: number = 4;
+  export const MAX_HARVESTERS_PER_SOURCE: number = 2;
 
   /**
    * @type {number}
    */
-  export const MAX_UPGRADERS_PER_CONTROLLER: number = 4;
+  export const MAX_UPGRADERS_PER_CONTROLLER: number = 2;
+
+  /**
+   * @type {number}
+   */
+  export const MAX_BUILDERS_IN_ROOM: number = 4;
 
   /**
    * Default amount of minimal ticksToLive Screep can have, before it goes
