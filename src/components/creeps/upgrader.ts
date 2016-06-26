@@ -36,9 +36,7 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
 
   public action(): boolean {
     // This is probably not the most efficient way to do this.
-    if (this.needsRenew()) {
-      this.moveToRenew();
-    } else if (this.isBagFull()) {
+    if (this.isBagFull()) {
       this.moveToUpgrade();
     } else {
       this.moveToHarvest();
