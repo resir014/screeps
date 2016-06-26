@@ -8,6 +8,10 @@ export interface IUpgrader {
   targetController: StructureController;
 
   tryUpgrade(): number;
+  moveToUpgrade(): void;
+
+  action(): boolean;
+
 }
 
 export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
@@ -32,10 +36,12 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
 
   public action(): boolean {
     // This is probably not the most efficient way to do this.
-    if (this.creep.carry.energy == 0) {
-      this.moveToHarvest();
-    } else {
+    if (this.needsRenew()) {
+      this.moveToRenew();
+    } else if (this.isBagFull()) {
       this.moveToUpgrade();
+    } else {
+      this.moveToHarvest();
     }
 
     return true
