@@ -53,10 +53,6 @@ export namespace GameManager {
 
     if (CreepManager.canCreateUpgrader()) {
       CreepManager.createUpgrader();
-    } else {
-      if (Config.VERBOSE) {
-        console.log('[GameManager] Need more upgraders!');
-      }
     }
 
     CreepManager.harvestersGoToWork();
