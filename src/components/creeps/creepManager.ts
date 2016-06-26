@@ -57,10 +57,13 @@ export namespace CreepManager {
   }
 
   export function createUpgrader(): number {
-    let bodyParts: string[] = [MOVE, CARRY, WORK];
+    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
-      role: 'upgrader'
+      role: 'upgrader',
+      target_source_id: SourceManager.getFirstSource().id,
+      target_energy_dropoff_id: SpawnManager.getFirstSpawn().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
     var status: number = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
