@@ -146,33 +146,45 @@ export namespace CreepManager {
   export function isHarvesterLimitFull(): boolean {
     let harvesterCount: number = 0;
 
-    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+    // TODO: This should have some kind of load balancing. It's not useful to
+    // create all the harvesters for all source points at the start.
+    _.forEach(creeps, function (creep: Creep, creepName: string) {
       if (creep.memory.role == 'harvester') {
         harvesterCount++;
       }
     });
 
-    // TODO: This should have some kind of load balancing. It's not useful to
-    // create all the harvesters for all source points at the start.
-    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) == harvesterCount);
+    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) >= harvesterCount);
   }
 
   /**
-   * Checks if there's enough harvesters handling the same controller.
+   * Checks if it's possible can create an upgrader.
    *
    * @export
    * @returns {boolean}
    */
-  export function isUpgraderLimitFull(): boolean {
+  export function canCreateUpgrader(): boolean {
+    let harvesterCount: number = 0;
     let upgraderCount: number = 0;
 
-    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+    _.forEach(creeps, function (creep: Creep, creepName: string) {
       if (creep.memory.role == 'harvester') {
+        harvesterCount++;
+      }
+      if (creep.memory.role == 'upgrader') {
         upgraderCount++;
       }
     });
 
-    return Config.MAX_UPGRADERS_PER_CONTROLLER == upgraderCount;
+    if (Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraderCount) {
+      // We still have enough room for the current controller.
+      return true;
+    } else if (harvesterCount > 0) {
+      // We already have a harvester.
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**

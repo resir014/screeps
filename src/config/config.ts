@@ -18,7 +18,8 @@ export namespace Config {
   export const MAX_UPGRADERS_PER_CONTROLLER: number = 4;
 
   /**
-   * Default amount of minimal ticksToLive Screep can have, before it goes to renew. This is only default value, that don't have to be used.
+   * Default amount of minimal ticksToLive Screep can have, before it goes
+   * to renew. This is only default value, that don't have to be used.
    * So it doesn't cover all Screeps.
    *
    * @type {number}
