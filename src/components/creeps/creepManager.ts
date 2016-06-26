@@ -194,7 +194,7 @@ export namespace CreepManager {
       }
     });
 
-    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) >= harvesters.length);
+    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) > harvesters.length);
   }
 
   /**
