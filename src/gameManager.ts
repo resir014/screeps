@@ -40,6 +40,14 @@ export namespace GameManager {
       }
     }
 
+    if (!CreepManager.isUpgraderLimitFull()) {
+      CreepManager.createUpgrader();
+
+      if (Config.VERBOSE) {
+        console.log('Need more upgraders!');
+      }
+    }
+
     CreepManager.harvestersGoToWork();
     CreepManager.upgradersGoToWork();
   }

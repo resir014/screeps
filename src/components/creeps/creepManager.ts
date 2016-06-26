@@ -131,6 +131,10 @@ export namespace CreepManager {
     // return (Config.MAX_HARVESTERS_PER_SOURCE == this.creepCount);
   }
 
+  export function isUpgraderLimitFull(): boolean {
+    return Config.MAX_UPGRADERS_PER_CONTROLLER == this.creepCount;
+  }
+
   /**
    * Loads all Creep names.
    */

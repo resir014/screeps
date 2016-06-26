@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
+import { Harvester } from './harvester';
 
 export interface IUpgrader {
 
@@ -8,7 +9,7 @@ export interface IUpgrader {
   tryUpgrade(): number;
 }
 
-export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
+export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
 
   public targetController: StructureController = null;
 
@@ -29,7 +30,12 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   }
 
   public action(): boolean {
-    this.moveToUpgrade();
+    // This is probably not the most efficient way to do this.
+    if (this.creep.carry.energy == 0) {
+      this.moveToHarvest();
+    } else {
+      this.moveToUpgrade();
+    }
 
     return true
   }
