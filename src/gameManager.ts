@@ -41,6 +41,7 @@ export namespace GameManager {
     }
 
     CreepManager.harvestersGoToWork();
+    CreepManager.upgradersGoToWork();
   }
 
 }

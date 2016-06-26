@@ -2,7 +2,9 @@ import { Config } from './../../config/config';
 import { MemoryManager } from './../../shared/memoryManager';
 import { SourceManager } from './../sources/sourceManager';
 import { SpawnManager } from './../spawns/spawnManager';
+import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './harvester';
+import { Upgrader } from './upgrader';
 
 export namespace CreepManager {
 
@@ -54,6 +56,26 @@ export namespace CreepManager {
     return status;
   }
 
+  export function createUpgrader(): number {
+    let bodyParts: string[] = [MOVE, CARRY, WORK];
+    let name: string = null;
+    let properties: any = {
+      role: 'upgrader',
+      target_controller_id: ControllerManager.getController().id
+    };
+
+    var status: number = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    if (status == OK) {
+      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+
+      if (Config.VERBOSE) {
+        console.log('Started creating new Upgrader');
+      }
+    }
+
+    return status;
+  }
+
   export function harvestersGoToWork(): void {
 
     let harvesters: Harvester[] = [];
@@ -71,6 +93,27 @@ export namespace CreepManager {
 
     if (Config.VERBOSE) {
       console.log(harvesters.length + ' harvesters reported on duty today!');
+    }
+
+  }
+
+  export function upgradersGoToWork(): void {
+
+    let upgraders: Upgrader[] = [];
+    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'upgrader') {
+        let upgrader = new Upgrader();
+        upgrader.setCreep(creep);
+        // Next move for harvester
+        upgrader.action();
+
+        // Save harvester to collection
+        upgraders.push(upgrader);
+      }
+    });
+
+    if (Config.VERBOSE) {
+      console.log(upgraders.length + ' upgraders reported on duty today!');
     }
 
   }
