@@ -60,8 +60,7 @@ export namespace CreepManager {
     let bodyParts: string[] = [MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
-      role: 'upgrader',
-      target_controller_id: ControllerManager.getController().id
+      role: 'upgrader'
     };
 
     var status: number = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);

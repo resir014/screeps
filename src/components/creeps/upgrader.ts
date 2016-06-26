@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
+import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './harvester';
 
 export interface IUpgrader {
@@ -16,7 +17,7 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
+    this.targetController = ControllerManager.getController();
   }
 
   public tryUpgrade(): number {
