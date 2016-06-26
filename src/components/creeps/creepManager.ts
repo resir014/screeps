@@ -56,6 +56,12 @@ export namespace CreepManager {
     return status;
   }
 
+  /**
+   * Creates a new upgrader creep.
+   *
+   * @export
+   * @returns {number}
+   */
   export function createUpgrader(): number {
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
@@ -78,6 +84,11 @@ export namespace CreepManager {
     return status;
   }
 
+  /**
+   * Trigger action methods for all Harvester creeps.
+   *
+   * @export
+   */
   export function harvestersGoToWork(): void {
 
     let harvesters: Harvester[] = [];
@@ -99,6 +110,11 @@ export namespace CreepManager {
 
   }
 
+  /**
+   * Trigger action methods for all Upgrader creeps.
+   *
+   * @export
+   */
   export function upgradersGoToWork(): void {
 
     let upgraders: Upgrader[] = [];
@@ -122,17 +138,24 @@ export namespace CreepManager {
 
 
   /**
-   * This should have some kind of load balancing. It's not useful to create
-   * all the harvesters for all source points at the start.
+   * Checks if there's enough harvesters handling a certain source.
    *
    * @export
    * @returns {boolean}
    */
   export function isHarvesterLimitFull(): boolean {
-    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) == this.creepCount);
-    // return (Config.MAX_HARVESTERS_PER_SOURCE == this.creepCount);
+    // TODO: This should have some kind of load balancing. It's not useful to
+    // create all the harvesters for all source points at the start.
+    // return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) == this.creepCount);
+    return (Config.MAX_HARVESTERS_PER_SOURCE == this.creepCount);
   }
 
+  /**
+   * Checks if there's enough harvesters handling the same controller.
+   *
+   * @export
+   * @returns {boolean}
+   */
   export function isUpgraderLimitFull(): boolean {
     return Config.MAX_UPGRADERS_PER_CONTROLLER == this.creepCount;
   }
