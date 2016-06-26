@@ -32,6 +32,15 @@ export namespace GameManager {
     MemoryManager.loadMemory();
     CreepManager.loadCreeps();
 
+    for (var name in Memory.creeps) {
+      if (!Game.creeps[name]) {
+        if (Config.VERBOSE) {
+          console.log('Clearing non-existing creep memory: ', name);
+        }
+        delete Memory.creeps[name];
+      }
+    }
+
     if (!CreepManager.isHarvesterLimitFull()) {
       CreepManager.createHarvester();
 
