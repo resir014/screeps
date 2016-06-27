@@ -9,14 +9,17 @@ export interface IUpgrader {
   targetController: StructureController;
 
   isBagEmpty(): boolean;
+  isBagFull(): boolean;
   tryUpgrade(): number;
   moveToUpgrade(): void;
+  tryHarvest(): number;
+  moveToHarvest(): void;
 
   action(): boolean;
 
 }
 
-export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
+export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public targetSource: Source = null;
   public targetController: StructureController = null;
@@ -46,6 +49,16 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
     }
   }
 
+  public tryHarvest(): number {
+    return this.creep.harvest(this.targetSource);
+  }
+
+  public moveToHarvest(): void {
+    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetSource);
+    }
+  }
+
   public action(): boolean {
     if (this.creep.memory.upgrading && this.isBagEmpty()) {
       this.creep.memory.upgrading = false;
@@ -57,9 +70,9 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
     if (this.needsRenew()) {
       this.moveToRenew();
     } else if (this.creep.memory.upgrading) {
-      this.moveToHarvest();
-    } else {
       this.moveToUpgrade();
+    } else {
+      this.moveToHarvest();
     }
 
     return true
