@@ -5,6 +5,7 @@ import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
 import { CreepManager } from './components/creeps/creepManager';
 import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
+import { StructureManager } from './components/structures/structureManager';
 
 /**
  * Singleton object.
@@ -25,6 +26,7 @@ export namespace GameManager {
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
     ConstructionSiteManager.loadConstructionSites();
+    StructureManager.loadStructures();
   }
 
   export function loop() {
@@ -61,9 +63,14 @@ export namespace GameManager {
       CreepManager.createBuilder();
     }
 
+    if (CreepManager.canCreateRepairer()) {
+      CreepManager.createRepairer();
+    }
+
     CreepManager.harvestersGoToWork();
     CreepManager.upgradersGoToWork();
     CreepManager.buildersGoToWork();
+    CreepManager.repairersGoToWork();
   }
 
 }

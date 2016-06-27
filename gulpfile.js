@@ -42,7 +42,7 @@ gulp.task('upload-sim', ['compile'], function () {
       'Content-Type': 'application/json; charset=utf-8'
     }
   }, function (res) {
-    gutil.log('Build ' + gutil.colors.cyan('completed') + ' with HTTPS Response ' + gutil.colors.magenta(res.statusCode));
+    gutil.log('Build ' + gutil.colors.cyan('completed') + ' with HTTPS response ' + gutil.colors.magenta(res.statusCode));
   });
 
   req.write(JSON.stringify(screeps.data));

@@ -6,10 +6,11 @@ import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './harvester';
 import { Upgrader } from './upgrader';
 import { Builder } from './builder';
+import { Repairer } from './repairer';
 
 export namespace CreepManager {
 
-  export var creeps: {Creep} = null;
+  export var creeps: { Creep } = null;
   export var creepNames: string[] = [];
   export var creepCount: number = 0;
 
@@ -108,6 +109,28 @@ export namespace CreepManager {
     return 0;
   }
 
+  export function createRepairer(): number | string {
+    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
+    let name: string = null;
+    let properties: any = {
+      role: 'repairer',
+      target_source_id: SourceManager.getFirstSource().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      repairing: false
+    }
+
+    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    if (status == OK) {
+      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+
+      if (Config.VERBOSE) {
+        console.log('[CreepManager] Started creating new Builder');
+      }
+    }
+
+    return 0;
+  }
+
   /**
    * Trigger action methods for all Harvester creeps.
    *
@@ -182,6 +205,29 @@ export namespace CreepManager {
 
   }
 
+  /**
+   * Trigger action methods for all Repairer creeps.
+   *
+   * @export
+   */
+  export function repairersGoToWork(): void {
+
+    let repairers: Repairer[] = [];
+    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'repairer') {
+        let repairer = new Repairer();
+        repairer.setCreep(creep);
+        repairer.action();
+
+        repairers.push(repairer);
+      }
+    });
+
+    if (Config.VERBOSE) {
+      console.log('[CreepManager] ' + repairers.length + ' repairers reported on duty today!');
+    }
+
+  }
 
   /**
    * Checks if there's enough harvesters handling a certain source.
@@ -252,6 +298,31 @@ export namespace CreepManager {
 
     if ((Config.MAX_BUILDERS_IN_ROOM > builders.length) && (harvesters.length != 0)) {
       // Same deal, haven't reached builder limit, already have at least one harvester.
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  export function canCreateRepairer(): boolean {
+    let builders: Creep[] = [];
+    let harvesters: Creep[] = [];
+    let repairers: Creep[] = [];
+
+    _.forEach(creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'harvester') {
+        harvesters.push(creep);
+      }
+      if (creep.memory.role == 'builder') {
+        builders.push(creep);
+      }
+      if (creep.memory.role == 'repairer') {
+        repairers.push(creep);
+      }
+    });
+
+    if ((Config.MAX_REPAIRERS_IN_ROOM > repairers.length) && (harvesters.length != 0)
+      && (builders.length != 0)) {
       return true;
     } else {
       return false;
