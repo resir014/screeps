@@ -70,7 +70,8 @@ export namespace CreepManager {
       role: 'upgrader',
       target_source_id: SourceManager.getFirstSource().id,
       target_energy_dropoff_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      upgrading: false
     };
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);

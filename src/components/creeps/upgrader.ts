@@ -32,6 +32,10 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
     return (this.creep.carry.energy == 0);
   }
 
+  public isBagFull(): boolean {
+    return this.creep.carry.energy == this.creep.carryCapacity;
+  }
+
   public tryUpgrade(): number {
     return this.creep.upgradeController(this.targetController);
   }
@@ -43,10 +47,16 @@ export class Upgrader extends Harvester implements IUpgrader, ICreepAction {
   }
 
   public action(): boolean {
-    // This is probably not the most efficient way to do this.
+    if (this.creep.memory.upgrading && this.isBagEmpty()) {
+      this.creep.memory.upgrading = false;
+    }
+    if (!this.creep.memory.upgrading && this.isBagFull()) {
+      this.creep.memory.upgrading = true;
+    }
+
     if (this.needsRenew()) {
       this.moveToRenew();
-    } else if (this.isBagEmpty()) {
+    } else if (this.creep.memory.upgrading) {
       this.moveToHarvest();
     } else {
       this.moveToUpgrade();
