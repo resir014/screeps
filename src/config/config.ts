@@ -10,7 +10,7 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MAX_HARVESTERS_PER_SOURCE: number = 3;
+  export const MAX_HARVESTERS_PER_SOURCE: number = 4;
 
   /**
    * @type {number}
@@ -34,7 +34,7 @@ export namespace Config {
    *
    * @type {number}
    */
-  export const DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL: number = 700;
+  export const DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL: number = 400;
 
   /**
    * Default amount of minimal hit points a Structure can have before it needs
