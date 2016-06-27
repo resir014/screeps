@@ -62,7 +62,7 @@ export class Harvester extends CreepAction implements IHarvester, ICreepAction {
       }
     });
 
-    this.creep.memory.target_energy_dropoff_id = targets[0];
+    this.creep.memory.target_energy_dropoff_id = targets[0].id;
   }
 
   public action(): boolean {
