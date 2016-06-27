@@ -12,7 +12,9 @@ export interface IBuilder {
   isBagEmpty(): boolean;
   isBagFull(): boolean;
   tryBuild(): number;
+  tryHarvest(): number;
   moveToBuild(): void;
+  moveToHarvest(): void;
 
   action(): boolean;
 

@@ -157,6 +157,11 @@ export namespace CreepManager {
 
   }
 
+  /**
+   * Trigger action methods for all Builder creeps.
+   *
+   * @export
+   */
   export function buildersGoToWork(): void {
 
     let builders: Builder[] = [];
@@ -198,7 +203,7 @@ export namespace CreepManager {
   }
 
   /**
-   * Checks if it's possible can create an upgrader.
+   * Checks if it's possible to create an upgrader.
    *
    * @export
    * @returns {boolean}
@@ -225,6 +230,12 @@ export namespace CreepManager {
     }
   }
 
+  /**
+   * Checks if it's possible to create a builder.
+   *
+   * @export
+   * @returns {boolean}
+   */
   export function canCreateBuilder(): boolean {
     let builders: Creep[] = [];
     let harvesters: Creep[] = [];
