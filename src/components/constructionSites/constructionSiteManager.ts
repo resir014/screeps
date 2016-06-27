@@ -3,7 +3,7 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace ConstructionSiteManager {
 
-  export var constructionSites: ConstructionSite;
+  export var constructionSites: ConstructionSite[];
   export var constructionSiteCount: number = 0;
 
   export function loadConstructionSites() {
