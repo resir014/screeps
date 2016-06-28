@@ -106,7 +106,7 @@ export namespace CreepManager {
       }
     }
 
-    return 0;
+    return status;
   }
 
   export function createRepairer(): number | string {
@@ -128,7 +128,7 @@ export namespace CreepManager {
       }
     }
 
-    return 0;
+    return status;
   }
 
   /**
@@ -235,18 +235,15 @@ export namespace CreepManager {
    * @export
    * @returns {boolean}
    */
-  export function isHarvesterLimitFull(): boolean {
-    let harvesters: Creep[] = [];
-
+  export function canCreateHarvester(): boolean {
     // TODO: This should have some kind of load balancing. It's not useful to
     // create all the harvesters for all source points at the start.
-    _.forEach(creeps, function (creep: Creep, creepName: string) {
-      if (creep.memory.role == 'harvester') {
-        harvesters.push(creep);
-      }
-    });
+    let harvesters: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
+    );
 
-    return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) > harvesters.length);
+    // return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) > harvesters.length);
+    return (Config.MAX_HARVESTERS_PER_SOURCE >= harvesters.length);
   }
 
   /**
@@ -256,25 +253,16 @@ export namespace CreepManager {
    * @returns {boolean}
    */
   export function canCreateUpgrader(): boolean {
-    let harvesters: Creep[] = [];
-    let upgraders: Creep[] = [];
+    let upgraders: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'upgrader'
+    );
+    let harvesters: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
+    );
 
-    _.forEach(creeps, function (creep: Creep, creepName: string) {
-      if (creep.memory.role == 'harvester') {
-        harvesters.push(creep);
-      }
-      if (creep.memory.role == 'upgrader') {
-        upgraders.push(creep);
-      }
-    });
-
-    if ((Config.MAX_UPGRADERS_PER_CONTROLLER > upgraders.length) && (harvesters.length != 0)) {
-      // We still have enough room for the current controller.
-      // We also already have a harvester.
-      return true;
-    } else {
-      return false;
-    }
+    // We still have enough room for the current controller.
+    // We also already have a harvester.
+    return (Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraders.length);
   }
 
   /**
@@ -284,49 +272,34 @@ export namespace CreepManager {
    * @returns {boolean}
    */
   export function canCreateBuilder(): boolean {
-    let builders: Creep[] = [];
-    let harvesters: Creep[] = [];
+    let builders: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'builder'
+    );
+    let upgraders: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'upgrader'
+    );
+    let harvesters: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
+    );
 
-    _.forEach(creeps, function (creep: Creep, creepName: string) {
-      if (creep.memory.role == 'harvester') {
-        harvesters.push(creep);
-      }
-      if (creep.memory.role == 'builder') {
-        builders.push(creep);
-      }
-    });
-
-    if ((Config.MAX_BUILDERS_IN_ROOM > builders.length) && (harvesters.length != 0)) {
-      // Same deal, haven't reached builder limit, already have at least one harvester.
-      return true;
-    } else {
-      return false;
-    }
+    return (Config.MAX_BUILDERS_IN_ROOM >= builders.length);
   }
 
+  /**
+   * Checks if it's possible to create a repairer.
+   *
+   * @export
+   * @returns {boolean}
+   */
   export function canCreateRepairer(): boolean {
-    let builders: Creep[] = [];
-    let harvesters: Creep[] = [];
-    let repairers: Creep[] = [];
+    let repairers: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'repairer'
+    );
+    let builders: Creep[] = _.filter(
+      this.creeps, (creep: Creep) => creep.memory.role == 'builder'
+    );
 
-    _.forEach(creeps, function (creep: Creep, creepName: string) {
-      if (creep.memory.role == 'harvester') {
-        harvesters.push(creep);
-      }
-      if (creep.memory.role == 'builder') {
-        builders.push(creep);
-      }
-      if (creep.memory.role == 'repairer') {
-        repairers.push(creep);
-      }
-    });
-
-    if ((Config.MAX_REPAIRERS_IN_ROOM > repairers.length) && (harvesters.length != 0)
-      && (builders.length != 0)) {
-      return true;
-    } else {
-      return false;
-    }
+    return (Config.MAX_REPAIRERS_IN_ROOM >= repairers.length);
   }
 
   /**

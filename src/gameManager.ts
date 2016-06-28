@@ -47,23 +47,13 @@ export namespace GameManager {
       }
     }
 
-    if (!CreepManager.isHarvesterLimitFull()) {
+    if (CreepManager.canCreateHarvester()) {
       CreepManager.createHarvester();
-
-      if (Config.VERBOSE) {
-        console.log('[GameManager] Need more harvesters!');
-      }
-    }
-
-    if (CreepManager.canCreateUpgrader()) {
+    } else if (CreepManager.canCreateUpgrader()) {
       CreepManager.createUpgrader();
-    }
-
-    if (CreepManager.canCreateBuilder()) {
+    } else if (CreepManager.canCreateBuilder()) {
       CreepManager.createBuilder();
-    }
-
-    if (CreepManager.canCreateRepairer()) {
+    } else if (CreepManager.canCreateRepairer()) {
       CreepManager.createRepairer();
     }
 

@@ -67,9 +67,7 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
       this.creep.memory.upgrading = true;
     }
 
-    if (this.needsRenew()) {
-      this.moveToRenew();
-    } else if (this.creep.memory.upgrading) {
+    if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
     } else {
       this.moveToHarvest();

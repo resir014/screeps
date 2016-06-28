@@ -68,9 +68,7 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
       this.creep.memory.building = true;
     }
 
-    if (this.needsRenew()) {
-      this.moveToRenew();
-    } else if (this.creep.memory.building) {
+    if (this.creep.memory.building) {
       this.moveToBuild();
     } else {
       this.moveToHarvest();
