@@ -243,7 +243,7 @@ export namespace CreepManager {
     );
 
     // return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) > harvesters.length);
-    return (Config.MAX_HARVESTERS_PER_SOURCE >= harvesters.length);
+    return (Config.MAX_HARVESTERS_PER_SOURCE > harvesters.length);
   }
 
   /**
@@ -262,7 +262,7 @@ export namespace CreepManager {
 
     // We still have enough room for the current controller.
     // We also already have a harvester.
-    return (Config.MAX_UPGRADERS_PER_CONTROLLER >= upgraders.length);
+    return (Config.MAX_UPGRADERS_PER_CONTROLLER > upgraders.length);
   }
 
   /**
@@ -282,7 +282,7 @@ export namespace CreepManager {
       this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
     );
 
-    return (Config.MAX_BUILDERS_IN_ROOM >= builders.length);
+    return (Config.MAX_BUILDERS_IN_ROOM > builders.length);
   }
 
   /**
@@ -299,7 +299,7 @@ export namespace CreepManager {
       this.creeps, (creep: Creep) => creep.memory.role == 'builder'
     );
 
-    return (Config.MAX_REPAIRERS_IN_ROOM >= repairers.length);
+    return (Config.MAX_REPAIRERS_IN_ROOM > repairers.length);
   }
 
   /**
