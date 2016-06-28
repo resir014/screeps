@@ -235,15 +235,12 @@ export namespace CreepManager {
    * @export
    * @returns {boolean}
    */
-  export function canCreateHarvester(): boolean {
+  export function canCreateHarvester(harvesters: Creep[]): boolean {
     // TODO: This should have some kind of load balancing. It's not useful to
     // create all the harvesters for all source points at the start.
-    let harvesters: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
-    );
 
     // return ((SourceManager.sourceCount * Config.MAX_HARVESTERS_PER_SOURCE) > harvesters.length);
-    return (Config.MAX_HARVESTERS_PER_SOURCE > harvesters.length);
+    return ((Config.MAX_HARVESTERS_PER_SOURCE > harvesters.length) || (harvesters.length < 2));
   }
 
   /**
@@ -252,14 +249,7 @@ export namespace CreepManager {
    * @export
    * @returns {boolean}
    */
-  export function canCreateUpgrader(): boolean {
-    let upgraders: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'upgrader'
-    );
-    let harvesters: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
-    );
-
+  export function canCreateUpgrader(upgraders: Creep[]): boolean {
     // We still have enough room for the current controller.
     // We also already have a harvester.
     return (Config.MAX_UPGRADERS_PER_CONTROLLER > upgraders.length);
@@ -271,17 +261,7 @@ export namespace CreepManager {
    * @export
    * @returns {boolean}
    */
-  export function canCreateBuilder(): boolean {
-    let builders: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'builder'
-    );
-    let upgraders: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'upgrader'
-    );
-    let harvesters: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'harvester'
-    );
-
+  export function canCreateBuilder(builders: Creep[]): boolean {
     return (Config.MAX_BUILDERS_IN_ROOM > builders.length);
   }
 
@@ -291,14 +271,7 @@ export namespace CreepManager {
    * @export
    * @returns {boolean}
    */
-  export function canCreateRepairer(): boolean {
-    let repairers: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'repairer'
-    );
-    let builders: Creep[] = _.filter(
-      this.creeps, (creep: Creep) => creep.memory.role == 'builder'
-    );
-
+  export function canCreateRepairer(repairers: Creep[]): boolean {
     return (Config.MAX_REPAIRERS_IN_ROOM > repairers.length);
   }
 
