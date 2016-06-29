@@ -7,8 +7,7 @@ export interface IRepairer {
   energyStation: Storage | Spawn;
   _minHitsBeforeNeedsRepair: number;
 
-  isBagEmpty(): boolean;
-  isBagFull(): boolean;
+  hasEmptyBag(): boolean;
   askForEnergy();
   moveToAskEnergy(): void;
   tryRepair(): number;
@@ -32,12 +31,8 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
-  public isBagEmpty(): boolean {
+  public hasEmptyBag(): boolean {
     return this.creep.carry.energy == 0;
-  }
-
-  public isBagFull(): boolean {
-    return this.creep.carry.energy == this.creep.carryCapacity;
   }
 
   public askForEnergy() {
@@ -61,17 +56,10 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.creep.memory.repairing && this.isBagEmpty()) {
-      this.creep.memory.repairing = false;
-    }
-    if (!this.creep.memory.repairing && this.isBagFull()) {
-      this.creep.memory.repairing = true;
-    }
-
-    if (this.creep.memory.repairing) {
-      this.moveToRepair();
-    } else {
+    if (this.hasEmptyBag()) {
       this.moveToAskEnergy();
+    } else {
+      this.moveToRepair();
     }
 
     return true;

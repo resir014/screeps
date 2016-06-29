@@ -6,8 +6,7 @@ export interface IBuilder {
   targetConstructionSite: ConstructionSite;
   energyStation: Spawn;
 
-  isBagEmpty(): boolean;
-  isBagFull(): boolean;
+  hasEmptyBag(): boolean;
   askForEnergy(): number;
   moveToAskEnergy(): void;
   tryBuild(): number;
@@ -29,12 +28,8 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
     this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
-  public isBagEmpty(): boolean {
+  public hasEmptyBag(): boolean {
     return this.creep.carry.energy == 0;
-  }
-
-  public isBagFull(): boolean {
-    return this.creep.carry.energy == this.creep.carryCapacity;
   }
 
   public askForEnergy(): number {
@@ -58,17 +53,10 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.creep.memory.building && this.isBagEmpty()) {
-      this.creep.memory.building = false;
-    }
-    if (!this.creep.memory.building && this.isBagFull()) {
-      this.creep.memory.building = true;
-    }
-
-    if (this.creep.memory.building) {
-      this.moveToBuild();
-    } else {
+    if (this.hasEmptyBag()) {
       this.moveToAskEnergy();
+    } else {
+      this.moveToBuild();
     }
 
     return true;

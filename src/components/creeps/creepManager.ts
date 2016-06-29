@@ -73,8 +73,7 @@ export namespace CreepManager {
       role: 'upgrader',
       target_controller_id: ControllerManager.getController().id,
       target_energy_station_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      upgrading: false
+      renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -96,8 +95,7 @@ export namespace CreepManager {
       role: 'builder',
       target_construction_site_id: ConstructionSiteManager.getFirstConstructionSite().id,
       target_energy_station_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      building: false
+      renew_station_id: SpawnManager.getFirstSpawn().id
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -119,8 +117,7 @@ export namespace CreepManager {
       role: 'repairer',
       target_repair_site_id: StructureManager.getStructuresToRepair().id,
       target_energy_station_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      repairing: false
+      renew_station_id: SpawnManager.getFirstSpawn().id
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
