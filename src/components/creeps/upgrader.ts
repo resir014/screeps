@@ -1,19 +1,20 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
 import { ControllerManager } from './../controllers/controllerManager';
+import { StructureManager } from './../structures/structureManager';
 import { Harvester } from './harvester';
 
 export interface IUpgrader {
 
-  targetSource: Source;
+  energyStation: Spawn;
   targetController: StructureController;
 
   isBagEmpty(): boolean;
   isBagFull(): boolean;
+  askForEnergy(): number;
+  moveToAskEnergy(): void;
   tryUpgrade(): number;
   moveToUpgrade(): void;
-  tryHarvest(): number;
-  moveToHarvest(): void;
 
   action(): boolean;
 
@@ -21,14 +22,14 @@ export interface IUpgrader {
 
 export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
-  public targetSource: Source = null;
   public targetController: StructureController = null;
+  public energyStation: Spawn = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
-    this.targetController = ControllerManager.getController();
+    this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
+    this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
   public isBagEmpty(): boolean {
@@ -39,6 +40,16 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
     return this.creep.carry.energy == this.creep.carryCapacity;
   }
 
+  public askForEnergy(): number {
+    return this.energyStation.transferEnergy(this.creep);
+  }
+
+  public moveToAskEnergy(): void {
+    if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.energyStation);
+    }
+  }
+
   public tryUpgrade(): number {
     return this.creep.upgradeController(this.targetController);
   }
@@ -46,16 +57,6 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   public moveToUpgrade(): void {
     if (this.tryUpgrade() == ERR_NOT_IN_RANGE) {
       this.moveTo(this.targetController);
-    }
-  }
-
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
     }
   }
 
@@ -70,7 +71,7 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
     if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
     } else {
-      this.moveToHarvest();
+      this.moveToAskEnergy();
     }
 
     return true

@@ -19,4 +19,23 @@ export namespace StructureManager {
     return this.structures[0];
   }
 
+  export function getStorageObject(): Structure {
+    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
+      filter: (structure) => {
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+          structure.energy < structure.energyCapacity;
+      }
+    });
+
+    return targets[0];
+  }
+
+  export function getStructuresToRepair(): Structure {
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
+      return (structure.hits < Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR);
+    });
+
+    return targets[0];
+  }
+
 }

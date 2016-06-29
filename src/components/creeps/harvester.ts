@@ -1,6 +1,7 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
 import { RoomManager } from './../rooms/roomManager';
+import { StructureManager } from './../structures/structureManager';
 
 export interface IHarvester {
 
@@ -23,8 +24,6 @@ export class Harvester extends CreepAction implements IHarvester, ICreepAction {
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
-
-    this.setTargetDropOff();
 
     this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
     this.targetEnergyDropOff = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_dropoff_id);
@@ -51,19 +50,6 @@ export class Harvester extends CreepAction implements IHarvester, ICreepAction {
   public moveToDropEnergy(): void {
     if (this.tryEnergyDropOff() == ERR_NOT_IN_RANGE) {
       this.moveTo(this.targetEnergyDropOff);
-    }
-  }
-
-  public setTargetDropOff(): void {
-    let targets: Structure[] =  <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-      filter: (structure) => {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-          structure.energy < structure.energyCapacity;
-      }
-    });
-
-    if (targets.length > 0) {
-      this.creep.memory.target_energy_dropoff_id = targets[0].id;
     }
   }
 
