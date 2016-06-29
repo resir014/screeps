@@ -1,8 +1,5 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { ControllerManager } from './../controllers/controllerManager';
-import { StructureManager } from './../structures/structureManager';
-import { Harvester } from './harvester';
 
 export interface IUpgrader {
 

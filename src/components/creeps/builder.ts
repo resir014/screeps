@@ -1,9 +1,5 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { ControllerManager } from './../controllers/controllerManager';
-import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
-import { RoomManager } from './../rooms/roomManager';
-import { StructureManager } from './../structures/structureManager';
 
 export interface IBuilder {
 

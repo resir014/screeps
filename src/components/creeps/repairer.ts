@@ -1,8 +1,5 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { ControllerManager } from './../controllers/controllerManager';
-import { StructureManager } from './../structures/structureManager';
-import { RoomManager } from './../rooms/roomManager';
 
 export interface IRepairer {
 

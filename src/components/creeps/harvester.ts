@@ -1,7 +1,5 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { RoomManager } from './../rooms/roomManager';
-import { StructureManager } from './../structures/structureManager';
 
 export interface IHarvester {
 
