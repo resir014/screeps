@@ -1,22 +1,17 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { ControllerManager } from './../controllers/controllerManager';
-import { StructureManager } from './../structures/structureManager';
-import { RoomManager } from './../rooms/roomManager';
 
 export interface IRepairer {
 
-  structures: Structure[];
-  targetSource: Source;
+  targetStructure: Structure;
+  energyStation: Storage | Spawn;
   _minHitsBeforeNeedsRepair: number;
 
-  isBagEmpty(): boolean;
-  isBagFull(): boolean;
-  findRepair(structures: Structure[]): Structure;
-  tryRepair(targetStructure: Structure): number;
-  tryHarvest(): number;
-  moveToRepair(targetStructure: Structure): void;
-  moveToHarvest(): void;
+  hasEmptyBag(): boolean;
+  askForEnergy();
+  moveToAskEnergy(): void;
+  tryRepair(): number;
+  moveToRepair(): void;
 
   action(): boolean;
 
@@ -24,79 +19,47 @@ export interface IRepairer {
 
 export class Repairer extends CreepAction implements IRepairer, ICreepAction {
 
-  public structures: Structure[] = [];
-  public targetSource: Source = null;
+  public targetStructure: Structure = null;
+  public energyStation: Spawn = null;
 
   public _minHitsBeforeNeedsRepair: number = Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.structures = StructureManager.structures;
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
+    this.targetStructure = <Structure>Game.getObjectById(this.creep.memory.target_repair_site_id);
+    this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
-  public isBagEmpty(): boolean {
+  public hasEmptyBag(): boolean {
     return this.creep.carry.energy == 0;
   }
 
-  public isBagFull(): boolean {
-    return this.creep.carry.energy == this.creep.carryCapacity;
+  public askForEnergy() {
+    return this.energyStation.transferEnergy(this.creep);
   }
 
-  /**
-   * Collects all available structure and determine which ones need repair.
-   *
-   * @param {Structure[]} structures
-   * @returns {Structure} the first structure in the toRepair list.
-   */
-  public findRepair(structures: Structure[]): Structure {
-    let toRepair: Structure[] = [];
-
-    _.forEach(this.structures, function (structure: Structure) {
-      if (structure.hits < Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR) {
-        toRepair.push(structure);
-      }
-    });
-
-    // For now, just return the first structure available.
-    return toRepair[0];
-  }
-
-  public tryRepair(targetStructure: Structure): number {
-    return this.creep.repair(targetStructure);
-  }
-
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToRepair(targetStructure: Structure): void {
-    if (this.tryRepair(targetStructure) == ERR_NOT_IN_RANGE) {
-      this.moveTo(targetStructure);
+  public moveToAskEnergy(): void {
+    if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.energyStation);
     }
   }
 
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
+  public tryRepair(): number {
+    return this.creep.repair(this.targetStructure);
+  }
+
+  public moveToRepair(): void {
+    if (this.tryRepair() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetStructure);
     }
   }
 
   public action(): boolean {
-    let targetStructure = this.findRepair(this.structures);
-
-    if (this.creep.memory.repairing && this.isBagEmpty()) {
-      this.creep.memory.repairing = false;
-    }
-    if (!this.creep.memory.repairing && this.isBagFull()) {
-      this.creep.memory.repairing = true;
-    }
-
-    if (this.creep.memory.repairing) {
-      this.moveToRepair(targetStructure);
+    if (this.hasEmptyBag()) {
+      this.moveToAskEnergy();
     } else {
-      this.moveToHarvest();
+      this.moveToRepair();
     }
 
     return true;

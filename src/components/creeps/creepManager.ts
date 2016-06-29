@@ -2,6 +2,8 @@ import { Config } from './../../config/config';
 import { MemoryManager } from './../../shared/memoryManager';
 import { SourceManager } from './../sources/sourceManager';
 import { SpawnManager } from './../spawns/spawnManager';
+import { StructureManager } from './../structures/structureManager';
+import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
 import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './harvester';
 import { Upgrader } from './upgrader';
@@ -42,7 +44,7 @@ export namespace CreepManager {
     let properties: any = {
       role: 'harvester',
       target_source_id: SourceManager.getFirstSource().id,
-      target_energy_dropoff_id: SpawnManager.getFirstSpawn().id,
+      target_energy_dropoff_id: StructureManager.getStorageObject().id,
       renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
@@ -69,10 +71,9 @@ export namespace CreepManager {
     let name: string = null;
     let properties: any = {
       role: 'upgrader',
-      target_source_id: SourceManager.getFirstSource().id,
-      target_energy_dropoff_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      upgrading: false
+      target_controller_id: ControllerManager.getController().id,
+      target_energy_station_id: SpawnManager.getFirstSpawn().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -92,9 +93,9 @@ export namespace CreepManager {
     let name: string = null;
     let properties: any = {
       role: 'builder',
-      target_source_id: SourceManager.getFirstSource().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      building: false
+      target_construction_site_id: ConstructionSiteManager.getFirstConstructionSite().id,
+      target_energy_station_id: SpawnManager.getFirstSpawn().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -114,9 +115,9 @@ export namespace CreepManager {
     let name: string = null;
     let properties: any = {
       role: 'repairer',
-      target_source_id: SourceManager.getFirstSource().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id,
-      repairing: false
+      target_repair_site_id: StructureManager.getStructuresToRepair().id,
+      target_energy_station_id: SpawnManager.getFirstSpawn().id,
+      renew_station_id: SpawnManager.getFirstSpawn().id
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);

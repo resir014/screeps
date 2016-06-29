@@ -1,20 +1,16 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
-import { ControllerManager } from './../controllers/controllerManager';
-import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
-import { RoomManager } from './../rooms/roomManager';
 
 export interface IBuilder {
 
-  targetSite: ConstructionSite;
-  targetSource: Source;
+  targetConstructionSite: ConstructionSite;
+  energyStation: Spawn;
 
-  isBagEmpty(): boolean;
-  isBagFull(): boolean;
+  hasEmptyBag(): boolean;
+  askForEnergy(): number;
+  moveToAskEnergy(): void;
   tryBuild(): number;
-  tryHarvest(): number;
   moveToBuild(): void;
-  moveToHarvest(): void;
 
   action(): boolean;
 
@@ -22,56 +18,45 @@ export interface IBuilder {
 
 export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
-  public targetSite: ConstructionSite = null;
-  public targetSource: Source = null;
+  public targetConstructionSite: ConstructionSite = null;
+  public energyStation: Spawn = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetSite = ConstructionSiteManager.getFirstConstructionSite();
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
+    this.targetConstructionSite = <ConstructionSite>Game.getObjectById(this.creep.memory.target_construction_site_id);
+    this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
-  public isBagEmpty(): boolean {
+  public hasEmptyBag(): boolean {
     return this.creep.carry.energy == 0;
   }
 
-  public isBagFull(): boolean {
-    return this.creep.carry.energy == this.creep.carryCapacity;
+  public askForEnergy(): number {
+    return this.energyStation.transferEnergy(this.creep);
+  }
+
+  public moveToAskEnergy(): void {
+    if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.energyStation);
+    }
   }
 
   public tryBuild(): number {
-    return this.creep.build(this.targetSite);
-  }
-
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
+    return this.creep.build(this.targetConstructionSite);
   }
 
   public moveToBuild(): void {
     if (this.tryBuild() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSite);
-    }
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
+      this.moveTo(this.targetConstructionSite);
     }
   }
 
   public action(): boolean {
-    if (this.creep.memory.building && this.isBagEmpty()) {
-      this.creep.memory.building = false;
-    }
-    if (!this.creep.memory.building && this.isBagFull()) {
-      this.creep.memory.building = true;
-    }
-
-    if (this.creep.memory.building) {
-      this.moveToBuild();
+    if (this.hasEmptyBag()) {
+      this.moveToAskEnergy();
     } else {
-      this.moveToHarvest();
+      this.moveToBuild();
     }
 
     return true;
