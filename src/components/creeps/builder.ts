@@ -4,7 +4,7 @@ import { ICreepAction, CreepAction } from './creepAction';
 export interface IBuilder {
 
   targetConstructionSite: ConstructionSite;
-  energyStation: Spawn;
+  energyStation: Spawn | Structure;
 
   hasEmptyBag(): boolean;
   askForEnergy(): number;
@@ -19,13 +19,13 @@ export interface IBuilder {
 export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
   public targetConstructionSite: ConstructionSite = null;
-  public energyStation: Spawn = null;
+  public energyStation: Spawn | Structure = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
     this.targetConstructionSite = <ConstructionSite>Game.getObjectById(this.creep.memory.target_construction_site_id);
-    this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
   public hasEmptyBag(): boolean {
@@ -33,7 +33,11 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public askForEnergy(): number {
-    return this.energyStation.transferEnergy(this.creep);
+    if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
+      return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
+    } else if (this.energyStation instanceof StructureContainer || this.energyStation instanceof StructureStorage) {
+      return (<StructureContainer | StructureStorage>this.energyStation).transfer(this.creep, RESOURCE_ENERGY);
+    }
   }
 
   public moveToAskEnergy(): void {
