@@ -18,7 +18,6 @@ export namespace GameManager {
   export var harvesters: Creep[] = [];
   export var upgraders: Creep[] = [];
   export var builders: Creep[] = [];
-  export var builders: Creep[] = [];
 
   export function globalBootstrap() {
     // Set up your global objects.
@@ -43,14 +42,7 @@ export namespace GameManager {
 
     // This creep garbage collection logic has to exist BEFORE the spawn logic,
     // else it would break the entire spawning logic.
-    for (var name in Memory.creeps) {
-      if (!Game.creeps[name]) {
-        if (Config.VERBOSE) {
-          console.log('[GameManager] Clearing non-existing creep memory:', name);
-        }
-        delete Memory.creeps[name];
-      }
-    }
+    MemoryManager.cleanupCreepMemory();
 
     this.harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     this.upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
@@ -59,10 +51,10 @@ export namespace GameManager {
 
     if (CreepManager.canCreateHarvester(this.harvesters)) {
       CreepManager.createHarvester();
-    } else if (CreepManager.canCreateUpgrader(this.upgraders)) {
-      CreepManager.createUpgrader();
     } else if (CreepManager.canCreateBuilder(this.builders)) {
       CreepManager.createBuilder();
+    } else if (CreepManager.canCreateUpgrader(this.upgraders)) {
+      CreepManager.createUpgrader();
     } else if (CreepManager.canCreateRepairer(this.repairers)) {
       CreepManager.createRepairer();
     }
