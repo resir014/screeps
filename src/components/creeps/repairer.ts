@@ -4,11 +4,11 @@ import { ICreepAction, CreepAction } from './creepAction';
 export interface IRepairer {
 
   targetStructure: Structure;
-  energyStation: Storage | Spawn;
+  energyStation: Spawn | Structure;
   _minHitsBeforeNeedsRepair: number;
 
   hasEmptyBag(): boolean;
-  askForEnergy();
+  askForEnergy(): number;
   moveToAskEnergy(): void;
   tryRepair(): number;
   moveToRepair(): void;
@@ -20,7 +20,7 @@ export interface IRepairer {
 export class Repairer extends CreepAction implements IRepairer, ICreepAction {
 
   public targetStructure: Structure = null;
-  public energyStation: Spawn = null;
+  public energyStation: Spawn | Structure = null;
 
   public _minHitsBeforeNeedsRepair: number = Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR;
 
@@ -28,7 +28,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     super.setCreep(creep);
 
     this.targetStructure = <Structure>Game.getObjectById(this.creep.memory.target_repair_site_id);
-    this.energyStation = <Spawn>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
   }
 
   public hasEmptyBag(): boolean {
