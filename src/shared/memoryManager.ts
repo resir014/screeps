@@ -16,6 +16,7 @@ export namespace MemoryManager {
   }
 
   export function updateCreepMemory(): void {
+    this.updateSharedCreepMemory();
     this.updateHarvestersMemory();
     this.updateBuildersMemory();
     this.updateRepairersMemory();
