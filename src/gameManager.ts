@@ -18,7 +18,9 @@ export namespace GameManager {
   export var harvesters: Creep[] = [];
   export var upgraders: Creep[] = [];
   export var builders: Creep[] = [];
+  export var repairers: Creep[] = [];
 
+  // This method is called **only once**.
   export function globalBootstrap() {
     // Set up your global objects.
     // This method is executed only when Screeps system instantiated new "global".
@@ -40,14 +42,17 @@ export namespace GameManager {
     MemoryManager.loadMemory();
     CreepManager.loadCreeps();
 
-    // This creep garbage collection logic has to exist BEFORE the spawn logic,
-    // else it would break the entire spawning logic.
+    // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
+    // update exported lists of creeps by role
     this.harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     this.upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     this.builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     this.repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+
+    // update creep memory (builders' target site, repairers' target structure, etc)
+    MemoryManager.updateCreepMemory();
 
     if (CreepManager.canCreateHarvester(this.harvesters)) {
       CreepManager.createHarvester();
