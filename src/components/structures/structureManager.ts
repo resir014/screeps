@@ -22,13 +22,10 @@ export namespace StructureManager {
   // TODO find() calls are much more expensive, let's try to find() once and
   // cache the result
   export function getStorageObject(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      if (structure instanceof StructureExtension) {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_STORAGE) &&
-        structure.energy < structure.energyCapacity;
-      } else if (structure instanceof StructureContainer || structure instanceof Storage) {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_STORAGE) &&
-        structure.store < structure.storeCapacity;
+    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
+      filter: (structure) => {
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+          structure.energy < structure.energyCapacity;
       }
     });
 
