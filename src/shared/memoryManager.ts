@@ -48,7 +48,7 @@ export namespace MemoryManager {
     _.each(Memory.creeps, (creep: Creep) => {
 
       if (!creep.memory.renew_station_id) {
-        creep.memory.renew_station_id = SpawnManager.getFirstSpawn();
+        creep.memory.renew_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -106,7 +106,7 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated energy station ID for ' + creep.name);
 
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn();
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -131,7 +131,7 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
 
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn();
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -154,7 +154,7 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
 
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn();
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
