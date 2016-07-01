@@ -20,10 +20,13 @@ export namespace StructureManager {
   }
 
   export function getStorageObject(): Structure {
-    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-      filter: (structure) => {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-          structure.energy < structure.energyCapacity;
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
+      if (structure instanceof StructureExtension) {
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_STORAGE) &&
+        structure.energy < structure.energyCapacity;
+      } else if (structure instanceof StructureContainer || structure instanceof Storage) {
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_STORAGE) &&
+        structure.store < structure.storeCapacity;
       }
     });
 
@@ -31,9 +34,8 @@ export namespace StructureManager {
   }
 
   export function getStructuresToRepair(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return (structure.hits < Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR);
-    });
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) =>
+      (structure.hits < Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR));
 
     return targets[0];
   }
