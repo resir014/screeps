@@ -131,6 +131,8 @@ export namespace CreepManager {
     let energyStation_id: string = StructureManager.getStorageObject() ?
       StructureManager.getStorageObject().id :
       SpawnManager.getFirstSpawn().id;
+    let toRepair_id: string = StructureManager.getStructuresToRepair() ?
+      StructureManager.getStructuresToRepair().id : '';
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
