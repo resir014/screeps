@@ -121,7 +121,7 @@ export namespace CreepManager {
   }
 
   export function createRepairer(): number | string {
-    var energyStation_id: string = StructureManager.getStorageObject() ?
+    let energyStation_id: string = StructureManager.getStorageObject() ?
       StructureManager.getStorageObject().id :
       SpawnManager.getFirstSpawn().id;
 
