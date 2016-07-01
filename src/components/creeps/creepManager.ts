@@ -45,7 +45,7 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createHarvester(): number | string {
-    var dropoff_id: string = StructureManager.getStorageObject() ?
+    let dropoff_id: string = StructureManager.getStorageObject() ?
       StructureManager.getStorageObject().id :
       SpawnManager.getFirstSpawn().id;
 
