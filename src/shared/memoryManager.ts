@@ -16,28 +16,6 @@ export namespace MemoryManager {
     this.memory = Memory;
   }
 
-  export function updateCreepMemory(): void {
-    this.updateSharedCreepMemory();
-    this.updateHarvestersMemory();
-    this.updateBuildersMemory();
-    this.updateRepairersMemory();
-    this.updateUpgradersMemory();
-  }
-
-  /**
-   * Update memory shared by many creeps (i.e. thru CreepAction superclass)
-   */
-  export function updateSharedCreepMemory(): void {
-    _.each(Memory.creeps, (creep: Creep) => {
-
-      if (!creep.memory.renew_station_id) {
-        creep.memory.renew_station_id = SpawnManager.getFirstSpawn();
-      }
-
-    });
-  }
-
-
   /**
    * Clean up creep memory. Delete any creeps in memory that no longer exist in
    * the game.
@@ -55,12 +33,33 @@ export namespace MemoryManager {
     }
   }
 
+  export function updateCreepMemory(): void {
+    updateSharedCreepMemory();
+    updateHarvestersMemory();
+    updateBuildersMemory();
+    updateRepairersMemory();
+    updateUpgradersMemory();
+  }
+
+  /**
+   * Update memory shared by many creeps (i.e. thru CreepAction superclass)
+   */
+  function updateSharedCreepMemory(): void {
+    _.each(Memory.creeps, (creep: Creep) => {
+
+      if (!creep.memory.renew_station_id) {
+        creep.memory.renew_station_id = SpawnManager.getFirstSpawn();
+      }
+
+    });
+  }
+
 
   /**
    * Update each harvester's target source and/or energy dropoff
    * TODO this is a hack and needs to be un-hacked
    */
-  export function updateHarvestersMemory(): void {
+  function updateHarvestersMemory(): void {
 
     // pull harvesters from GameManager
     _.each(CreepManager.harvesters, (creep: Creep) => {
@@ -90,7 +89,7 @@ export namespace MemoryManager {
    * TODO spread out builders. all just default to spawn always, never actually
    * target a container
    */
-  export function updateBuildersMemory(): void {
+  function updateBuildersMemory(): void {
 
     _.each(CreepManager.builders, (creep: Creep) => {
 
@@ -115,7 +114,7 @@ export namespace MemoryManager {
   }
 
 
-  export function updateRepairersMemory(): void {
+  function updateRepairersMemory(): void {
 
     _.each(CreepManager.repairers, (creep: Creep) => {
 
@@ -140,7 +139,7 @@ export namespace MemoryManager {
   }
 
 
-  export function updateUpgradersMemory(): void {
+  function updateUpgradersMemory(): void {
 
     _.each(CreepManager.upgraders, (creep: Creep) => {
 
