@@ -6,6 +6,7 @@
     "noResolve": false,
     "noImplicitAny": false
   },
+  "compileOnSave": false,
   "exclude": "dist",
   "files": ["typings/index.d.ts", "src/boot/main.ts"],
   "bundles": {

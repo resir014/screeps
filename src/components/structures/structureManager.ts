@@ -19,6 +19,8 @@ export namespace StructureManager {
     return this.structures[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getStorageObject(): Structure {
     let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
       filter: (structure) => {
