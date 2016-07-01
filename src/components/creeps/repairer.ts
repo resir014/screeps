@@ -36,7 +36,11 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
   }
 
   public askForEnergy() {
-    return this.energyStation.transferEnergy(this.creep);
+    if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
+      return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
+    } else if (this.energyStation instanceof StructureContainer || this.energyStation instanceof StructureStorage) {
+      return (<StructureContainer | StructureStorage>this.energyStation).transfer(this.creep, RESOURCE_ENERGY);
+    }
   }
 
   public moveToAskEnergy(): void {
