@@ -15,7 +15,7 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MAX_UPGRADERS_PER_CONTROLLER: number = 4;
+  export const MAX_UPGRADERS_PER_CONTROLLER: number = 3;
 
   /**
    * @type {number}
