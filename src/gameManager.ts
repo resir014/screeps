@@ -15,11 +15,6 @@ import { StructureManager } from './components/structures/structureManager';
  */
 export namespace GameManager {
 
-  export var harvesters: Creep[] = [];
-  export var upgraders: Creep[] = [];
-  export var builders: Creep[] = [];
-  export var repairers: Creep[] = [];
-
   // This method is called **only once**.
   export function globalBootstrap() {
     // Set up your global objects.
@@ -45,6 +40,7 @@ export namespace GameManager {
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
+<<<<<<< HEAD
     // update exported lists of creeps by role
     this.harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     this.upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
@@ -61,6 +57,15 @@ export namespace GameManager {
     } else if (CreepManager.canCreateUpgrader(this.upgraders)) {
       CreepManager.createUpgrader();
     } else if (CreepManager.canCreateRepairer(this.repairers)) {
+=======
+    if (CreepManager.canCreateHarvester()) {
+      CreepManager.createHarvester();
+    } else if (CreepManager.canCreateUpgrader()) {
+      CreepManager.createUpgrader();
+    } else if (CreepManager.canCreateBuilder()) {
+      CreepManager.createBuilder();
+    } else if (CreepManager.canCreateRepairer()) {
+>>>>>>> creep-manager-refactoring
       CreepManager.createRepairer();
     }
 
