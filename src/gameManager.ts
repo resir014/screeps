@@ -40,24 +40,6 @@ export namespace GameManager {
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
-<<<<<<< HEAD
-    // update exported lists of creeps by role
-    this.harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    this.upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    this.builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-    this.repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-
-    // update creep memory (builders' target site, repairers' target structure, etc)
-    MemoryManager.updateCreepMemory();
-
-    if (CreepManager.canCreateHarvester(this.harvesters)) {
-      CreepManager.createHarvester();
-    } else if (CreepManager.canCreateBuilder(this.builders)) {
-      CreepManager.createBuilder();
-    } else if (CreepManager.canCreateUpgrader(this.upgraders)) {
-      CreepManager.createUpgrader();
-    } else if (CreepManager.canCreateRepairer(this.repairers)) {
-=======
     if (CreepManager.canCreateHarvester()) {
       CreepManager.createHarvester();
     } else if (CreepManager.canCreateUpgrader()) {
@@ -65,7 +47,6 @@ export namespace GameManager {
     } else if (CreepManager.canCreateBuilder()) {
       CreepManager.createBuilder();
     } else if (CreepManager.canCreateRepairer()) {
->>>>>>> creep-manager-refactoring
       CreepManager.createRepairer();
     }
 

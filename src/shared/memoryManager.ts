@@ -1,5 +1,6 @@
 import { Config } from './../config/config';
 import { GameManager } from './../gameManager';
+import { CreepManager } from './../components/creeps/creepManager';
 import { SpawnManager } from './../components/spawns/spawnManager';
 import { SourceManager } from './../components/sources/sourceManager';
 import { StructureManager } from './../components/structures/structureManager';
@@ -62,7 +63,7 @@ export namespace MemoryManager {
   export function updateHarvestersMemory(): void {
 
     // pull harvesters from GameManager
-    _.each(GameManager.harvesters, (creep: Creep) => {
+    _.each(CreepManager.harvesters, (creep: Creep) => {
 
       // make sure the harvester's target source still exists
       if (!creep.memory.target_source_id || Game.getObjectById(creep.memory.target_source_id) == null) {
@@ -91,7 +92,7 @@ export namespace MemoryManager {
    */
   export function updateBuildersMemory(): void {
 
-    _.each(GameManager.builders, (creep: Creep) => {
+    _.each(CreepManager.builders, (creep: Creep) => {
 
       // make sure the builder's target construction site still exists
       if (!creep.memory.target_construction_site_id || Game.getObjectById(creep.memory.target_construction_site_id) == null) {
@@ -116,7 +117,7 @@ export namespace MemoryManager {
 
   export function updateRepairersMemory(): void {
 
-    _.each(GameManager.repairers, (creep: Creep) => {
+    _.each(CreepManager.repairers, (creep: Creep) => {
 
       // target structure ID exists?
       if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
@@ -141,7 +142,7 @@ export namespace MemoryManager {
 
   export function updateUpgradersMemory(): void {
 
-    _.each(GameManager.upgraders, (creep: Creep) => {
+    _.each(CreepManager.upgraders, (creep: Creep) => {
 
       if (!creep.memory.target_controller_id || !Game.getObjectById(creep.memory.target_controller_id)) {
         if (Config.VERBOSE)
