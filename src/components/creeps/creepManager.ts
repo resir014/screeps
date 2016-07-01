@@ -77,12 +77,16 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createUpgrader(): number | string {
+    let energyStation_id: string = StructureManager.getStorageObject() ?
+      StructureManager.getStorageObject().id :
+      SpawnManager.getFirstSpawn().id;
+
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'upgrader',
       target_controller_id: ControllerManager.getController().id,
-      target_energy_station_id: SpawnManager.getFirstSpawn().id,
+      target_energy_station_id: energyStation_id,
       renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
@@ -99,11 +103,14 @@ export namespace CreepManager {
   }
 
   export function createBuilder(): number | string {
+    let constructionSite_id: string = ConstructionSiteManager.getFirstConstructionSite() ?
+      ConstructionSiteManager.getFirstConstructionSite().id : '';
+
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'builder',
-      target_construction_site_id: ConstructionSiteManager.getFirstConstructionSite().id,
+      target_construction_site_id: constructionSite_id,
       target_energy_station_id: SpawnManager.getFirstSpawn().id,
       renew_station_id: SpawnManager.getFirstSpawn().id
     }
