@@ -28,6 +28,11 @@ export namespace Config {
   export const MAX_REPAIRERS_IN_ROOM: number = 4;
 
   /**
+   * @type {number}
+   */
+  export const MAX_ENERGY_REFILL_THRESHOLD: number = 10;
+
+  /**
    * Default amount of minimal ticksToLive Screep can have, before it goes
    * to renew. This is only default value, that don't have to be used.
    * So it doesn't cover all Screeps.

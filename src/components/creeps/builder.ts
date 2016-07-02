@@ -29,7 +29,7 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public hasEmptyBag(): boolean {
-    return this.creep.carry.energy == 0;
+    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
   public askForEnergy(): number {

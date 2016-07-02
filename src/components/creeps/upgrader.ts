@@ -29,7 +29,7 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   }
 
   public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy == 0);
+    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
 }
 
   public askForEnergy(): number {
