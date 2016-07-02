@@ -19,15 +19,19 @@ export namespace StructureManager {
     return this.structures[0];
   }
 
-  // TODO find() calls are much more expensive, let's try to find() once and
-  // cache the result
   export function getStorageObject(): Structure {
-    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-      filter: (structure) => {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-          structure.energy < structure.energyCapacity;
-      }
+    let targets: Structure[] = _.filter(this.structures, (structure: StructureStorage) => {
+      return ((structure.structureType == STRUCTURE_STORAGE)
+        && structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
     });
+
+    // if we can't find any storage containers, use either the extension or spawn.
+    if (targets == null) {
+      targets = _.filter(this.structures, (structure: StructureExtension | Spawn) => {
+        return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+          structure.energy < structure.energyCapacity);
+      });
+    }
 
     return targets[0];
   }
