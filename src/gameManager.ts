@@ -53,6 +53,9 @@ export namespace GameManager {
       CreepManager.createRepairer();
     }
 
+    // specifies whether or not to use the new, experimental PathFinder object.
+    PathFinder.use(Config.USE_PATHFINDER);
+
     CreepManager.harvestersGoToWork();
     CreepManager.upgradersGoToWork();
     CreepManager.buildersGoToWork();

@@ -8,6 +8,14 @@ export namespace Config {
   export const VERBOSE: boolean = true;
 
   /**
+   * Specify whether to use the new experimental pathfinder in game objects
+   * methods.
+   *
+   * @type {boolean}
+   */
+  export const USE_PATHFINDER: boolean = false;
+
+  /**
    * @type {number}
    */
   export const MAX_HARVESTERS_PER_SOURCE: number = 3;
