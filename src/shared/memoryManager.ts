@@ -77,7 +77,8 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated energy dropoff ID for ' + creep.name);
 
-        creep.memory.target_energy_dropoff_id = StructureManager.getStorageObject().id;
+        creep.memory.target_energy_dropoff_id = StructureManager.getDropOffPoint() ?
+          StructureManager.getDropOffPoint().id : null;
       }
 
     });

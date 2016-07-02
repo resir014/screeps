@@ -20,16 +20,41 @@ export namespace StructureManager {
   }
 
   export function getStorageObject(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: StructureStorage) => {
-      return ((structure.structureType == STRUCTURE_STORAGE)
-        && structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
+    let targets: Structure[] = _.filter(this.structures, (structure: StructureContainer | StructureStorage) => {
+      return ((structure.structureType == STRUCTURE_CONTAINER)
+        && _.sum(structure.store) < structure.storeCapacity);
     });
 
     // if we can't find any storage containers, use either the extension or spawn.
-    if (targets == null) {
-      targets = _.filter(this.structures, (structure: StructureExtension | Spawn) => {
+    if (targets.length == 0) {
+      targets = _.filter(this.structures, (structure: StructureExtension) => {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
           structure.energy < structure.energyCapacity);
+      });
+    }
+
+    return targets[0];
+  }
+
+  export function getDropOffPoint(): Structure {
+    let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
+      return ((structure.structureType == STRUCTURE_SPAWN)
+        && structure.energy < structure.energyCapacity);
+    });
+
+    // if we can't find any storage containers, use the extension.
+    if (targets.length == 0) {
+      targets = _.filter(this.structures, (structure: StructureExtension) => {
+        return ((structure.structureType == STRUCTURE_EXTENSION) &&
+          structure.energy < structure.energyCapacity);
+      });
+    }
+
+    // Same thing, but we now look for storage.
+    if (targets.length == 0) {
+      targets = _.filter(this.structures, (structure: StructureContainer | StructureStorage) => {
+        return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
+          _.sum(structure.store) < structure.storeCapacity);
       });
     }
 
