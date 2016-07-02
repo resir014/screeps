@@ -63,7 +63,7 @@ export namespace StructureManager {
 
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) =>
-      (structure.hits < Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR));
+      (structure.hits < structure.hitsMax));
 
     return targets[0];
   }
