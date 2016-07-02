@@ -75,9 +75,14 @@ export namespace StructureManager {
     return targets[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getStructuresToRepair(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: Structure) =>
-      (structure.hits < structure.hitsMax));
+    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
+      filter: (structure: Structure) => {
+        return (structure.hits < structure.hitsMax);
+      }
+    });
 
     return targets[0];
   }
