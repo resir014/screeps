@@ -115,6 +115,9 @@ export namespace MemoryManager {
   }
 
 
+  /**
+   * Update each repairer's target repair site and refill point.
+   */
   function updateRepairersMemory(): void {
 
     _.each(CreepManager.repairers, (creep: Creep) => {
@@ -141,6 +144,9 @@ export namespace MemoryManager {
   }
 
 
+  /**
+   * Update each upgrader's target controller and refill point.
+   */
   function updateUpgradersMemory(): void {
 
     _.each(CreepManager.upgraders, (creep: Creep) => {
