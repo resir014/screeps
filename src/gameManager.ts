@@ -40,7 +40,7 @@ export namespace GameManager {
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
-    // updates all creep memory entries
+    // after garbage collection, we update all existing creep memory entries.
     MemoryManager.updateCreepMemory();
 
     if (CreepManager.canCreateHarvester()) {
