@@ -62,8 +62,25 @@ export namespace StructureManager {
   }
 
   export function getStructuresToRepair(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: Structure) =>
-      (structure.hits < structure.hitsMax));
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
+        && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD)));
+    });
+
+    // if we can't find anything from above, expand the search to roads
+    if (targets.length == 0) {
+      targets = _.filter(this.structures, (structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
+          && (structure.structureType !== STRUCTURE_WALL)));
+      });
+    }
+
+    // otherwise, return any wall below 200000 HP
+    if (targets.length == 0) {
+      targets = _.filter(this.structures, (structure: Structure) => {
+        return (structure.structureType === STRUCTURE_WALL && structure.hits < 200000);
+      });
+    }
 
     return targets[0];
   }

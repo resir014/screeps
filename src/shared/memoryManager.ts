@@ -124,7 +124,8 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
 
-        // TODO find new target repair site
+        creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
+          StructureManager.getStructuresToRepair : null;
       }
 
       // energy station ID exists?
