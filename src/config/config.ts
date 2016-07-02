@@ -41,6 +41,11 @@ export namespace Config {
   export const MAX_ENERGY_REFILL_THRESHOLD: number = 10;
 
   /**
+   * @type {number}
+   */
+  export const MIN_WALL_HEALTH: number = 1000;
+
+  /**
    * Default amount of minimal ticksToLive Screep can have, before it goes
    * to renew. This is only default value, that don't have to be used.
    * So it doesn't cover all Screeps.

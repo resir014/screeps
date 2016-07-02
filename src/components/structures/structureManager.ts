@@ -66,7 +66,7 @@ export namespace StructureManager {
 
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return (structure.structureType === STRUCTURE_WALL && structure.hits <= 200000);
+      return (structure.structureType === STRUCTURE_WALL && structure.hits <= Config.MIN_WALL_HEALTH);
     });
 
     // if we can't find anything from above, expand the search to everything elseroads
