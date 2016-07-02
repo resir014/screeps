@@ -66,16 +66,18 @@ export namespace MemoryManager {
 
       // make sure the harvester's target source still exists
       if (!creep.memory.target_source_id || Game.getObjectById(creep.memory.target_source_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated source ID for ' + creep.name);
+        }
 
         creep.memory.target_source_id = SourceManager.getFirstSource().id;
       }
 
       // make sure the harvester's energy dropoff still exists
       if (!creep.memory.target_energy_dropoff_id || Game.getObjectById(creep.memory.target_energy_dropoff_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated energy dropoff ID for ' + creep.name);
+        }
 
         creep.memory.target_energy_dropoff_id = StructureManager.getDropOffPoint() ?
           StructureManager.getDropOffPoint().id : null;
@@ -96,8 +98,9 @@ export namespace MemoryManager {
 
       // make sure the builder's target construction site still exists
       if (!creep.memory.target_construction_site_id || Game.getObjectById(creep.memory.target_construction_site_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated construction site ID for ' + creep.name);
+        }
 
         creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
       }
@@ -124,8 +127,9 @@ export namespace MemoryManager {
 
       // target structure ID exists?
       if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
+        }
 
         creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
           StructureManager.getStructuresToRepair : null;
@@ -152,8 +156,9 @@ export namespace MemoryManager {
     _.each(CreepManager.upgraders, (creep: Creep) => {
 
       if (!creep.memory.target_controller_id || !Game.getObjectById(creep.memory.target_controller_id)) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated controller ID for ' + creep.name);
+        }
 
         creep.memory.target_controller_id = ControllerManager.getController();
       }
