@@ -26,8 +26,6 @@ export namespace GameManager {
     RoomManager.loadRooms();
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
-    ConstructionSiteManager.loadConstructionSites();
-    StructureManager.loadStructures();
   }
 
   export function loop() {
@@ -36,6 +34,8 @@ export namespace GameManager {
 
     MemoryManager.loadMemory();
     CreepManager.loadCreeps();
+    ConstructionSiteManager.loadConstructionSites();
+    StructureManager.loadStructures();
 
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
