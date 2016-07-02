@@ -8,6 +8,7 @@ export interface IRepairer {
   _minHitsBeforeNeedsRepair: number;
 
   hasEmptyBag(): boolean;
+  isBagFull(): boolean;
   askForEnergy(): number;
   moveToAskEnergy(): void;
   tryRepair(): number;
@@ -35,6 +36,10 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
+  public isBagFull(): boolean {
+    return (this.creep.carry.energy == this.creep.carryCapacity);
+  }
+
   public askForEnergy() {
     if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
       return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
@@ -60,7 +65,14 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.hasEmptyBag()) {
+    if (this.creep.memory.repairing && this.hasEmptyBag()) {
+      this.creep.memory.repairing = false;
+    }
+    if (!this.creep.memory.repairing && this.isBagFull()) {
+      this.creep.memory.repairing = true;
+    }
+
+    if (this.creep.memory.repairing) {
       this.moveToAskEnergy();
     } else {
       this.moveToRepair();

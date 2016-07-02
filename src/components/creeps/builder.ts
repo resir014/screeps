@@ -7,6 +7,7 @@ export interface IBuilder {
   energyStation: Spawn | Structure;
 
   hasEmptyBag(): boolean;
+  isBagFull(): boolean;
   askForEnergy(): number;
   moveToAskEnergy(): void;
   tryBuild(): number;
@@ -30,6 +31,10 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
   public hasEmptyBag(): boolean {
     return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+  }
+
+  public isBagFull(): boolean {
+    return (this.creep.carry.energy == this.creep.carryCapacity);
   }
 
   public askForEnergy(): number {
@@ -57,10 +62,17 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.hasEmptyBag()) {
-      this.moveToAskEnergy();
-    } else {
+    if (this.creep.memory.building && this.hasEmptyBag()) {
+      this.creep.memory.building = false;
+    }
+    if (!this.creep.memory.building && this.isBagFull()) {
+      this.creep.memory.building = true;
+    }
+
+    if (this.creep.memory.building) {
       this.moveToBuild();
+    } else {
+      this.moveToAskEnergy();
     }
 
     return true;

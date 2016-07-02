@@ -7,6 +7,7 @@ export interface IUpgrader {
   targetController: StructureController;
 
   hasEmptyBag(): boolean;
+  isBagFull(): boolean;
   askForEnergy(): number;
   moveToAskEnergy(): void;
   tryUpgrade(): number;
@@ -30,7 +31,11 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public hasEmptyBag(): boolean {
     return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
-}
+  }
+
+  public isBagFull(): boolean {
+    return (this.creep.carry.energy == this.creep.carryCapacity);
+  }
 
   public askForEnergy(): number {
     if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
@@ -57,10 +62,17 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.hasEmptyBag()) {
-      this.moveToAskEnergy();
-    } else {
+    if (this.creep.memory.upgrading && this.hasEmptyBag()) {
+      this.creep.memory.upgrading = false;
+    }
+    if (!this.creep.memory.upgrading && this.isBagFull()) {
+      this.creep.memory.upgrading = true;
+    }
+
+    if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
+    } else {
+      this.moveToAskEnergy();
     }
 
     return true
