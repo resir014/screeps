@@ -31,31 +31,34 @@ export namespace StructureManager {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
           structure.energy < structure.energyCapacity);
       });
+
+      return targets[0];
     }
 
     return targets[0];
   }
 
   export function getDropOffPoint(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
-      return ((structure.structureType == STRUCTURE_SPAWN)
-        && structure.energy < structure.energyCapacity);
+    let targets: Structure[] = <Structure[]>_.filter(this.structures, (structure: Spawn) => {
+      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
     });
 
-    // if we can't find any storage containers, use the extension.
-    if (targets.length == 0) {
-      targets = _.filter(this.structures, (structure: StructureExtension) => {
-        return ((structure.structureType == STRUCTURE_EXTENSION) &&
-          structure.energy < structure.energyCapacity);
+    if (targets.length === 0) {
+      targets = <Structure[]>_.filter(this.structures, (structure: StructureExtension | StructureTower) => {
+        return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
+          && structure.energy < structure.energyCapacity);
       });
+
+      return targets[0];
     }
 
-    // Same thing, but we now look for storage.
-    if (targets.length == 0) {
-      targets = _.filter(this.structures, (structure: StructureContainer | StructureStorage) => {
-        return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
-          _.sum(structure.store) < structure.storeCapacity);
+    // Same thing, but we now look for storage containers.
+    if (targets.length === 0) {
+      targets = <Structure[]>_.filter(this.structures, (structure: StructureContainer) => {
+        return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
       });
+
+      return targets[0];
     }
 
     return targets[0];
@@ -63,23 +66,17 @@ export namespace StructureManager {
 
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-        && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD)));
+      return (structure.structureType === STRUCTURE_WALL && structure.hits <= 200000);
     });
 
-    // if we can't find anything from above, expand the search to roads
+    // if we can't find anything from above, expand the search to everything elseroads
     if (targets.length == 0) {
       targets = _.filter(this.structures, (structure: Structure) => {
         return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
           && (structure.structureType !== STRUCTURE_WALL)));
       });
-    }
 
-    // otherwise, return any wall below 200000 HP
-    if (targets.length == 0) {
-      targets = _.filter(this.structures, (structure: Structure) => {
-        return (structure.structureType === STRUCTURE_WALL && structure.hits < 200000);
-      });
+      return targets[0];
     }
 
     return targets[0];
