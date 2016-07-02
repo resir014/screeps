@@ -77,9 +77,16 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createUpgrader(): number | string {
-    let energyStation_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
-      SpawnManager.getFirstSpawn().id;
+    let energyStation_id: string;
+
+    if (SourceManager.sourceCount > 1) {
+      // we'll find the second energy source on the list first to avoid congestion at spawn
+      energyStation_id = SourceManager.sources[1].id
+    } else if (SpawnManager.getFirstSpawn()) {
+      energyStation_id = SpawnManager.getFirstSpawn().id
+    } else {
+      energyStation_id = null;
+    }
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
