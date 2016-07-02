@@ -77,22 +77,17 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createUpgrader(): number | string {
-    let energyStation_id: string;
-
-    if (SourceManager.sourceCount > 1) {
-      // we'll find the second energy source on the list first to avoid congestion at spawn
-      energyStation_id = SourceManager.sources[1].id
-    } else if (SpawnManager.getFirstSpawn()) {
-      energyStation_id = SpawnManager.getFirstSpawn().id
-    } else {
-      energyStation_id = null;
-    }
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'upgrader',
       target_controller_id: ControllerManager.getController().id,
+      target_source_id: targetSource_id,
       target_energy_station_id: energyStation_id,
       renew_station_id: SpawnManager.getFirstSpawn().id
     };

@@ -163,7 +163,7 @@ export namespace MemoryManager {
           console.log('[MemoryManager] Updating outdated controller ID for ' + creep.name);
         }
 
-        creep.memory.target_controller_id = ControllerManager.getController();
+        creep.memory.target_controller_id = ControllerManager.getController().id;
       }
 
       if (!creep.memory.target_energy_station_id || !Game.getObjectById(creep.memory.target_energy_station_id)) {
@@ -171,14 +171,12 @@ export namespace MemoryManager {
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
         }
 
-        if (SourceManager.sourceCount > 1) {
-          // we'll find the second energy source on the list first to avoid congestion at spawn
-          creep.memory.target_energy_station_id = SourceManager.sources[1].id
-        } else if (SpawnManager.getFirstSpawn()) {
-          creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn().id
-        } else {
-          creep.memory.target_energy_station_id = null;
-        }
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
+          SourceManager.sources[1].id : null;
+
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+          SpawnManager.getFirstSpawn().id : null;
       }
 
     });

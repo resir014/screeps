@@ -5,6 +5,7 @@ export interface IUpgrader {
 
   energyStation: Spawn | Structure;
   targetController: StructureController;
+  targetSource: Source;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -21,12 +22,14 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public targetController: StructureController = null;
   public energyStation: Spawn | Structure = null;
+  public targetSource: Source = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
     this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
     this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {
@@ -51,6 +54,16 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
     }
   }
 
+  public tryHarvest(): number {
+    return this.creep.harvest(this.targetSource);
+  }
+
+  public moveToHarvest(): void {
+    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetSource);
+    }
+  }
+
   public tryUpgrade(): number {
     return this.creep.upgradeController(this.targetController);
   }
@@ -69,10 +82,14 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
       this.creep.memory.upgrading = true;
     }
 
-    if (this.hasEmptyBag()) {
-      this.moveToAskEnergy();
-    } else {
+    if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
+    } else {
+      if (this.creep.memory.target_source_id) {
+        this.moveToHarvest();
+      } else {
+        this.moveToAskEnergy();
+      }
     }
 
     return true
