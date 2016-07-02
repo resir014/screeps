@@ -156,7 +156,14 @@ export namespace MemoryManager {
         if (Config.VERBOSE)
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
 
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+        if (SourceManager.sourceCount > 1) {
+          // we'll find the second energy source on the list first to avoid congestion at spawn
+          creep.memory.target_energy_station_id = SourceManager.sources[1].id
+        } else if (SpawnManager.getFirstSpawn()) {
+          creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn().id
+        } else {
+          creep.memory.target_energy_station_id = null;
+        }
       }
 
     });
