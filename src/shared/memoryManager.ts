@@ -102,13 +102,15 @@ export namespace MemoryManager {
           console.log('[MemoryManager] Updating outdated construction site ID for ' + creep.name);
         }
 
-        creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
+        creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite() ?
+          ConstructionSiteManager.getFirstConstructionSite().id : null;
       }
 
       // make sure the builder's target energy station exists
       if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated energy station ID for ' + creep.name);
+        }
 
         creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
@@ -132,13 +134,14 @@ export namespace MemoryManager {
         }
 
         creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
-          StructureManager.getStructuresToRepair : null;
+          StructureManager.getStructuresToRepair().id : null;
       }
 
       // energy station ID exists?
       if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
+        }
 
         creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
@@ -164,8 +167,9 @@ export namespace MemoryManager {
       }
 
       if (!creep.memory.target_energy_station_id || !Game.getObjectById(creep.memory.target_energy_station_id)) {
-        if (Config.VERBOSE)
+        if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
+        }
 
         if (SourceManager.sourceCount > 1) {
           // we'll find the second energy source on the list first to avoid congestion at spawn

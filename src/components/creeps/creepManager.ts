@@ -45,8 +45,8 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createHarvester(): number | string {
-    let dropoff_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
+    let dropoff_id: string = StructureManager.getDropOffPoint() ?
+      StructureManager.getDropOffPoint().id :
       SpawnManager.getFirstSpawn().id;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
@@ -104,7 +104,7 @@ export namespace CreepManager {
 
   export function createBuilder(): number | string {
     let constructionSite_id: string = ConstructionSiteManager.getFirstConstructionSite() ?
-      ConstructionSiteManager.getFirstConstructionSite().id : '';
+      ConstructionSiteManager.getFirstConstructionSite().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
@@ -132,7 +132,7 @@ export namespace CreepManager {
       StructureManager.getStorageObject().id :
       SpawnManager.getFirstSpawn().id;
     let toRepair_id: string = StructureManager.getStructuresToRepair() ?
-      StructureManager.getStructuresToRepair().id : '';
+      StructureManager.getStructuresToRepair().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
