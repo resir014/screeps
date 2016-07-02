@@ -30,7 +30,7 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
   public isBagFull(): boolean {
@@ -69,10 +69,10 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
       this.creep.memory.building = true;
     }
 
-    if (this.creep.memory.building) {
-      this.moveToBuild();
-    } else {
+    if (this.hasEmptyBag()) {
       this.moveToAskEnergy();
+    } else {
+      this.moveToBuild();
     }
 
     return true;

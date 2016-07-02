@@ -30,7 +30,7 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   }
 
   public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
   public isBagFull(): boolean {
@@ -69,10 +69,10 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
       this.creep.memory.upgrading = true;
     }
 
-    if (this.creep.memory.upgrading) {
-      this.moveToUpgrade();
-    } else {
+    if (this.hasEmptyBag()) {
       this.moveToAskEnergy();
+    } else {
+      this.moveToUpgrade();
     }
 
     return true

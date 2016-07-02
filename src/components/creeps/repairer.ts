@@ -33,7 +33,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
   }
 
   public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
   public isBagFull(): boolean {
