@@ -73,9 +73,9 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     }
 
     if (this.creep.memory.repairing) {
-      this.moveToAskEnergy();
-    } else {
       this.moveToRepair();
+    } else {
+      this.moveToAskEnergy();
     }
 
     return true;
