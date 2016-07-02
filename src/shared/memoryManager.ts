@@ -45,7 +45,7 @@ export namespace MemoryManager {
    * Update memory shared by many creeps (i.e. thru CreepAction superclass)
    */
   function updateSharedCreepMemory(): void {
-    _.each(Memory.creeps, (creep: Creep) => {
+    _.each(CreepManager.creeps, (creep: Creep) => {
 
       if (!creep.memory.renew_station_id) {
         creep.memory.renew_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
