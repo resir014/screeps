@@ -5,6 +5,7 @@ export interface IBuilder {
 
   targetConstructionSite: ConstructionSite;
   energyStation: Spawn | Structure;
+  targetSource: Source;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -21,12 +22,14 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
   public targetConstructionSite: ConstructionSite = null;
   public energyStation: Spawn | Structure = null;
+  public targetSource: Source = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
     this.targetConstructionSite = <ConstructionSite>Game.getObjectById(this.creep.memory.target_construction_site_id);
     this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {
@@ -51,6 +54,16 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
     }
   }
 
+  public tryHarvest(): number {
+    return this.creep.harvest(this.targetSource);
+  }
+
+  public moveToHarvest(): void {
+    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetSource);
+    }
+  }
+
   public tryBuild(): number {
     return this.creep.build(this.targetConstructionSite);
   }
@@ -70,7 +83,11 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
     }
 
     if (this.hasEmptyBag()) {
-      this.moveToAskEnergy();
+      if (this.creep.memory.target_source_id) {
+        this.moveToHarvest();
+      } else {
+        this.moveToAskEnergy();
+      }
     } else {
       this.moveToBuild();
     }

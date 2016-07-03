@@ -106,6 +106,10 @@ export namespace CreepManager {
   }
 
   export function createBuilder(): number | string {
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
     let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
       ConstructionSiteManager.getConstructionSite().id : null;
 
@@ -114,7 +118,8 @@ export namespace CreepManager {
     let properties: any = {
       role: 'builder',
       target_construction_site_id: constructionSite_id,
-      target_energy_station_id: SpawnManager.getFirstSpawn().id,
+      target_source_id: targetSource_id,
+      target_energy_station_id: energyStation_id,
       renew_station_id: SpawnManager.getFirstSpawn().id,
       building: false
     }
@@ -132,9 +137,13 @@ export namespace CreepManager {
   }
 
   export function createRepairer(): number | string {
-    let energyStation_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
-      SpawnManager.getFirstSpawn().id;
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
+    // let energyStation_id: string = StructureManager.getStorageObject() ?
+    //   StructureManager.getStorageObject().id :
+    //   SpawnManager.getFirstSpawn().id;
     let toRepair_id: string = StructureManager.getStructuresToRepair() ?
       StructureManager.getStructuresToRepair().id : null;
 
@@ -143,6 +152,7 @@ export namespace CreepManager {
     let properties: any = {
       role: 'repairer',
       target_repair_site_id: StructureManager.getStructuresToRepair().id,
+      target_source_id: targetSource_id,
       target_energy_station_id: energyStation_id,
       renew_station_id: SpawnManager.getFirstSpawn().id,
       repairing: false
