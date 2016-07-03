@@ -31,8 +31,6 @@ export namespace StructureManager {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
           structure.energy < structure.energyCapacity);
       });
-
-      return targets[0];
     }
 
     return targets[0];
