@@ -13,7 +13,7 @@ export namespace Config {
    *
    * @type {boolean}
    */
-  export const USE_PATHFINDER: boolean = false;
+  export const USE_PATHFINDER: boolean = true;
 
   /**
    * @type {number}
