@@ -48,8 +48,6 @@ export namespace StructureManager {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
           && structure.energy < structure.energyCapacity);
       });
-
-      return targets[0];
     }
 
     // Same thing, but we now look for storage containers.
@@ -57,8 +55,6 @@ export namespace StructureManager {
       targets = <Structure[]>_.filter(this.structures, (structure: StructureContainer) => {
         return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
       });
-
-      return targets[0];
     }
 
     return targets[0];
@@ -75,8 +71,6 @@ export namespace StructureManager {
         return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
           && (structure.structureType !== STRUCTURE_WALL)));
       });
-
-      return targets[0];
     }
 
     return targets[0];
