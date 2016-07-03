@@ -41,6 +41,7 @@ export namespace StructureManager {
       return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
     });
 
+    // If the spawn is full, we'll find any extensions/towers.
     if (targets.length === 0) {
       targets = _.filter(this.structures, (structure: StructureExtension | StructureTower) => {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
@@ -48,7 +49,7 @@ export namespace StructureManager {
       });
     }
 
-    // Same thing, but we now look for storage containers.
+    // Otherwise, look for storage containers.
     if (targets.length === 0) {
       targets = _.filter(this.structures, (structure: StructureContainer) => {
         return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
