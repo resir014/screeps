@@ -102,8 +102,8 @@ export namespace MemoryManager {
           console.log('[MemoryManager] Updating outdated construction site ID for ' + creep.name);
         }
 
-        creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite() ?
-          ConstructionSiteManager.getFirstConstructionSite().id : null;
+        creep.memory.target_construction_site_id = ConstructionSiteManager.getConstructionSite() ?
+          ConstructionSiteManager.getConstructionSite().id : null;
       }
 
       // make sure the builder's target energy station exists

@@ -106,8 +106,8 @@ export namespace CreepManager {
   }
 
   export function createBuilder(): number | string {
-    let constructionSite_id: string = ConstructionSiteManager.getFirstConstructionSite() ?
-      ConstructionSiteManager.getFirstConstructionSite().id : null;
+    let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
+      ConstructionSiteManager.getConstructionSite().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
