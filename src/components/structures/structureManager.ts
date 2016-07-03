@@ -37,12 +37,12 @@ export namespace StructureManager {
   }
 
   export function getDropOffPoint(): Structure {
-    let targets: Structure[] = <Structure[]>_.filter(this.structures, (structure: Spawn) => {
+    let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
       return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
     });
 
     if (targets.length === 0) {
-      targets = <Structure[]>_.filter(this.structures, (structure: StructureExtension | StructureTower) => {
+      targets = _.filter(this.structures, (structure: StructureExtension | StructureTower) => {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
           && structure.energy < structure.energyCapacity);
       });
@@ -50,7 +50,7 @@ export namespace StructureManager {
 
     // Same thing, but we now look for storage containers.
     if (targets.length === 0) {
-      targets = <Structure[]>_.filter(this.structures, (structure: StructureContainer) => {
+      targets = _.filter(this.structures, (structure: StructureContainer) => {
         return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
       });
     }
