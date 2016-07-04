@@ -43,13 +43,13 @@ export namespace GameManager {
     // after garbage collection, we update all existing creep memory entries.
     MemoryManager.updateCreepMemory();
 
-    if (CreepManager.canCreateHarvester()) {
+    if (CreepManager.harvesters.length < Config.MAX_HARVESTERS_PER_SOURCE) {
       CreepManager.createHarvester();
-    } else if (CreepManager.canCreateUpgrader()) {
+    } else if (CreepManager.upgraders.length < Config.MAX_UPGRADERS_PER_CONTROLLER) {
       CreepManager.createUpgrader();
-    } else if (CreepManager.canCreateBuilder()) {
+    } else if (CreepManager.builders.length < Config.MAX_BUILDERS_IN_ROOM) {
       CreepManager.createBuilder();
-    } else if (CreepManager.canCreateRepairer()) {
+    } else if (CreepManager.repairers.length < Config.MAX_REPAIRERS_IN_ROOM) {
       CreepManager.createRepairer();
     }
 
