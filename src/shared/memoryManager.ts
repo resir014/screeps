@@ -135,6 +135,12 @@ export namespace MemoryManager {
 
         creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
           StructureManager.getStructuresToRepair().id : null;
+
+        if (!creep.memory.target_repair_site_id) {
+          // if we have nothing to repair, let's build a wall.
+          creep.memory.target_repair_site_id = StructureManager.getWallsToRepair() ?
+            StructureManager.getWallsToRepair().id : null;
+        }
       }
 
       // energy station ID exists?

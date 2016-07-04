@@ -138,6 +138,11 @@ export namespace CreepManager {
     let toRepair_id: string = StructureManager.getStructuresToRepair() ?
       StructureManager.getStructuresToRepair().id : null;
 
+    if (!toRepair_id) {
+      toRepair_id = StructureManager.getWallsToRepair() ?
+        StructureManager.getWallsToRepair().id : null;
+    }
+
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
