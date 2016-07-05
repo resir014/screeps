@@ -38,14 +38,15 @@ export namespace StructureManager {
 
   export function getDropOffPoint(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
-      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
+      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity -
+        (structure.energyCapacity * 0.1));
     });
 
     // If the spawn is full, we'll find any extensions/towers.
     if (targets.length === 0) {
       targets = _.filter(this.structures, (structure: StructureExtension | StructureTower) => {
         return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
-          && structure.energy < structure.energyCapacity);
+          && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.1));
       });
     }
 
@@ -61,9 +62,15 @@ export namespace StructureManager {
 
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-        && (structure.structureType !== STRUCTURE_WALL)));
+      return (structure.structureType === STRUCTURE_WALL && structure.hits <= Config.MIN_WALL_HEALTH);
     });
+
+    if (targets.length === 0) {
+      targets = _.filter(this.structures, (structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
+          && (structure.structureType !== STRUCTURE_WALL)));
+      });
+    }
 
     return targets[0];
   }

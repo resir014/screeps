@@ -73,14 +73,13 @@ export namespace MemoryManager {
         creep.memory.target_source_id = SourceManager.getFirstSource().id;
       }
 
-      // make sure the harvester's energy dropoff still exists
-      if (!creep.memory.target_energy_dropoff_id || Game.getObjectById(creep.memory.target_energy_dropoff_id) == null) {
+      // HACK: if we use the same method as above, it somehow won't work. Therefore we just use this weird check
+      if (StructureManager.getDropOffPoint()) {
         if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated energy dropoff ID for ' + creep.name);
         }
 
-        creep.memory.target_energy_dropoff_id = StructureManager.getDropOffPoint() ?
-          StructureManager.getDropOffPoint().id : null;
+        creep.memory.target_energy_dropoff_id = StructureManager.getDropOffPoint().id;
       }
 
     });
@@ -113,11 +112,11 @@ export namespace MemoryManager {
         }
 
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-          SourceManager.sources[1].id : null;
-
-        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-          SpawnManager.getFirstSpawn().id : null;
+        if (SourceManager.sourceCount > 1) {
+          creep.memory.target_source_id = SourceManager.sources[1].id;
+        } else {
+          creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+        }
 
         // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
@@ -140,13 +139,14 @@ export namespace MemoryManager {
           console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
         }
 
-        creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
-          StructureManager.getStructuresToRepair().id : null;
-
-        if (!creep.memory.target_repair_site_id) {
+        if (StructureManager.getStructuresToRepair()) {
+          creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair().id;
+        } else if (StructureManager.getWallsToRepair()) {
           // if we have nothing to repair, let's build a wall.
-          creep.memory.target_repair_site_id = StructureManager.getWallsToRepair() ?
-            StructureManager.getWallsToRepair().id : null;
+          creep.memory.target_repair_site_id = StructureManager.getWallsToRepair().id;
+        } else {
+          // otherwise, return null.
+          creep.memory.target.repair_site_id = null;
         }
       }
 
