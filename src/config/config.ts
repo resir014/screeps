@@ -48,12 +48,12 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MIN_WALL_HEALTH: number = 1000;
+  export const MIN_WALL_HEALTH: number = 200000;
 
   /**
    * @type {number}
    */
-  export const MIN_RAMPART_HEALTH: number = 1000;
+  export const MIN_RAMPART_HEALTH: number = 150000;
 
   /**
    * Default amount of minimal ticksToLive Screep can have, before it goes
