@@ -51,6 +51,8 @@ export namespace GameManager {
       CreepManager.createBuilder();
     } else if (CreepManager.repairers.length < Config.MAX_REPAIRERS_IN_ROOM) {
       CreepManager.createRepairer();
+    } else if (CreepManager.wallRepairers.length < Config.MAX_WALL_REPAIRERS_IN_ROOM) {
+      CreepManager.createWallRepairer();
     }
 
     // specifies whether or not to use the new, experimental PathFinder object.
@@ -60,6 +62,7 @@ export namespace GameManager {
     CreepManager.upgradersGoToWork();
     CreepManager.buildersGoToWork();
     CreepManager.repairersGoToWork();
+    CreepManager.wallRepairersGoToWork();
   }
 
 }

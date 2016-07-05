@@ -38,12 +38,22 @@ export namespace Config {
   /**
    * @type {number}
    */
+  export const MAX_WALL_REPAIRERS_IN_ROOM: number = 4;
+
+  /**
+   * @type {number}
+   */
   export const MAX_ENERGY_REFILL_THRESHOLD: number = 10;
 
   /**
    * @type {number}
    */
   export const MIN_WALL_HEALTH: number = 1000;
+
+  /**
+   * @type {number}
+   */
+  export const MIN_RAMPART_HEALTH: number = 1000;
 
   /**
    * Default amount of minimal ticksToLive Screep can have, before it goes
