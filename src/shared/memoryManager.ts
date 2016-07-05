@@ -38,6 +38,7 @@ export namespace MemoryManager {
     updateHarvestersMemory();
     updateBuildersMemory();
     updateRepairersMemory();
+    updateWallRepairersMemory();
     updateUpgradersMemory();
   }
 
@@ -128,24 +129,81 @@ export namespace MemoryManager {
 
   /**
    * Update each repairer's target repair site and refill point.
-   * TODO null checks are disabled right now because hax
    */
   function updateRepairersMemory(): void {
 
     _.each(CreepManager.repairers, (creep: Creep) => {
 
+      creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
+        StructureManager.getStructuresToRepair().id : null;
+
+      // we'll find the second energy source on the list first to avoid congestion at spawn
+      creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+
+      creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+        SpawnManager.getFirstSpawn().id : null;
+
       // target structure ID exists?
-      // if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
-      //   if (Config.VERBOSE) {
-      //     console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
-      //   }
+      if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
+        if (Config.VERBOSE) {
+          console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
+        }
 
         creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
           StructureManager.getStructuresToRepair().id : null;
-      // }
+      }
 
       // energy station ID exists?
       if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {
+        if (Config.VERBOSE) {
+          console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
+        }
+
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
+          SourceManager.sources[1].id : null;
+
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+          SpawnManager.getFirstSpawn().id : null;
+
+        // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+      }
+
+    });
+
+  }
+
+  /**
+   * Update each wall repairer's target repair site and refill point.
+   */
+  function updateWallRepairersMemory(): void {
+
+    _.each(CreepManager.wallRepairers, (creep: Creep) => {
+
+      creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
+        StructureManager.getDefensiveStructuresToRepair().id : null;
+
+      // we'll find the second energy source on the list first to avoid congestion at spawn
+      creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+
+      creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+        SpawnManager.getFirstSpawn().id : null;
+
+      // target structure ID exists?
+      if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
+        if (Config.VERBOSE) {
+          console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
+        }
+
+        creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
+          StructureManager.getDefensiveStructuresToRepair().id : null;
+      }
+
+      // energy station ID exists?
+      if ((!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null)
+        || (!creep.memory.target_source_id || Game.getObjectById(creep.memory.target_source_id) == null)) {
         if (Config.VERBOSE) {
           console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
         }
