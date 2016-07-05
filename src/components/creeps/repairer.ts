@@ -5,6 +5,7 @@ export interface IRepairer {
 
   targetStructure: Structure;
   energyStation: Spawn | Structure;
+  targetSource: Source;
   _minHitsBeforeNeedsRepair: number;
 
   hasEmptyBag(): boolean;
@@ -22,6 +23,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
 
   public targetStructure: Structure = null;
   public energyStation: Spawn | Structure = null;
+  public targetSource: Source = null;
 
   public _minHitsBeforeNeedsRepair: number = Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR;
 
@@ -30,6 +32,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
 
     this.targetStructure = <Structure>Game.getObjectById(this.creep.memory.target_repair_site_id);
     this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {
@@ -54,6 +57,16 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     }
   }
 
+  public tryHarvest(): number {
+    return this.creep.harvest(this.targetSource);
+  }
+
+  public moveToHarvest(): void {
+    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetSource);
+    }
+  }
+
   public tryRepair(): number {
     return this.creep.repair(this.targetStructure);
   }
@@ -72,10 +85,16 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
       this.creep.memory.repairing = true;
     }
 
-    if (this.creep.memory.repairing) {
+    if (this.needsRenew()) {
+      this.moveToRenew();
+    } else if (this.creep.memory.repairing) {
       this.moveToRepair();
     } else {
-      this.moveToAskEnergy();
+      if (this.creep.memory.target_source_id) {
+        this.moveToHarvest();
+      } else {
+        this.moveToAskEnergy();
+      }
     }
 
     return true;
