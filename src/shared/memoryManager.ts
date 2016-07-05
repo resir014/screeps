@@ -112,11 +112,11 @@ export namespace MemoryManager {
         }
 
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        if (SourceManager.sourceCount > 1) {
-          creep.memory.target_source_id = SourceManager.sources[1].id;
-        } else {
-          creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
-        }
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
+          SourceManager.sources[1].id : null;
+
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+          SpawnManager.getFirstSpawn().id : null;
 
         // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
@@ -128,27 +128,21 @@ export namespace MemoryManager {
 
   /**
    * Update each repairer's target repair site and refill point.
+   * TODO null checks are disabled right now because hax
    */
   function updateRepairersMemory(): void {
 
     _.each(CreepManager.repairers, (creep: Creep) => {
 
       // target structure ID exists?
-      if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
-        }
+      // if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
+      //   if (Config.VERBOSE) {
+      //     console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
+      //   }
 
-        if (StructureManager.getStructuresToRepair()) {
-          creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair().id;
-        } else if (StructureManager.getWallsToRepair()) {
-          // if we have nothing to repair, let's build a wall.
-          creep.memory.target_repair_site_id = StructureManager.getWallsToRepair().id;
-        } else {
-          // otherwise, return null.
-          creep.memory.target.repair_site_id = null;
-        }
-      }
+        creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
+          StructureManager.getStructuresToRepair().id : null;
+      // }
 
       // energy station ID exists?
       if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {

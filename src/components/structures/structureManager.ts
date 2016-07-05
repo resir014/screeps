@@ -62,15 +62,9 @@ export namespace StructureManager {
 
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return (structure.structureType === STRUCTURE_WALL && structure.hits <= Config.MIN_WALL_HEALTH);
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
+        && (structure.structureType !== STRUCTURE_WALL)));
     });
-
-    if (targets.length === 0) {
-      targets = _.filter(this.structures, (structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-          && (structure.structureType !== STRUCTURE_WALL)));
-      });
-    }
 
     return targets[0];
   }
