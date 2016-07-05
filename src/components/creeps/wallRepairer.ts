@@ -85,9 +85,7 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
       this.creep.memory.repairing = true;
     }
 
-    if (this.needsRenew()) {
-      this.moveToRenew();
-    } else if (this.creep.memory.repairing) {
+    if (this.creep.memory.repairing) {
       this.moveToRepair();
     } else {
       if (this.creep.memory.target_source_id) {
