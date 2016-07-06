@@ -3,8 +3,8 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace FlagManager {
 
-  export var flags: Flag[];
-  export var flagNames: string[];
+  export var flags: { Flag } = null;
+  export var flagNames: string[] = [];
   export var flagCount: number = 0;
 
   export function loadFlags() {
