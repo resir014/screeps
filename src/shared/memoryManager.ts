@@ -120,7 +120,11 @@ export namespace MemoryManager {
 
       // make sure the builder's target construction site still exists
       if (!checkObjectIdValidity(creep, 'target_construction_site_id')) {
-        creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
+        if (ConstructionSiteManager.constructionSiteCount > 0) {
+          creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
+        } else {
+          console.log('[MemoryManager] there are no construction sites for ' + creep.name);
+        }
       }
 
       // make sure the builder's target energy station exists
