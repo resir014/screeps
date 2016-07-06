@@ -1,33 +1,36 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
 
-export interface IBuilder {
+interface IWallRepairer {
 
-  targetConstructionSite: ConstructionSite;
+  targetStructure: Structure;
   energyStation: Spawn | Structure;
   targetSource: Source;
+  _minWallHealth: number;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
   askForEnergy(): number;
   moveToAskEnergy(): void;
-  tryBuild(): number;
-  moveToBuild(): void;
+  tryRepair(): number;
+  moveToRepair(): void;
 
   action(): boolean;
 
 }
 
-export class Builder extends CreepAction implements IBuilder, ICreepAction {
+export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAction {
 
-  public targetConstructionSite: ConstructionSite = null;
+  public targetStructure: Structure = null;
   public energyStation: Spawn | Structure = null;
   public targetSource: Source = null;
+
+  public _minWallHealth: number = Config.MIN_WALL_HEALTH;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetConstructionSite = <ConstructionSite>Game.getObjectById(this.creep.memory.target_construction_site_id);
+    this.targetStructure = <Structure>Game.getObjectById(this.creep.memory.target_repair_site_id);
     this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
     this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
   }
@@ -40,7 +43,7 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
     return (this.creep.carry.energy == this.creep.carryCapacity);
   }
 
-  public askForEnergy(): number {
+  public askForEnergy() {
     if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
       return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
     } else if (this.energyStation instanceof StructureContainer || this.energyStation instanceof StructureStorage) {
@@ -64,26 +67,26 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
     }
   }
 
-  public tryBuild(): number {
-    return this.creep.build(this.targetConstructionSite);
+  public tryRepair(): number {
+    return this.creep.repair(this.targetStructure);
   }
 
-  public moveToBuild(): void {
-    if (this.tryBuild() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetConstructionSite);
+  public moveToRepair(): void {
+    if (this.tryRepair() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetStructure);
     }
   }
 
   public action(): boolean {
-    if (this.creep.memory.building && this.hasEmptyBag()) {
-      this.creep.memory.building = false;
+    if (this.creep.memory.repairing && this.hasEmptyBag()) {
+      this.creep.memory.repairing = false;
     }
-    if (!this.creep.memory.building && this.isBagFull()) {
-      this.creep.memory.building = true;
+    if (!this.creep.memory.repairing && this.isBagFull()) {
+      this.creep.memory.repairing = true;
     }
 
-    if (this.creep.memory.building) {
-      this.moveToBuild();
+    if (this.creep.memory.repairing) {
+      this.moveToRepair();
     } else {
       if (this.creep.memory.target_source_id) {
         this.moveToHarvest();

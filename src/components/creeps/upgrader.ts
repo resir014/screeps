@@ -5,6 +5,7 @@ export interface IUpgrader {
 
   energyStation: Spawn | Structure;
   targetController: StructureController;
+  targetSource: Source;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -21,16 +22,18 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public targetController: StructureController = null;
   public energyStation: Spawn | Structure = null;
+  public targetSource: Source = null;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
     this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
     this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
+    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy >= 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
   }
 
   public isBagFull(): boolean {
@@ -48,6 +51,16 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   public moveToAskEnergy(): void {
     if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
       this.moveTo(this.energyStation);
+    }
+  }
+
+  public tryHarvest(): number {
+    return this.creep.harvest(this.targetSource);
+  }
+
+  public moveToHarvest(): void {
+    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
+      this.moveTo(this.targetSource);
     }
   }
 
@@ -69,10 +82,16 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
       this.creep.memory.upgrading = true;
     }
 
-    if (this.creep.memory.upgrading) {
+    if (this.needsRenew()) {
+      this.moveToRenew();
+    } else if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
     } else {
-      this.moveToAskEnergy();
+      if (this.creep.memory.target_source_id) {
+        this.moveToHarvest();
+      } else {
+        this.moveToAskEnergy();
+      }
     }
 
     return true

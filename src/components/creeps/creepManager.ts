@@ -9,6 +9,7 @@ import { Harvester } from './harvester';
 import { Upgrader } from './upgrader';
 import { Builder } from './builder';
 import { Repairer } from './repairer';
+import { WallRepairer } from './wallRepairer';
 
 export namespace CreepManager {
 
@@ -20,6 +21,7 @@ export namespace CreepManager {
   export var upgraders: Creep[] = [];
   export var builders: Creep[] = [];
   export var repairers: Creep[] = [];
+  export var wallRepairers: Creep[] = [];
 
   /**
    * Loads and counts all available creeps.
@@ -45,8 +47,8 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createHarvester(): number | string {
-    let dropoff_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
+    let dropoff_id: string = StructureManager.getDropOffPoint() ?
+      StructureManager.getDropOffPoint().id :
       SpawnManager.getFirstSpawn().id;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
@@ -77,17 +79,20 @@ export namespace CreepManager {
    * @returns {number}
    */
   export function createUpgrader(): number | string {
-    let energyStation_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
-      SpawnManager.getFirstSpawn().id;
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'upgrader',
       target_controller_id: ControllerManager.getController().id,
+      target_source_id: targetSource_id,
       target_energy_station_id: energyStation_id,
-      renew_station_id: SpawnManager.getFirstSpawn().id
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      upgrading: false
     };
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -103,16 +108,22 @@ export namespace CreepManager {
   }
 
   export function createBuilder(): number | string {
-    let constructionSite_id: string = ConstructionSiteManager.getFirstConstructionSite() ?
-      ConstructionSiteManager.getFirstConstructionSite().id : '';
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
+    let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
+      ConstructionSiteManager.getConstructionSite().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'builder',
       target_construction_site_id: constructionSite_id,
-      target_energy_station_id: SpawnManager.getFirstSpawn().id,
-      renew_station_id: SpawnManager.getFirstSpawn().id
+      target_source_id: targetSource_id,
+      target_energy_station_id: energyStation_id,
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      building: false
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -128,19 +139,25 @@ export namespace CreepManager {
   }
 
   export function createRepairer(): number | string {
-    let energyStation_id: string = StructureManager.getStorageObject() ?
-      StructureManager.getStorageObject().id :
-      SpawnManager.getFirstSpawn().id;
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
+    // let energyStation_id: string = StructureManager.getStorageObject() ?
+    //   StructureManager.getStorageObject().id :
+    //   SpawnManager.getFirstSpawn().id;
     let toRepair_id: string = StructureManager.getStructuresToRepair() ?
-      StructureManager.getStructuresToRepair().id : '';
+      StructureManager.getStructuresToRepair().id : null;
 
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
     let name: string = null;
     let properties: any = {
       role: 'repairer',
       target_repair_site_id: StructureManager.getStructuresToRepair().id,
+      target_source_id: targetSource_id,
       target_energy_station_id: energyStation_id,
-      renew_station_id: SpawnManager.getFirstSpawn().id
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      repairing: false
     }
 
     var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
@@ -148,7 +165,41 @@ export namespace CreepManager {
       status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
 
       if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Builder');
+        console.log('[CreepManager] Started creating new Repairer');
+      }
+    }
+
+    return status;
+  }
+
+  export function createWallRepairer(): number | string {
+    let targetSource_id: string = SourceManager.sourceCount > 1 ?
+      SourceManager.sources[1].id : null;
+    let energyStation_id: string = targetSource_id == null ?
+      SpawnManager.getFirstSpawn().id : null;
+    // let energyStation_id: string = StructureManager.getStorageObject() ?
+    //   StructureManager.getStorageObject().id :
+    //   SpawnManager.getFirstSpawn().id;
+    let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair() ?
+      StructureManager.getDefensiveStructuresToRepair().id : null;
+
+    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
+    let name: string = null;
+    let properties: any = {
+      role: 'wallRepairer',
+      target_repair_site_id: toRepair_id,
+      target_source_id: targetSource_id,
+      target_energy_station_id: energyStation_id,
+      renew_station_id: SpawnManager.getFirstSpawn().id,
+      repairing: false
+    }
+
+    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
+    if (status == OK) {
+      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+
+      if (Config.VERBOSE) {
+        console.log('[CreepManager] Started creating new Wall Repairer');
       }
     }
 
@@ -254,6 +305,30 @@ export namespace CreepManager {
   }
 
   /**
+   * Trigger action methods for all WallRepairer creeps.
+   *
+   * @export
+   */
+  export function wallRepairersGoToWork(): void {
+
+    let wallRepairers: WallRepairer[] = [];
+    _.forEach(this.creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'wallRepairer') {
+        let wallRepairer = new WallRepairer();
+        wallRepairer.setCreep(creep);
+        wallRepairer.action();
+
+        wallRepairers.push(wallRepairer);
+      }
+    });
+
+    if (Config.VERBOSE) {
+      console.log('[CreepManager] ' + repairers.length + ' wall repairers reported on duty today!');
+    }
+
+  }
+
+  /**
    * Checks if there's enough harvesters handling a certain source.
    *
    * @export
@@ -316,6 +391,7 @@ export namespace CreepManager {
     upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+    wallRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'wallRepairer');
   }
 
 }

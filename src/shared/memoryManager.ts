@@ -38,6 +38,7 @@ export namespace MemoryManager {
     updateHarvestersMemory();
     updateBuildersMemory();
     updateRepairersMemory();
+    updateWallRepairersMemory();
     updateUpgradersMemory();
   }
 
@@ -45,7 +46,7 @@ export namespace MemoryManager {
    * Update memory shared by many creeps (i.e. thru CreepAction superclass)
    */
   function updateSharedCreepMemory(): void {
-    _.each(Memory.creeps, (creep: Creep) => {
+    _.each(CreepManager.creeps, (creep: Creep) => {
 
       if (!creep.memory.renew_station_id) {
         creep.memory.renew_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
@@ -123,27 +124,10 @@ export namespace MemoryManager {
       }
 
       // make sure the builder's target energy station exists
-      if (!checkObjectIdValidity(creep, 'target_energy_station_id')) {
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
-      }
-
-    });
-
-  }
-
-
-  function updateRepairersMemory(): void {
-
-    _.each(CreepManager.repairers, (creep: Creep) => {
-
-      // target structure ID exists?
-      if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
-        /* FIXME find new target repair site */
-      }
-
-      // energy station ID exists?
-      if (!checkObjectIdValidity(creep, 'target_energy_station_id')) {
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ?
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
           SpawnManager.getFirstSpawn().id : null;
       }
 
@@ -152,16 +136,72 @@ export namespace MemoryManager {
   }
 
 
+  /**
+   * Update each repairer's target repair site and refill point.
+   */
+  function updateRepairersMemory(): void {
+
+    _.each(CreepManager.repairers, (creep: Creep) => {
+
+      if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
+        creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
+          StructureManager.getStructuresToRepair().id : null;
+      }
+
+      // energy station ID exists?
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+          SpawnManager.getFirstSpawn().id : null;
+      }
+
+    });
+
+  }
+
+  /**
+   * Update each wall repairer's target repair site and refill point.
+   */
+  function updateWallRepairersMemory(): void {
+
+    _.each(CreepManager.wallRepairers, (creep: Creep) => {
+
+      // target structure ID exists?
+      if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
+        creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
+          StructureManager.getDefensiveStructuresToRepair().id : null;
+      }
+
+      // energy station ID exists?
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
+          SpawnManager.getFirstSpawn().id : null;
+      }
+
+    });
+
+  }
+
+
+  /**
+   * Update each upgrader's target controller and refill point.
+   */
   function updateUpgradersMemory(): void {
 
     _.each(CreepManager.upgraders, (creep: Creep) => {
 
       if (!checkObjectIdValidity(creep, 'target_controller_id')) {
-        creep.memory.target_controller_id = ControllerManager.getController();
+        creep.memory.target_controller_id = ControllerManager.getController().id;
       }
 
-      if (!checkObjectIdValidity(creep, 'target_energy_station_id')) {
-        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ?
+      // energy station ID exists?
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
+        // we'll find the second energy source on the list first to avoid congestion at spawn
+        creep.memory.target_source_id = SourceManager.getFirstSource() ? SourceManager.getFirstSource().id : null;
+        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
           SpawnManager.getFirstSpawn().id : null;
       }
 

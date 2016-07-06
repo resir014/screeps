@@ -45,30 +45,23 @@ export namespace StructureManager {
   // TODO find() calls are much more expensive, let's try to find() once and
   // cache the result
   export function getDropOffPoint(): Structure {
-    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-      filter: (structure: Spawn) => {
-        return ((structure.structureType == STRUCTURE_SPAWN)
-          && structure.energy < structure.energyCapacity);
-      }
+    let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
+      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity -
+        (structure.energyCapacity * 0.1));
     });
 
-    // if we can't find any storage containers, use the extension.
-    if (targets.length == 0) {
-      targets = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-        filter: (structure: StructureExtension) => {
-          return ((structure.structureType == STRUCTURE_EXTENSION) &&
-            structure.energy < structure.energyCapacity);
-        }
+    // If the spawn is full, we'll find any extensions/towers.
+    if (targets.length === 0) {
+      targets = _.filter(this.structures, (structure: StructureExtension | StructureTower) => {
+        return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
+          && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.1));
       });
     }
 
-    // Same thing, but we now look for storage.
-    if (targets.length == 0) {
-      targets = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-        filter: (structure: StructureContainer | StructureStorage) => {
-          return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
-            _.sum(structure.store) < structure.storeCapacity);
-        }
+    // Otherwise, look for storage containers.
+    if (targets.length === 0) {
+      targets = _.filter(this.structures, (structure: StructureContainer) => {
+        return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
       });
     }
 
@@ -78,10 +71,24 @@ export namespace StructureManager {
   // TODO find() calls are much more expensive, let's try to find() once and
   // cache the result
   export function getStructuresToRepair(): Structure {
-    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
-      filter: (structure: Structure) => {
-        return (structure.hits < structure.hitsMax);
-      }
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
+        && (structure.structureType !== STRUCTURE_WALL || structure.structureType !== STRUCTURE_RAMPART)));
+    });
+
+    if (targets.length === 0) {
+      targets = _.filter(this.structures, (structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.5))
+          && (structure.structureType === STRUCTURE_RAMPART)));
+      });
+    }
+
+    return targets[0];
+  }
+
+  export function getDefensiveStructuresToRepair(): Structure {
+    let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
+      return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);
     });
 
     return targets[0];

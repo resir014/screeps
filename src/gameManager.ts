@@ -3,6 +3,7 @@ import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
 import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
+import { FlagManager } from './components/flags/flagManager';
 import { CreepManager } from './components/creeps/creepManager';
 import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
 import { StructureManager } from './components/structures/structureManager';
@@ -26,8 +27,7 @@ export namespace GameManager {
     RoomManager.loadRooms();
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
-    ConstructionSiteManager.loadConstructionSites();
-    StructureManager.loadStructures();
+    FlagManager.loadFlags();
   }
 
   export function loop() {
@@ -36,24 +36,35 @@ export namespace GameManager {
 
     MemoryManager.loadMemory();
     CreepManager.loadCreeps();
+    ConstructionSiteManager.loadConstructionSites();
+    StructureManager.loadStructures();
 
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
-    if (CreepManager.canCreateHarvester()) {
+    // after garbage collection, we update all existing creep memory entries.
+    MemoryManager.updateCreepMemory();
+
+    if (CreepManager.harvesters.length < Config.MAX_HARVESTERS_PER_SOURCE) {
       CreepManager.createHarvester();
-    } else if (CreepManager.canCreateUpgrader()) {
+    } else if (CreepManager.upgraders.length < Config.MAX_UPGRADERS_PER_CONTROLLER) {
       CreepManager.createUpgrader();
-    } else if (CreepManager.canCreateBuilder()) {
+    } else if (CreepManager.builders.length < Config.MAX_BUILDERS_IN_ROOM) {
       CreepManager.createBuilder();
-    } else if (CreepManager.canCreateRepairer()) {
+    } else if (CreepManager.repairers.length < Config.MAX_REPAIRERS_IN_ROOM) {
       CreepManager.createRepairer();
+    } else if (CreepManager.wallRepairers.length < Config.MAX_WALL_REPAIRERS_IN_ROOM) {
+      CreepManager.createWallRepairer();
     }
+
+    // specifies whether or not to use the new, experimental PathFinder object.
+    PathFinder.use(Config.USE_PATHFINDER);
 
     CreepManager.harvestersGoToWork();
     CreepManager.upgradersGoToWork();
     CreepManager.buildersGoToWork();
     CreepManager.repairersGoToWork();
+    CreepManager.wallRepairersGoToWork();
   }
 
 }
