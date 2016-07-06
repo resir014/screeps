@@ -244,8 +244,8 @@ export namespace MemoryManager {
         }
 
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-          SourceManager.sources[1].id : null;
+        creep.memory.target_source_id = SourceManager.getFirstSource() ?
+          SourceManager.getFirstSource().id : null;
 
         creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
           SpawnManager.getFirstSpawn().id : null;
