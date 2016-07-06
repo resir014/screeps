@@ -3,6 +3,7 @@ import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
 import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
+import { FlagManager } from './components/flags/flagManager';
 import { CreepManager } from './components/creeps/creepManager';
 import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
 import { StructureManager } from './components/structures/structureManager';
@@ -26,6 +27,7 @@ export namespace GameManager {
     RoomManager.loadRooms();
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
+    FlagManager.loadFlags();
   }
 
   export function loop() {
