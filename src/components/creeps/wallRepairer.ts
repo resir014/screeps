@@ -79,7 +79,7 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
   }
 
   public action(): boolean {
-    if ((this.creep.memory.repairing && this.hasEmptyBag()) || this.targetStructure === null) {
+    if ((this.creep.memory.repairing && this.hasEmptyBag()) || this.creep.memory.target_repair_site_id === null) {
       this.creep.memory.repairing = false;
     }
     if (!this.creep.memory.repairing && this.isBagFull()) {
