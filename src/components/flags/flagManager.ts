@@ -22,6 +22,10 @@ export namespace FlagManager {
     return this.flags[this.flagNames[0]];
   }
 
+  export function getFlag(name: string): Flag {
+    return this.flags[name];
+  }
+
   function _loadFlagNames(): void {
     for (let name in flags) {
       if (flags.hasOwnProperty(name)) {

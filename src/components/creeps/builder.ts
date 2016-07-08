@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
+import { FlagManager } from '../flags/flagManager';
 
 export interface IBuilder {
 
@@ -75,7 +76,7 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.creep.memory.building && this.hasEmptyBag()) {
+    if ((this.creep.memory.building && this.hasEmptyBag()) || this.targetConstructionSite === null) {
       this.creep.memory.building = false;
     }
     if (!this.creep.memory.building && this.isBagFull()) {
@@ -86,9 +87,17 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
       this.moveToBuild();
     } else {
       if (this.creep.memory.target_source_id) {
-        this.moveToHarvest();
+        if (!this.isBagFull()) {
+          this.moveToHarvest();
+        } else {
+          this.moveTo(FlagManager.getFlag('BuildersPost'));
+        }
       } else {
-        this.moveToAskEnergy();
+        if (!this.isBagFull()) {
+          this.moveToAskEnergy();
+        } else {
+          this.moveTo(FlagManager.getFlag('BuildersPost'));
+        }
       }
     }
 
