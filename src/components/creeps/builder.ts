@@ -76,10 +76,10 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   }
 
   public action(): boolean {
-    if ((this.creep.memory.building && this.hasEmptyBag()) || this.targetConstructionSite === null) {
+    if ((this.creep.memory.building && this.hasEmptyBag()) || this.creep.memory.target_construction_site_id === null) {
       this.creep.memory.building = false;
     }
-    if (!this.creep.memory.building && this.isBagFull()) {
+    if ((!this.creep.memory.building && this.isBagFull()) && this.creep.memory.target_construction_site_id !== null) {
       this.creep.memory.building = true;
     }
 

@@ -82,7 +82,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
     if ((this.creep.memory.repairing && this.hasEmptyBag()) || this.creep.memory.target_repair_site_id === null) {
       this.creep.memory.repairing = false;
     }
-    if (!this.creep.memory.repairing && this.isBagFull()) {
+    if ((!this.creep.memory.repairing && this.isBagFull()) && this.creep.memory.target_repair_site_id !== null) {
       this.creep.memory.repairing = true;
     }
 
