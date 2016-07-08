@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
+import { FlagManager } from '../flags/flagManager';
 
 interface IWallRepairer {
 
@@ -89,9 +90,17 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
       this.moveToRepair();
     } else {
       if (this.creep.memory.target_source_id) {
-        this.moveToHarvest();
+        if (!this.isBagFull()) {
+          this.moveToHarvest();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
       } else {
-        this.moveToAskEnergy();
+        if (!this.isBagFull()) {
+          this.moveToAskEnergy();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
       }
     }
 
