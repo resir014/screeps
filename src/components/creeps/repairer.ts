@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { ICreepAction, CreepAction } from './creepAction';
+import { FlagManager } from '../flags/flagManager';
 
 export interface IRepairer {
 
@@ -78,7 +79,7 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
   }
 
   public action(): boolean {
-    if (this.creep.memory.repairing && this.hasEmptyBag()) {
+    if ((this.creep.memory.repairing && this.hasEmptyBag()) || this.targetStructure === null) {
       this.creep.memory.repairing = false;
     }
     if (!this.creep.memory.repairing && this.isBagFull()) {
@@ -89,9 +90,17 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
       this.moveToRepair();
     } else {
       if (this.creep.memory.target_source_id) {
-        this.moveToHarvest();
+        if (!this.isBagFull()) {
+          this.moveToHarvest();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
       } else {
-        this.moveToAskEnergy();
+        if (!this.isBagFull()) {
+          this.moveToAskEnergy();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
       }
     }
 
