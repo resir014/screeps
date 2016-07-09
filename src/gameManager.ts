@@ -29,7 +29,6 @@ export namespace GameManager {
   export function loop() {
     // Loop code starts here
     // This is executed every tick
-
     MemoryManager.loadMemory();
 
     // garbage collection. must run before any spawning logic.
@@ -39,7 +38,7 @@ export namespace GameManager {
     MemoryManager.updateCreepMemory();
 
     // specifies whether or not to use the new, experimental PathFinder object.
-    PathFinder.use(Config.USE_PATHFINDER);
+    PathFinder.use(true);
 
     RoomManager.rooms.forEach((room: Room) => {
       SpawnManager.loadSpawns(room);
