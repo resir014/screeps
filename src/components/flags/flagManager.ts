@@ -3,27 +3,27 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace FlagManager {
 
-  export var flags: { Flag } = null;
+  export var flags: { [flagName: string]: Flag };
   export var flagNames: string[] = [];
-  export var flagCount: number = 0;
+  export var flagCount: number;
 
   export function loadFlags() {
-    this.flags = Game.flags;
-    this.flagCount = _.size(this.flags);
+    flags = Game.flags;
+    flagCount = _.size(flags);
 
     _loadFlagNames();
 
     if (Config.VERBOSE) {
-      console.log('[FlagManager] ' + this.flagCount + ' flags found.');
+      console.log('[FlagManager] ' + flagCount + ' flags found.');
     }
   }
 
   export function getFirstFlag(): Flag {
-    return this.flags[this.flagNames[0]];
+    return flags[flagNames[0]];
   }
 
   export function getFlag(name: string): Flag {
-    return this.flags[name];
+    return flags[name];
   }
 
   function _loadFlagNames(): void {

@@ -20,9 +20,9 @@ export interface IUpgrader {
 
 export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
-  public targetController: StructureController = null;
-  public energyStation: Spawn | Structure = null;
-  public targetSource: Source = null;
+  public targetController: StructureController;
+  public energyStation: Spawn | Structure;
+  public targetSource: Source;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
