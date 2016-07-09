@@ -36,14 +36,6 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
     this.targetSource = Game.getObjectById<Source>(this.creep.memory.target_source_id);
   }
 
-  public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
-  }
-
-  public isBagFull(): boolean {
-    return (this.creep.carry.energy == this.creep.carryCapacity);
-  }
-
   public askForEnergy() {
     if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
       return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);

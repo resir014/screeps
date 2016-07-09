@@ -23,6 +23,12 @@ export namespace CreepManager {
   export var repairers: Creep[] = [];
   export var wallRepairers: Creep[] = [];
 
+  export function run(room: Room): void {
+    // _loadCreeps(room);
+    // _buildMissingCreeps(room);
+    // _creepsGoToWork(room);
+  }
+
   /**
    * Loads and counts all available creeps.
    *
@@ -44,7 +50,6 @@ export namespace CreepManager {
    * Creates a new Harvester creep.
    *
    * @export
-   * @returns {number}
    */
   export function createHarvester(): void {
     let dropoff_id: string = StructureManager.getDropOffPoint() ?
@@ -76,7 +81,6 @@ export namespace CreepManager {
    * Creates a new upgrader creep.
    *
    * @export
-   * @returns {number}
    */
   export function createUpgrader(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
@@ -107,6 +111,11 @@ export namespace CreepManager {
     });
   }
 
+  /**
+   * Creates a new Builder.
+   *
+   * @export
+   */
   export function createBuilder(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;
@@ -138,6 +147,11 @@ export namespace CreepManager {
     });
   }
 
+  /**
+   * Creates a new Repairer.
+   *
+   * @export
+   */
   export function createRepairer(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;

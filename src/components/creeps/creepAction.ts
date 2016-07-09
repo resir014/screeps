@@ -12,6 +12,8 @@ export interface ICreepAction {
    */
   moveTo(target: RoomPosition | {pos: RoomPosition}): number;
 
+  hasEmptyBag(): boolean;
+  isBagFull(): boolean;
   needsRenew(): boolean;
   tryRenew(): number;
   moveToRenew(): void;
@@ -27,7 +29,7 @@ export class CreepAction implements ICreepAction {
 
   public setCreep(creep: Creep) {
     this.creep = creep;
-    this.renewStation = <Spawn>Game.getObjectById(this.creep.memory.renew_station_id);
+    this.renewStation = Game.getObjectById<Spawn>(this.creep.memory.renew_station_id);
   }
 
   /**
@@ -38,6 +40,14 @@ export class CreepAction implements ICreepAction {
    */
   public moveTo(target: RoomPosition | {pos: RoomPosition}) {
     return this.creep.moveTo(target);
+  }
+
+  public hasEmptyBag(): boolean {
+    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
+  }
+
+  public isBagFull(): boolean {
+    return (this.creep.carry.energy == this.creep.carryCapacity);
   }
 
   public needsRenew(): boolean {

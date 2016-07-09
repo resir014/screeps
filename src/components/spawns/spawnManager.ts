@@ -21,6 +21,25 @@ export namespace SpawnManager {
     return spawns[spawnNames[0]];
   }
 
+  /**
+   * Spawns a new creep.
+   *
+   * @export
+   * @param {Spawn} spawn
+   * @param {string[]} body
+   * @param {{ [key: string]: any }} properties
+   * @returns {(number | string)}
+   */
+  export function spawnCreep(spawn: Spawn, body: string[], properties: { [key: string]: any }): number | string {
+    let status = spawn.canCreateCreep(body, null);
+
+    if (status == OK) {
+      return spawn.createCreep(body, null, properties);
+    } else {
+      return status;
+    }
+  }
+
   function _loadSpawnNames() {
     for (let spawnName in spawns) {
       if (spawns.hasOwnProperty(spawnName)) {
