@@ -3,11 +3,11 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace SourceManager {
 
-  export var sources: Source[] = [];
+  export var sources: Source[];
   export var sourceCount: number;
 
-  export function loadSources() {
-    sources = RoomManager.getFirstRoom().find<Source>(FIND_SOURCES_ACTIVE);
+  export function loadSources(room: Room) {
+    sources = room.find<Source>(FIND_SOURCES_ACTIVE);
     sourceCount = _.size(sources);
 
     if (Config.VERBOSE) {

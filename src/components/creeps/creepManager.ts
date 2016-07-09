@@ -13,9 +13,9 @@ import { WallRepairer } from './wallRepairer';
 
 export namespace CreepManager {
 
-  export var creeps: { [creepName: string]: Creep };
+  export var creeps: Creep[];
   export var creepNames: string[] = [];
-  export var creepCount: number;
+  export var creepCount: number = 0;
 
   export var harvesters: Creep[] = [];
   export var upgraders: Creep[] = [];
@@ -28,8 +28,8 @@ export namespace CreepManager {
    *
    * @export
    */
-  export function loadCreeps(): void {
-    creeps = Game.creeps;
+  export function loadCreeps(room: Room): void {
+    creeps = room.find<Creep>(FIND_MY_CREEPS);
     creepCount = _.size(creeps);
 
     _loadCreepNames();
@@ -46,7 +46,7 @@ export namespace CreepManager {
    * @export
    * @returns {number}
    */
-  export function createHarvester(): number | string {
+  export function createHarvester(): void {
     let dropoff_id: string = StructureManager.getDropOffPoint() ?
       StructureManager.getDropOffPoint().id :
       SpawnManager.getFirstSpawn().id;
@@ -60,16 +60,16 @@ export namespace CreepManager {
       renew_station_id: SpawnManager.getFirstSpawn().id
     };
 
-    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
-    if (status == OK) {
-      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+    _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      if (status == OK) {
+        status = spawn.createCreep(bodyParts, name, properties);
 
-      if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Harvester');
+        if (Config.VERBOSE) {
+          console.log('[CreepManager] Started creating new Harvester');
+        }
       }
-    }
-
-    return status;
+    });
   }
 
   /**
@@ -78,7 +78,7 @@ export namespace CreepManager {
    * @export
    * @returns {number}
    */
-  export function createUpgrader(): number | string {
+  export function createUpgrader(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;
     let energyStation_id: string = targetSource_id == null ?
@@ -95,19 +95,19 @@ export namespace CreepManager {
       upgrading: false
     };
 
-    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
-    if (status == OK) {
-      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+    _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      if (status == OK) {
+        status = spawn.createCreep(bodyParts, name, properties);
 
-      if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Upgrader');
+        if (Config.VERBOSE) {
+          console.log('[CreepManager] Started creating new Upgrader');
+        }
       }
-    }
-
-    return status;
+    });
   }
 
-  export function createBuilder(): number | string {
+  export function createBuilder(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;
     let energyStation_id: string = targetSource_id == null ?
@@ -126,19 +126,19 @@ export namespace CreepManager {
       building: false
     }
 
-    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
-    if (status == OK) {
-      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+    _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      if (status == OK) {
+        status = spawn.createCreep(bodyParts, name, properties);
 
-      if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Builder');
+        if (Config.VERBOSE) {
+          console.log('[CreepManager] Started creating new Builder');
+        }
       }
-    }
-
-    return status;
+    });
   }
 
-  export function createRepairer(): number | string {
+  export function createRepairer(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;
     let energyStation_id: string = targetSource_id == null ?
@@ -153,26 +153,26 @@ export namespace CreepManager {
     let name: string = null;
     let properties: any = {
       role: 'repairer',
-      target_repair_site_id: StructureManager.getStructuresToRepair().id,
+      target_repair_site_id: toRepair_id,
       target_source_id: targetSource_id,
       target_energy_station_id: energyStation_id,
       renew_station_id: SpawnManager.getFirstSpawn().id,
       repairing: false
     }
 
-    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
-    if (status == OK) {
-      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+    _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      if (status == OK) {
+        status = spawn.createCreep(bodyParts, name, properties);
 
-      if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Repairer');
+        if (Config.VERBOSE) {
+          console.log('[CreepManager] Started creating new Repairer');
+        }
       }
-    }
-
-    return status;
+    });
   }
 
-  export function createWallRepairer(): number | string {
+  export function createWallRepairer(): void {
     let targetSource_id: string = SourceManager.sourceCount > 1 ?
       SourceManager.sources[1].id : null;
     let energyStation_id: string = targetSource_id == null ?
@@ -194,16 +194,16 @@ export namespace CreepManager {
       repairing: false
     }
 
-    var status: number | string = SpawnManager.getFirstSpawn().canCreateCreep(bodyParts, name);
-    if (status == OK) {
-      status = SpawnManager.getFirstSpawn().createCreep(bodyParts, name, properties);
+    _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      if (status == OK) {
+        status = spawn.createCreep(bodyParts, name, properties);
 
-      if (Config.VERBOSE) {
-        console.log('[CreepManager] Started creating new Wall Repairer');
+        if (Config.VERBOSE) {
+          console.log('[CreepManager] Started creating new Wall Repairer');
+        }
       }
-    }
-
-    return status;
+    });
   }
 
   /**
@@ -387,11 +387,11 @@ export namespace CreepManager {
 
   function _loadCreepRoleCounts(): void {
     // TODO: find a way to avoid API calls.
-    harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-    repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-    wallRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'wallRepairer');
+    harvesters = _.filter(creeps, (creep) => creep.memory.role == 'harvester');
+    upgraders = _.filter(creeps, (creep) => creep.memory.role == 'upgrader');
+    builders = _.filter(creeps, (creep) => creep.memory.role == 'builder');
+    repairers = _.filter(creeps, (creep) => creep.memory.role == 'repairer');
+    wallRepairers = _.filter(creeps, (creep) => creep.memory.role == 'wallRepairer');
   }
 
 }

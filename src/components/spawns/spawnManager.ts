@@ -2,12 +2,12 @@ import { Config } from './../../config/config';
 
 export namespace SpawnManager {
 
-  export var spawns: { [spawnName: string]: Spawn };
+  export var spawns: Spawn[];
   export var spawnNames: string[] = [];
-  export var spawnCount: number;
+  export var spawnCount: number = 0;
 
-  export function loadSpawns() {
-    spawns = Game.spawns;
+  export function loadSpawns(room: Room) {
+    spawns = room.find<Spawn>(FIND_MY_SPAWNS);
     spawnCount = _.size(spawns);
 
     _loadSpawnNames();

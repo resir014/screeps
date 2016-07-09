@@ -14,8 +14,8 @@ export namespace ConstructionSiteManager {
   export var towers: ConstructionSite[] = [];
   export var storages: ConstructionSite[] = [];
 
-  export function loadConstructionSites() {
-    constructionSites = RoomManager.getFirstRoom().find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
+  export function loadConstructionSites(room: Room) {
+    constructionSites = room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
     constructionSiteCount = _.size(constructionSites);
 
     _loadStructureCounts();

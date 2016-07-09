@@ -3,11 +3,11 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace StructureManager {
 
-  export var structures: Structure[] = [];
-  export var structureCount: number;
+  export var structures: Structure[];
+  export var structureCount: number = 0;
 
-  export function loadStructures() {
-    structures = RoomManager.getFirstRoom().find<Structure>(FIND_STRUCTURES);
+  export function loadStructures(room: Room) {
+    structures = room.find<Structure>(FIND_STRUCTURES);
     structureCount = _.size(structures);
 
     if (Config.VERBOSE) {

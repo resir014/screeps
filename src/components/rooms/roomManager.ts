@@ -2,11 +2,13 @@ import { Config } from './../../config/config';
 
 export namespace RoomManager {
 
-  export var rooms: { [roomName: string]: Room };
+  export var rooms: Room[] = [];
   export var roomNames: string[] = [];
 
   export function loadRooms() {
-    rooms = Game.rooms;
+    for (let room in Game.rooms) {
+      rooms.push(Game.rooms[room]);
+    }
 
     _loadRoomNames();
 
