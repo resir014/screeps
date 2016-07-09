@@ -27,9 +27,9 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
-    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
+    this.targetController = Game.getObjectById<StructureController>(this.creep.memory.target_controller_id);
+    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
+    this.targetSource = Game.getObjectById<Source>(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {

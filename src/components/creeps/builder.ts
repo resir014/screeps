@@ -28,9 +28,9 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetConstructionSite = <ConstructionSite>Game.getObjectById(this.creep.memory.target_construction_site_id);
-    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
+    this.targetConstructionSite = Game.getObjectById<ConstructionSite>(this.creep.memory.target_construction_site_id);
+    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
+    this.targetSource = Game.getObjectById<Source>(this.creep.memory.target_source_id);
   }
 
   public hasEmptyBag(): boolean {
