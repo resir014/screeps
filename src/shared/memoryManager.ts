@@ -55,6 +55,35 @@ export namespace MemoryManager {
     });
   }
 
+  /**
+   * Check the validity of an object ID stored in a creep's memory.
+   *
+   * Invalid values are null, undefined, empty strings, or do not exist as an
+   * object in `Game`.
+   *
+   * Returns true if the creep exists, and if the object ID exists and is valid
+   *
+   * @param creep The creep whose memory we are managing
+   * @param key The memory key whose validity we will be checking
+   */
+  function checkObjectIdValidity(creep, key): boolean {
+    /* TODO */
+    if (creep == null) return false;
+
+    let value: string = <string> creep.memory[key];
+    var isValid: boolean = (
+      (value != null) &&
+      (value !== '')  &&
+      (Game.getObjectById(value) != null)
+    );
+
+    if (!isValid && Config.VERBOSE) {
+      console.log('[MemoryManager] ' + creep.name + ' has an invalid ID for ' + key);
+    }
+
+    return isValid;
+  };
+
 
   /**
    * Update each harvester's target source and/or energy dropoff
@@ -62,25 +91,18 @@ export namespace MemoryManager {
    */
   function updateHarvestersMemory(): void {
 
-    // pull harvesters from GameManager
+    // pull harvesters from CreepManager
     _.each(CreepManager.harvesters, (creep: Creep) => {
 
-      // make sure the harvester's target source still exists
-      if (!creep.memory.target_source_id || Game.getObjectById(creep.memory.target_source_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated source ID for ' + creep.name);
-        }
-
+      // check validity of target source
+      if (!checkObjectIdValidity(creep, 'target_source_id')) {
         creep.memory.target_source_id = SourceManager.getFirstSource().id;
       }
 
-      // HACK: if we use the same method as above, it somehow won't work. Therefore we just use this weird check
-      if (StructureManager.getDropOffPoint()) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated energy dropoff ID for ' + creep.name);
-        }
-
-        creep.memory.target_energy_dropoff_id = StructureManager.getDropOffPoint().id;
+      // check validity of energy dropoff
+      if (!checkObjectIdValidity(creep, 'target_energy_dropoff_id')) {
+        var dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
+        creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
       }
 
     });
@@ -97,29 +119,19 @@ export namespace MemoryManager {
     _.each(CreepManager.builders, (creep: Creep) => {
 
       // make sure the builder's target construction site still exists
-      if (!creep.memory.target_construction_site_id || Game.getObjectById(creep.memory.target_construction_site_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated construction site ID for ' + creep.name);
+      if (!checkObjectIdValidity(creep, 'target_construction_site_id')) {
+        if (ConstructionSiteManager.constructionSiteCount > 0) {
+          creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
+        } else {
+          console.log('[MemoryManager] there are no construction sites for ' + creep.name);
         }
-
-        creep.memory.target_construction_site_id = ConstructionSiteManager.getConstructionSite() ?
-          ConstructionSiteManager.getConstructionSite().id : null;
       }
 
       // make sure the builder's target energy station exists
-      if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated energy station ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-          SourceManager.sources[1].id : null;
-
-        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-          SpawnManager.getFirstSpawn().id : null;
-
-        // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -134,40 +146,21 @@ export namespace MemoryManager {
 
     _.each(CreepManager.repairers, (creep: Creep) => {
 
+      // HACK: this happened to be here since for some reason we can't do null-checking on
+      // target_repair_site_id. Well, either that or the fact that obsolete repair site ids won't resolve to null.
       creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
         StructureManager.getStructuresToRepair().id : null;
 
-      // we'll find the second energy source on the list first to avoid congestion at spawn
-      creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
-
-      creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-        SpawnManager.getFirstSpawn().id : null;
-
-      // target structure ID exists?
-      if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
         creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
           StructureManager.getStructuresToRepair().id : null;
       }
 
       // energy station ID exists?
-      if (!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-          SourceManager.sources[1].id : null;
-
-        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-          SpawnManager.getFirstSpawn().id : null;
-
-        // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -181,41 +174,22 @@ export namespace MemoryManager {
 
     _.each(CreepManager.wallRepairers, (creep: Creep) => {
 
+      // HACK: this happened to be here since for some reason we can't do null-checking on
+      // target_repair_site_id. Well, either that or the fact that obsolete repair site ids won't resolve to null.
       creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
         StructureManager.getDefensiveStructuresToRepair().id : null;
 
-      // we'll find the second energy source on the list first to avoid congestion at spawn
-      creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
-
-      creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-        SpawnManager.getFirstSpawn().id : null;
-
       // target structure ID exists?
-      if (!creep.memory.target_repair_site_id || Game.getObjectById(creep.memory.target_repair_site_id) == null) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target repair site ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
         creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
           StructureManager.getDefensiveStructuresToRepair().id : null;
       }
 
       // energy station ID exists?
-      if ((!creep.memory.target_energy_station_id || Game.getObjectById(creep.memory.target_energy_station_id) == null)
-        || (!creep.memory.target_source_id || Game.getObjectById(creep.memory.target_source_id) == null)) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.sourceCount > 1 ?
-          SourceManager.sources[1].id : null;
-
-        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-          SpawnManager.getFirstSpawn().id : null;
-
-        // creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+        creep.memory.target_source_id = SourceManager.sourceCount > 1 ? SourceManager.sources[1].id : null;
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });
@@ -230,25 +204,15 @@ export namespace MemoryManager {
 
     _.each(CreepManager.upgraders, (creep: Creep) => {
 
-      if (!creep.memory.target_controller_id || !Game.getObjectById(creep.memory.target_controller_id)) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated controller ID for ' + creep.name);
-        }
-
+      if (!checkObjectIdValidity(creep, 'target_controller_id')) {
         creep.memory.target_controller_id = ControllerManager.getController().id;
       }
 
-      if (!creep.memory.target_energy_station_id || !Game.getObjectById(creep.memory.target_energy_station_id)) {
-        if (Config.VERBOSE) {
-          console.log('[MemoryManager] Updating outdated target energy station ID for ' + creep.name);
-        }
-
+      // energy station ID exists?
+      if (!checkObjectIdValidity(creep, 'target_source_id') || !checkObjectIdValidity(creep, 'target_energy_station_id')) {
         // we'll find the second energy source on the list first to avoid congestion at spawn
-        creep.memory.target_source_id = SourceManager.getFirstSource() ?
-          SourceManager.getFirstSource().id : null;
-
-        creep.memory.target_energy_station_id = creep.memory.target_source_id == null ?
-          SpawnManager.getFirstSpawn().id : null;
+        creep.memory.target_source_id = SourceManager.getFirstSource() ? SourceManager.getFirstSource().id : null;
+        creep.memory.target_energy_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
       }
 
     });

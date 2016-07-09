@@ -19,23 +19,31 @@ export namespace StructureManager {
     return this.structures[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getStorageObject(): Structure {
-    let targets: Structure[] = _.filter(this.structures, (structure: StructureContainer | StructureStorage) => {
-      return ((structure.structureType == STRUCTURE_CONTAINER)
-        && _.sum(structure.store) < structure.storeCapacity);
+    let targets: Structure[] = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
+      filter: (structure: StructureContainer | StructureStorage) => {
+        return ((structure.structureType == STRUCTURE_CONTAINER)
+          && _.sum(structure.store) < structure.storeCapacity);
+      }
     });
 
     // if we can't find any storage containers, use either the extension or spawn.
     if (targets.length == 0) {
-      targets = _.filter(this.structures, (structure: StructureExtension) => {
-        return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-          structure.energy < structure.energyCapacity);
+      targets = <Structure[]>RoomManager.getFirstRoom().find(FIND_STRUCTURES, {
+        filter: (structure: StructureExtension) => {
+          return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+            structure.energy < structure.energyCapacity);
+        }
       });
     }
 
     return targets[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getDropOffPoint(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Spawn) => {
       return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity -
@@ -60,18 +68,13 @@ export namespace StructureManager {
     return targets[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-        && (structure.structureType !== STRUCTURE_WALL || structure.structureType !== STRUCTURE_RAMPART)));
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+        && (structure.structureType !== STRUCTURE_WALL)));
     });
-
-    if (targets.length === 0) {
-      targets = _.filter(this.structures, (structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.5))
-          && (structure.structureType === STRUCTURE_RAMPART)));
-      });
-    }
 
     return targets[0];
   }
