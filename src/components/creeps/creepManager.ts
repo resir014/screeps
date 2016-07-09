@@ -23,27 +23,129 @@ export namespace CreepManager {
   export var repairers: Creep[] = [];
   export var wallRepairers: Creep[] = [];
 
+  /**
+   * Run creeps that exist in a room.
+   *
+   * @export
+   * @param {Room} room
+   */
   export function run(room: Room): void {
-    // _loadCreeps(room);
-    // _buildMissingCreeps(room);
-    // _creepsGoToWork(room);
+    _loadCreeps(room);
+    _buildMissingCreeps(room);
+    _creepsGoToWork(room);
   }
 
   /**
    * Loads and counts all available creeps.
-   *
-   * @export
+   * NOTE: will be deprecated/removed when the new creepManager runner works
    */
   export function loadCreeps(room: Room): void {
     creeps = room.find<Creep>(FIND_MY_CREEPS);
     creepCount = _.size(creeps);
 
     _loadCreepNames();
-    _loadCreepRoleCounts();
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
     }
+  }
+
+  /**
+   * Loads and counts all available creeps.
+   */
+  function _loadCreeps(room: Room): void {
+    creeps = room.find<Creep>(FIND_MY_CREEPS);
+    creepCount = _.size(creeps);
+
+    _loadCreepNames();
+
+    if (Config.VERBOSE) {
+      console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
+    }
+  }
+
+  /**
+   * Creates a new creep if we still have enough space.
+   * TODO: add some load balancing, have the limit gradually increase as resources increase.
+   *
+   * @param {Room} room
+   */
+  function _buildMissingCreeps(room: Room): void {
+    // base bodyparts for a creep
+    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
+
+    // default name (can be null)
+    let name: string = null;
+
+    let properties: { [key: string]: any} = null;
+
+    let harvesters: Creep[] = [];
+    let upgraders: Creep[] = [];
+    let builders: Creep[] = [];
+    let repairers: Creep[] = [];
+    let wallRepairers: Creep[] = [];
+
+    _loadCreepRoleCounts();
+
+    if (harvesters.length < 6) {
+      let dropoff_id: string = StructureManager.getDropOffPoint() ?
+        StructureManager.getDropOffPoint().id :
+        SpawnManager.getFirstSpawn().id;
+
+      if (room.energyCapacityAvailable <= 300) {
+        bodyParts = [MOVE, MOVE, CARRY, WORK];
+      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      }
+
+      properties = {
+        role: 'harvester',
+        target_source_id: SourceManager.sources[0].id,
+        target_energy_dropoff_id: dropoff_id,
+        renew_station_id: SpawnManager.getFirstSpawn().id
+      }
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        let status: number | string = spawn.canCreateCreep(bodyParts, name);
+        if (status == OK) {
+          status = spawn.createCreep(bodyParts, name, properties);
+
+          if (Config.VERBOSE) {
+            console.log('[CreepManager] Started creating new Harvester');
+          }
+        } else {
+          if (Config.VERBOSE) {
+            console.log('[CreepManager] Failed creating Harvester: ' + status);
+          }
+        }
+      });
+    }
+  }
+
+  function _creepsGoToWork(room: Room): void {
+
+    let harvesters: Harvester[] = [];
+    let upgraders: Upgrader[] = [];
+    let builders: Builder[] = [];
+    let repairers: Repairer[] = [];
+    let wallRepairer: WallRepairer[] = [];
+
+    _.forEach(creeps, function (creep: Creep, creepName: string) {
+      if (creep.memory.role == 'harvester') {
+        let harvester = new Harvester();
+        harvester.setCreep(creep);
+        harvester.action();
+
+        harvesters.push(harvester);
+      }
+    });
+
+    if (Config.VERBOSE) {
+      console.log('[CreepManager] ' + harvesters.length + ' harvesters reported on duty today!');
+    }
+
   }
 
   /**

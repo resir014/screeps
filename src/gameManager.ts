@@ -44,9 +44,11 @@ export namespace GameManager {
       SpawnManager.loadSpawns(room);
       SourceManager.loadSources(room);
       FlagManager.loadFlags(room);
-      CreepManager.loadCreeps(room);
       ConstructionSiteManager.loadConstructionSites(room);
       StructureManager.loadStructures(room);
+
+      CreepManager.loadCreeps(room);
+      // CreepManager.run(room);
 
       if (CreepManager.harvesters.length < Config.MAX_HARVESTERS_PER_SOURCE) {
         CreepManager.createHarvester();
