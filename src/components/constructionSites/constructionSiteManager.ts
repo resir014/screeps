@@ -15,13 +15,13 @@ export namespace ConstructionSiteManager {
   export var storages: ConstructionSite[] = [];
 
   export function loadConstructionSites() {
-    this.constructionSites = RoomManager.getFirstRoom().find(FIND_CONSTRUCTION_SITES);
-    this.constructionSiteCount = _.size(this.constructionSites);
+    constructionSites = RoomManager.getFirstRoom().find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
+    constructionSiteCount = _.size(constructionSites);
 
     _loadStructureCounts();
 
     if (Config.VERBOSE) {
-      console.log('[ConstructionSiteManager] ' + this.constructionSiteCount + ' construction sites in room.');
+      console.log('[ConstructionSiteManager] ' + constructionSiteCount + ' construction sites in room.');
     }
   }
 
@@ -31,7 +31,7 @@ export namespace ConstructionSiteManager {
    * @return {ConstructionSite}
    */
   export function getFirstConstructionSite(): ConstructionSite {
-    return this.constructionSites[0];
+    return constructionSites[0];
   }
 
   /**
@@ -43,19 +43,19 @@ export namespace ConstructionSiteManager {
   export function getConstructionSite(): ConstructionSite {
     let target: ConstructionSite = null;
 
-    if (this.roads.length > 0) {
+    if (roads.length > 0) {
       target = roads[0];
-    } else if (this.extensions.length > 0) {
+    } else if (extensions.length > 0) {
       target = extensions[0];
-    } else if (this.containers.length > 0) {
+    } else if (containers.length > 0) {
       target = containers[0];
-    } else if (this.walls.length > 0) {
+    } else if (walls.length > 0) {
       target = walls[0];
-    } else if (this.ramparts.length > 0) {
+    } else if (ramparts.length > 0) {
       target = ramparts[0];
-    } else if (this.towers.length > 0) {
+    } else if (towers.length > 0) {
       target = towers[0];
-    } else if (this.storages.length > 0) {
+    } else if (storages.length > 0) {
       target = storages[0];
     } else {
       let rand = Math.round(Math.random() * (constructionSites.length - 1) + 1);

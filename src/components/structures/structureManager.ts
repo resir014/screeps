@@ -7,16 +7,16 @@ export namespace StructureManager {
   export var structureCount: number = 0;
 
   export function loadStructures() {
-    this.structures = RoomManager.getFirstRoom().find(FIND_STRUCTURES);
-    this.structureCount = _.size(this.structures);
+    structures = RoomManager.getFirstRoom().find<Structure>(FIND_STRUCTURES);
+    structureCount = _.size(structures);
 
     if (Config.VERBOSE) {
-      console.log('[StructureManager] ' + this.structureCount + ' structures in room.');
+      console.log('[StructureManager] ' + structureCount + ' structures in room.');
     }
   }
 
   export function getFirstStructure(): Structure {
-    return this.structures[0];
+    return structures[0];
   }
 
   // TODO find() calls are much more expensive, let's try to find() once and

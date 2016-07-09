@@ -13,9 +13,9 @@ import { WallRepairer } from './wallRepairer';
 
 export namespace CreepManager {
 
-  export var creeps: { Creep } = null;
+  export var creeps: { [creepName: string]: Creep };
   export var creepNames: string[] = [];
-  export var creepCount: number = 0;
+  export var creepCount: number;
 
   export var harvesters: Creep[] = [];
   export var upgraders: Creep[] = [];
@@ -29,14 +29,14 @@ export namespace CreepManager {
    * @export
    */
   export function loadCreeps(): void {
-    this.creeps = Game.creeps;
-    this.creepCount = _.size(this.creeps);
+    creeps = Game.creeps;
+    creepCount = _.size(creeps);
 
     _loadCreepNames();
     _loadCreepRoleCounts();
 
     if (Config.VERBOSE) {
-      console.log('[CreepManager] ' + this.creepCount + ' creeps found in the playground.');
+      console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
     }
   }
 
