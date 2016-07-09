@@ -73,7 +73,7 @@ export namespace StructureManager {
   export function getStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
       return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
-        && (structure.structureType !== STRUCTURE_WALL)));
+        && (structure.structureType !== STRUCTURE_WALL || structure.structureType !== STRUCTURE_RAMPART)));
     });
 
     return targets[0];
@@ -81,8 +81,15 @@ export namespace StructureManager {
 
   export function getDefensiveStructuresToRepair(): Structure {
     let targets: Structure[] = _.filter(this.structures, (structure: Structure) => {
-      return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.5))
+        && (structure.structureType === STRUCTURE_RAMPART)));
     });
+
+    if (targets.length === 0) {
+      targets = _.filter(this.structures, (structure: Structure) => {
+        return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);
+      })
+    }
 
     return targets[0];
   }
