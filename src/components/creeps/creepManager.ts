@@ -79,13 +79,11 @@ export namespace CreepManager {
 
     let properties: { [key: string]: any} = null;
 
-    let harvesters: Creep[] = [];
-    let upgraders: Creep[] = [];
-    let builders: Creep[] = [];
-    let repairers: Creep[] = [];
-    let wallRepairers: Creep[] = [];
-
-    _loadCreepRoleCounts();
+    let harvesters: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'harvester');
+    let upgraders: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'upgrader');
+    let builders: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'builder');
+    let repairers: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'repairer');
+    let wallRepairers: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'wallRepairer');
 
     if (harvesters.length < 6) {
       let dropoff_id: string = StructureManager.getDropOffPoint() ?
@@ -109,7 +107,7 @@ export namespace CreepManager {
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         let status: number | string = spawn.canCreateCreep(bodyParts, name);
-        if (status == OK) {
+        if (status === OK) {
           status = spawn.createCreep(bodyParts, name, properties);
 
           if (Config.VERBOSE) {
