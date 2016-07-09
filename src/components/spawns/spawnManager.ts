@@ -4,7 +4,7 @@ export namespace SpawnManager {
 
   export var spawns: { [spawnName: string]: Spawn };
   export var spawnNames: string[] = [];
-  export var spawnCount: number = 0;
+  export var spawnCount: number;
 
   export function loadSpawns() {
     spawns = Game.spawns;

@@ -21,9 +21,9 @@ export interface IBuilder {
 
 export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
-  public targetConstructionSite: ConstructionSite = null;
-  public energyStation: Spawn | Structure = null;
-  public targetSource: Source = null;
+  public targetConstructionSite: ConstructionSite;
+  public energyStation: Spawn | Structure;
+  public targetSource: Source;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);

@@ -22,9 +22,9 @@ interface IWallRepairer {
 
 export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAction {
 
-  public targetStructure: Structure = null;
-  public energyStation: Spawn | Structure = null;
-  public targetSource: Source = null;
+  public targetStructure: Structure;
+  public energyStation: Spawn | Structure;
+  public targetSource: Source;
 
   public _minWallHealth: number = Config.MIN_WALL_HEALTH;
 
