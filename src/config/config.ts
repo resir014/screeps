@@ -18,12 +18,12 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MAX_HARVESTERS_PER_SOURCE: number = 4;
+  export const MAX_HARVESTERS_PER_SOURCE: number = 5;
 
   /**
    * @type {number}
    */
-  export const MAX_UPGRADERS_PER_CONTROLLER: number = 4;
+  export const MAX_UPGRADERS_PER_CONTROLLER: number = 5;
 
   /**
    * @type {number}
