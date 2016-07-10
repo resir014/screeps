@@ -40,10 +40,11 @@ export namespace GameManager {
     // specifies whether or not to use the new, experimental PathFinder object.
     PathFinder.use(true);
 
+    FlagManager.loadFlags();
+
     RoomManager.rooms.forEach((room: Room) => {
       SpawnManager.loadSpawns(room);
       SourceManager.loadSources(room);
-      FlagManager.loadFlags(room);
       ConstructionSiteManager.loadConstructionSites(room);
       StructureManager.loadStructures(room);
 

@@ -3,12 +3,12 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace FlagManager {
 
-  export var flags: Flag[];
+  export var flags: { [flagName: string]: Flag };
   export var flagNames: string[] = [];
   export var flagCount: number = 0;
 
-  export function loadFlags(room: Room) {
-    flags = room.find<Flag>(FIND_FLAGS);
+  export function loadFlags() {
+    flags = Game.flags;
     flagCount = _.size(flags);
 
     _loadFlagNames();
@@ -19,7 +19,7 @@ export namespace FlagManager {
   }
 
   export function getFirstFlag(): Flag {
-    return flags[flagNames[0]];
+    return flags[0];
   }
 
   export function getFlag(name: string): Flag {
