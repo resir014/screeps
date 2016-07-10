@@ -35,7 +35,7 @@ export namespace MemoryManager {
 
   export function updateCreepMemory(creep: Creep): void {
     console.log('[MemoryManager] Updating memory for creep:', creep.name);
-    
+
     updateSharedCreepMemory(creep);
 
     // FIXME HACK fuck this whole block. - shawn
@@ -96,6 +96,10 @@ export namespace MemoryManager {
    */
   function updateHarvestersMemory(creep: Creep): void {
 
+    // HACK: same hack as the others for this.
+    var dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
+      creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
+
     // check validity of target source
     if (!checkObjectIdValidity(creep, 'target_source_id')) {
       creep.memory.target_source_id = SourceManager.getFirstSource().id;
@@ -103,7 +107,6 @@ export namespace MemoryManager {
 
     // check validity of energy dropoff
     if (!checkObjectIdValidity(creep, 'target_energy_dropoff_id')) {
-      var dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
       creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
     }
 
