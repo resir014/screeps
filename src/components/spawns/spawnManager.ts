@@ -34,8 +34,14 @@ export namespace SpawnManager {
     let status = spawn.canCreateCreep(body, null);
 
     if (status == OK) {
+      if (Config.VERBOSE) {
+        console.log('[SpawnManager] Started creating new creep');
+      }
       return spawn.createCreep(body, null, properties);
     } else {
+      if (Config.VERBOSE) {
+        console.log('[SpawnManager] Failed creating new creep: ' + status);
+      }
       return status;
     }
   }

@@ -44,6 +44,7 @@ export namespace CreepManager {
     creepCount = _.size(creeps);
 
     _loadCreepNames();
+    _loadCreepRoleCounts();
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
@@ -58,6 +59,7 @@ export namespace CreepManager {
     creepCount = _.size(creeps);
 
     _loadCreepNames();
+    _loadCreepRoleCounts();
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
@@ -71,21 +73,20 @@ export namespace CreepManager {
    * @param {Room} room
    */
   function _buildMissingCreeps(room: Room): void {
+    // status code
+    let status: number | string;
+
     // base bodyparts for a creep
     let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
 
     // default name (can be null)
     let name: string = null;
 
+    // default creep properties
     let properties: { [key: string]: any} = null;
 
-    let harvesters: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'harvester');
-    let upgraders: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'upgrader');
-    let builders: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'builder');
-    let repairers: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'repairer');
-    let wallRepairers: Creep[] = creeps.filter((creep: Creep) => creep.memory.role === 'wallRepairer');
-
-    if (harvesters.length < 6) {
+    // TODO: make this more non-repeating to maintain DRY-ness
+    if (harvesters.length < 4) {
       let dropoff_id: string = StructureManager.getDropOffPoint() ?
         StructureManager.getDropOffPoint().id :
         SpawnManager.getFirstSpawn().id;
@@ -106,18 +107,117 @@ export namespace CreepManager {
       }
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        let status: number | string = spawn.canCreateCreep(bodyParts, name);
-        if (status === OK) {
-          status = spawn.createCreep(bodyParts, name, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+      });
+    } else if (upgraders.length < 4) {
+      let targetSource_id: string = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
+        SpawnManager.getFirstSpawn().id : null;
 
-          if (Config.VERBOSE) {
-            console.log('[CreepManager] Started creating new Harvester');
-          }
-        } else {
-          if (Config.VERBOSE) {
-            console.log('[CreepManager] Failed creating Harvester: ' + status);
-          }
-        }
+      if (room.energyCapacityAvailable <= 300) {
+        bodyParts = [MOVE, MOVE, CARRY, WORK];
+      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      }
+
+      properties = {
+        role: 'upgrader',
+        target_controller_id: ControllerManager.getController().id,
+        target_source_id: targetSource_id,
+        target_energy_station_id: energyStation_id,
+        renew_station_id: SpawnManager.getFirstSpawn().id,
+        upgrading: false
+      };
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+      });
+    } else if (builders.length < 4) {
+      let targetSource_id: string = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
+        SpawnManager.getFirstSpawn().id : null;
+      let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
+        ConstructionSiteManager.getConstructionSite().id : null;
+
+      if (room.energyCapacityAvailable <= 300) {
+        bodyParts = [MOVE, MOVE, CARRY, WORK];
+      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      }
+
+      properties = {
+        role: 'builder',
+        target_construction_site_id: constructionSite_id,
+        target_source_id: targetSource_id,
+        target_energy_station_id: energyStation_id,
+        renew_station_id: SpawnManager.getFirstSpawn().id,
+        building: false
+      };
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+      });
+    } else if (repairers.length < 4) {
+      let targetSource_id: string = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
+        SpawnManager.getFirstSpawn().id : null;
+      let toRepair_id: string = StructureManager.getStructuresToRepair() ?
+        StructureManager.getStructuresToRepair().id : null;
+
+      if (room.energyCapacityAvailable <= 300) {
+        bodyParts = [MOVE, MOVE, CARRY, WORK];
+      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      }
+
+      properties = {
+        role: 'repairer',
+        target_repair_site_id: toRepair_id,
+        target_source_id: targetSource_id,
+        target_energy_station_id: energyStation_id,
+        renew_station_id: SpawnManager.getFirstSpawn().id,
+        repairing: false
+      }
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+      });
+    } else if (wallRepairers.length < 4) {
+      let targetSource_id: string = SourceManager.sourceCount > 1 ?
+        SourceManager.sources[1].id : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
+        SpawnManager.getFirstSpawn().id : null;
+      let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair() ?
+        StructureManager.getDefensiveStructuresToRepair().id : null;
+
+      if (room.energyCapacityAvailable <= 300) {
+        bodyParts = [MOVE, MOVE, CARRY, WORK];
+      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      }
+
+      properties = {
+        role: 'wallRepairer',
+        target_repair_site_id: toRepair_id,
+        target_source_id: targetSource_id,
+        target_energy_station_id: energyStation_id,
+        renew_station_id: SpawnManager.getFirstSpawn().id,
+        repairing: false
+      }
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     }
   }
@@ -128,7 +228,7 @@ export namespace CreepManager {
     let upgraders: Upgrader[] = [];
     let builders: Builder[] = [];
     let repairers: Repairer[] = [];
-    let wallRepairer: WallRepairer[] = [];
+    let wallRepairers: WallRepairer[] = [];
 
     _.forEach(creeps, function (creep: Creep, creepName: string) {
       if (creep.memory.role == 'harvester') {
@@ -138,10 +238,42 @@ export namespace CreepManager {
 
         harvesters.push(harvester);
       }
+      if (creep.memory.role == 'upgrader') {
+        let upgrader = new Upgrader();
+        upgrader.setCreep(creep);
+        upgrader.action();
+
+        upgraders.push(upgrader);
+      }
+      if (creep.memory.role == 'builder') {
+        let builder = new Builder();
+        builder.setCreep(creep);
+        builder.action();
+
+        builders.push(builder);
+      }
+      if (creep.memory.role == 'repairer') {
+        let repairer = new Repairer();
+        repairer.setCreep(creep);
+        repairer.action();
+
+        repairers.push(repairer);
+      }
+      if (creep.memory.role == 'wallRepairer') {
+        let wallRepairer = new WallRepairer();
+        wallRepairer.setCreep(creep);
+        wallRepairer.action();
+
+        wallRepairers.push(wallRepairer);
+      }
     });
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + harvesters.length + ' harvesters reported on duty today!');
+      console.log('[CreepManager] ' + upgraders.length + ' upgraders reported on duty today!');
+      console.log('[CreepManager] ' + builders.length + ' builders reported on duty today!');
+      console.log('[CreepManager] ' + repairers.length + ' repairers reported on duty today!');
+      console.log('[CreepManager] ' + wallRepairers.length + ' wall repairers reported on duty today!');
     }
 
   }
@@ -257,9 +389,6 @@ export namespace CreepManager {
       SourceManager.sources[1].id : null;
     let energyStation_id: string = targetSource_id == null ?
       SpawnManager.getFirstSpawn().id : null;
-    // let energyStation_id: string = StructureManager.getStorageObject() ?
-    //   StructureManager.getStorageObject().id :
-    //   SpawnManager.getFirstSpawn().id;
     let toRepair_id: string = StructureManager.getStructuresToRepair() ?
       StructureManager.getStructuresToRepair().id : null;
 
@@ -437,7 +566,7 @@ export namespace CreepManager {
     });
 
     if (Config.VERBOSE) {
-      console.log('[CreepManager] ' + repairers.length + ' wall repairers reported on duty today!');
+      console.log('[CreepManager] ' + wallRepairers.length + ' wall repairers reported on duty today!');
     }
 
   }
