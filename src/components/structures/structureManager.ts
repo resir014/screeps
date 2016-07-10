@@ -7,7 +7,7 @@ export namespace StructureManager {
   export var structureCount: number = 0;
 
   export function loadStructures(room: Room) {
-    structures = room.find<Structure>(FIND_STRUCTURES);
+    structures = room.find<Structure>(FIND_MY_STRUCTURES);
     structureCount = _.size(structures);
 
     if (Config.VERBOSE) {
@@ -41,20 +41,24 @@ export namespace StructureManager {
   // TODO find() calls are much more expensive, let's try to find() once and
   // cache the result
   export function getDropOffPoint(): Structure {
-    let targets: Structure[] = _.filter(structures, (structure: Spawn) => {
-      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
+    let targets: Structure[] = _.filter(structures, (structure) => {
+      if (structure instanceof Spawn) {
+        return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
+      }
     });
 
     // If the spawn is full, we'll find any extensions/towers.
-    if (targets.length === 0) {
-      targets = _.filter(structures, (structure: StructureExtension) => {
-        return ((structure.structureType == STRUCTURE_EXTENSION)
-          && structure.energy < structure.energyCapacity);
+    if (targets.length == 0) {
+      targets = _.filter(structures, (structure) => {
+        if (structure instanceof StructureExtension) {
+          return ((structure.structureType == STRUCTURE_EXTENSION)
+            && structure.energy < structure.energyCapacity);
+        }
       });
     }
 
-    // Or if that's fill as well, look for towers.
-    if (targets.length === 0) {
+    // Or if that's filled as well, look for towers.
+    if (targets.length == 0) {
       targets = _.filter(structures, (structure: StructureTower) => {
         return ((structure.structureType == STRUCTURE_TOWER)
           && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.5));
@@ -62,7 +66,7 @@ export namespace StructureManager {
     }
 
     // Otherwise, look for storage containers.
-    if (targets.length === 0) {
+    if (targets.length == 0) {
       targets = _.filter(structures, (structure: StructureStorage) => {
         return ((structure.structureType == STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity);
       });
@@ -88,7 +92,7 @@ export namespace StructureManager {
         && (structure.structureType === STRUCTURE_RAMPART)));
     });
 
-    if (targets.length === 0) {
+    if (targets.length == 0) {
       targets = _.filter(this.structures, (structure: Structure) => {
         return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);
       })
