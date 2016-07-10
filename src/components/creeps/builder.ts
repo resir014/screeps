@@ -64,20 +64,14 @@ export class Builder extends CreepAction implements IBuilder, ICreepAction {
 
     if (this.creep.memory.building) {
       this.moveToBuild();
-    } else {
+    } else if (!this.creep.memory.building && !this.isBagFull()) {
       if (this.creep.memory.target_source_id) {
-        if (!this.isBagFull()) {
-          this.moveToHarvest();
-        } else {
-          this.moveTo(FlagManager.getFlag('BuildersPost'));
-        }
+        this.moveToHarvest();
       } else {
-        if (!this.isBagFull()) {
-          this.moveToAskEnergy();
-        } else {
-          this.moveTo(FlagManager.getFlag('BuildersPost'));
-        }
+        this.moveToAskEnergy();
       }
+    } else {
+      this.moveTo(FlagManager.getFlag('BuildersPost'));
     }
 
     return true;
