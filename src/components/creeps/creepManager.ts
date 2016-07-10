@@ -222,6 +222,11 @@ export namespace CreepManager {
     }
   }
 
+  /**
+   * Runs all Creep tasks.
+   *
+   * @param {Room} room
+   */
   function _creepsGoToWork(room: Room): void {
 
     let harvesters: Harvester[] = [];

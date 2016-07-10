@@ -61,10 +61,10 @@ export namespace MemoryManager {
    * Invalid values are null, undefined, empty strings, or do not exist as an
    * object in `Game`.
    *
-   * Returns true if the creep exists, and if the object ID exists and is valid
-   *
-   * @param creep The creep whose memory we are managing
-   * @param key The memory key whose validity we will be checking
+   * @param {any} creep The creep whose memory we are managing
+   * @param {any} key The memory key whose validity we will be checking
+   * @returns {boolean} true if the creep exists, and if the object ID exists
+   *                    and is valid
    */
   function checkObjectIdValidity(creep, key): boolean {
     /* TODO */

@@ -6,7 +6,6 @@ interface IWallRepairer {
 
   targetStructure: Structure;
   energyStation: Spawn | Structure;
-  targetSource: Source;
   _minWallHealth: number;
 
   hasEmptyBag(): boolean;
@@ -24,7 +23,6 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
 
   public targetStructure: Structure;
   public energyStation: Spawn | Structure;
-  public targetSource: Source;
 
   public _minWallHealth: number = Config.MIN_WALL_HEALTH;
 
@@ -33,7 +31,6 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
 
     this.targetStructure = Game.getObjectById<Structure>(this.creep.memory.target_repair_site_id);
     this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
-    this.targetSource = Game.getObjectById<Source>(this.creep.memory.target_source_id);
   }
 
   public askForEnergy() {

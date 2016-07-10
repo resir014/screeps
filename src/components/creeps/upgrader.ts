@@ -5,7 +5,6 @@ export interface IUpgrader {
 
   energyStation: Spawn | Structure;
   targetController: StructureController;
-  targetSource: Source;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -22,14 +21,12 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public targetController: StructureController;
   public energyStation: Spawn | Structure;
-  public targetSource: Source;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
     this.targetController = Game.getObjectById<StructureController>(this.creep.memory.target_controller_id);
     this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
-    this.targetSource = Game.getObjectById<Source>(this.creep.memory.target_source_id);
   }
 
   public askForEnergy(): number {
