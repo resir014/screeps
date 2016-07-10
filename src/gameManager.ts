@@ -35,7 +35,7 @@ export namespace GameManager {
     MemoryManager.cleanupCreepMemory();
 
     // after garbage collection, we update all existing creep memory entries.
-    MemoryManager.updateCreepMemory();
+    // MemoryManager.updateCreepMemory();
 
     // specifies whether or not to use the new, experimental PathFinder object.
     PathFinder.use(true);

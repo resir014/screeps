@@ -61,6 +61,9 @@ export namespace CreepManager {
     _loadCreepNames();
     _loadCreepRoleCounts();
 
+    // TODO i put this here. this looks like a good place for this. - shawn
+    _.each(creeps, (creep: Creep) => MemoryManager.updateCreepMemory(creep));
+
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
     }
