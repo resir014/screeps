@@ -34,7 +34,9 @@ export namespace MemoryManager {
   }
 
   export function updateCreepMemory(creep: Creep): void {
-    console.log('[MemoryManager] Updating memory for creep:', creep.name);
+    if (Config.VERBOSE) {
+      console.log('[MemoryManager] Updating memory for creep:', creep.name);
+    }
 
     updateSharedCreepMemory(creep);
 
