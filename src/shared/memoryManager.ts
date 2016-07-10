@@ -123,10 +123,14 @@ export namespace MemoryManager {
    */
   function updateBuildersMemory(creep: Creep): void {
 
+    // HACK: same hack as the others for this.
+    var constructionSite: ConstructionSite = ConstructionSiteManager.getConstructionSite();
+    creep.memory.target_construction_site_id = constructionSite ? constructionSite.id : null;
+
     // make sure the builder's target construction site still exists
     if (!checkObjectIdValidity(creep, 'target_construction_site_id')) {
       if (ConstructionSiteManager.constructionSiteCount > 0) {
-        creep.memory.target_construction_site_id = ConstructionSiteManager.getFirstConstructionSite().id;
+        creep.memory.target_construction_site_id = constructionSite ? constructionSite.id : null;
       } else {
         console.log('[MemoryManager] there are no construction sites for ' + creep.name);
       }
