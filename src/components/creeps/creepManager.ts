@@ -113,8 +113,6 @@ export namespace CreepManager {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     } else if (upgraders.length < 4) {
-      let targetSource_id: string = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?
         SpawnManager.getFirstSpawn().id : null;
 
@@ -129,7 +127,7 @@ export namespace CreepManager {
       properties = {
         role: 'upgrader',
         target_controller_id: ControllerManager.getController().id,
-        target_source_id: targetSource_id,
+        target_source_id: SourceManager.sources[0].id,
         target_energy_station_id: energyStation_id,
         renew_station_id: SpawnManager.getFirstSpawn().id,
         upgrading: false
