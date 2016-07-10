@@ -77,7 +77,7 @@ export namespace CreepManager {
     let status: number | string;
 
     // base bodyparts for a creep
-    let bodyParts: string[] = [MOVE, MOVE, CARRY, WORK];
+    let bodyParts: string[];
 
     // default name (can be null)
     let name: string = null;

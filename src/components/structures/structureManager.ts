@@ -42,22 +42,29 @@ export namespace StructureManager {
   // cache the result
   export function getDropOffPoint(): Structure {
     let targets: Structure[] = _.filter(structures, (structure: Spawn) => {
-      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity -
-        (structure.energyCapacity * 0.1));
+      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
     });
 
     // If the spawn is full, we'll find any extensions/towers.
     if (targets.length === 0) {
-      targets = _.filter(structures, (structure: StructureExtension | StructureTower) => {
-        return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
-          && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.1));
+      targets = _.filter(structures, (structure: StructureExtension) => {
+        return ((structure.structureType == STRUCTURE_EXTENSION)
+          && structure.energy < structure.energyCapacity);
+      });
+    }
+
+    // Or if that's fill as well, look for towers.
+    if (targets.length === 0) {
+      targets = _.filter(structures, (structure: StructureTower) => {
+        return ((structure.structureType == STRUCTURE_TOWER)
+          && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.5));
       });
     }
 
     // Otherwise, look for storage containers.
     if (targets.length === 0) {
-      targets = _.filter(structures, (structure: StructureContainer) => {
-        return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
+      targets = _.filter(structures, (structure: StructureStorage) => {
+        return ((structure.structureType == STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity);
       });
     }
 
