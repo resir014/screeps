@@ -77,14 +77,20 @@ export class Repairer extends CreepAction implements IRepairer, ICreepAction {
 
     if (this.creep.memory.repairing) {
       this.moveToRepair();
-    } else if (!this.creep.memory.repairing && !this.isBagFull()) {
-      if (this.creep.memory.target_source_id) {
-        this.moveToHarvest();
-      } else {
-        this.moveToAskEnergy();
-      }
     } else {
-      this.moveTo(FlagManager.getFlag('RepairersPost'));
+      if (this.creep.memory.target_source_id) {
+        if (!this.isBagFull()) {
+          this.moveToHarvest();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
+      } else {
+        if (!this.isBagFull()) {
+          this.moveToAskEnergy();
+        } else {
+          this.moveTo(FlagManager.getFlag('RepairersPost'));
+        }
+      }
     }
 
     return true;
