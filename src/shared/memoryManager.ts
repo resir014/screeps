@@ -97,12 +97,15 @@ export namespace MemoryManager {
   function updateHarvestersMemory(creep: Creep): void {
 
     // HACK: same hack as the others for this.
+    var source: Source = SourceManager.sources[0];
     var dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
-      creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
+
+    creep.memory.target_source_id = source ? source.id : null;
+    creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
 
     // check validity of target source
     if (!checkObjectIdValidity(creep, 'target_source_id')) {
-      creep.memory.target_source_id = SourceManager.getFirstSource().id;
+      creep.memory.target_source_id = source ? source.id : null;
     }
 
     // check validity of energy dropoff
