@@ -94,9 +94,9 @@ export namespace CreepManager {
         StructureManager.getDropOffPoint().id :
         SpawnManager.getFirstSpawn().id;
 
-      if (room.energyCapacityAvailable <= 300) {
+      if (harvesters.length < 3 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+      } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
@@ -120,7 +120,7 @@ export namespace CreepManager {
 
       if (room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+      } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
@@ -146,9 +146,9 @@ export namespace CreepManager {
       let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
         ConstructionSiteManager.getConstructionSite().id : null;
 
-      if (room.energyCapacityAvailable <= 300) {
+      if (upgraders.length < 3 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+      } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
@@ -176,7 +176,7 @@ export namespace CreepManager {
 
       if (room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+      } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
@@ -204,7 +204,7 @@ export namespace CreepManager {
 
       if (room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable < 300 && room.energyCapacityAvailable <= 700) {
+      } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
