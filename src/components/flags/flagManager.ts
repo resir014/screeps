@@ -19,7 +19,7 @@ export namespace FlagManager {
   }
 
   export function getFirstFlag(): Flag {
-    return flags[0];
+    return flags[flagNames[0]];
   }
 
   export function getFlag(name: string): Flag {
