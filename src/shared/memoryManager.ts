@@ -10,7 +10,7 @@ import { ConstructionSiteManager } from './../components/constructionSites/const
 // TODO this namespace is as DRY as the ocean
 export namespace MemoryManager {
 
-  export var memory: Memory;
+  export let memory: Memory;
 
   export function loadMemory(): void {
     this.memory = Memory;
@@ -23,7 +23,7 @@ export namespace MemoryManager {
   export function cleanupCreepMemory(): void {
     // refactor: brought in from gameManager
     // clean up memory for deleted creeps
-    for (var name in Memory.creeps) {
+    for (let name in Memory.creeps) {
       if (Game.creeps[name] == null) {
         if (Config.VERBOSE) {
           console.log('[MemoryManager] Clearing non-existing creep memory:', name);
@@ -78,7 +78,7 @@ export namespace MemoryManager {
     if (creep == null) return false;
 
     let value: string = <string> creep.memory[key];
-    var isValid: boolean = (
+    let isValid: boolean = (
       (value != null) &&
       (value !== '')  &&
       (Game.getObjectById(value) != null)
@@ -99,8 +99,8 @@ export namespace MemoryManager {
   function updateHarvestersMemory(creep: Creep): void {
 
     // HACK: same hack as the others for this.
-    var source: Source = SourceManager.sources[0];
-    var dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
+    let source: Source = SourceManager.sources[0];
+    let dropoff: Spawn | Structure = StructureManager.getDropOffPoint();
 
     creep.memory.target_source_id = source ? source.id : null;
     creep.memory.target_energy_dropoff_id = dropoff ? dropoff.id : null;
@@ -126,7 +126,7 @@ export namespace MemoryManager {
   function updateBuildersMemory(creep: Creep): void {
 
     // HACK: same hack as the others for this.
-    var constructionSite: ConstructionSite = ConstructionSiteManager.getConstructionSite();
+    let constructionSite: ConstructionSite = ConstructionSiteManager.getConstructionSite();
     creep.memory.target_construction_site_id = constructionSite ? constructionSite.id : null;
 
     // make sure the builder's target construction site still exists

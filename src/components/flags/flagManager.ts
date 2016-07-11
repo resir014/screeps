@@ -3,9 +3,9 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace FlagManager {
 
-  export var flags: { [flagName: string]: Flag };
-  export var flagNames: string[] = [];
-  export var flagCount: number = 0;
+  export let flags: { [flagName: string]: Flag };
+  export let flagNames: string[] = [];
+  export let flagCount: number = 0;
 
   export function loadFlags() {
     flags = Game.flags;

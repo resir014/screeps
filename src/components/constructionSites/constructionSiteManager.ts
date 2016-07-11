@@ -3,16 +3,16 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace ConstructionSiteManager {
 
-  export var constructionSites: ConstructionSite[];
-  export var constructionSiteCount: number = 0;
+  export let constructionSites: ConstructionSite[];
+  export let constructionSiteCount: number = 0;
 
-  export var roads: ConstructionSite[] = [];
-  export var extensions: ConstructionSite[] = [];
-  export var containers: ConstructionSite[] = [];
-  export var walls: ConstructionSite[] = [];
-  export var ramparts: ConstructionSite[] = [];
-  export var towers: ConstructionSite[] = [];
-  export var storages: ConstructionSite[] = [];
+  export let roads: ConstructionSite[] = [];
+  export let extensions: ConstructionSite[] = [];
+  export let containers: ConstructionSite[] = [];
+  export let walls: ConstructionSite[] = [];
+  export let ramparts: ConstructionSite[] = [];
+  export let towers: ConstructionSite[] = [];
+  export let storages: ConstructionSite[] = [];
 
   export function loadConstructionSites(room: Room) {
     constructionSites = room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);

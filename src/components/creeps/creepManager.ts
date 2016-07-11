@@ -13,15 +13,15 @@ import { WallRepairer } from './wallRepairer';
 
 export namespace CreepManager {
 
-  export var creeps: Creep[];
-  export var creepNames: string[] = [];
-  export var creepCount: number = 0;
+  export let creeps: Creep[];
+  export let creepNames: string[] = [];
+  export let creepCount: number = 0;
 
-  export var harvesters: Creep[] = [];
-  export var upgraders: Creep[] = [];
-  export var builders: Creep[] = [];
-  export var repairers: Creep[] = [];
-  export var wallRepairers: Creep[] = [];
+  export let harvesters: Creep[] = [];
+  export let upgraders: Creep[] = [];
+  export let builders: Creep[] = [];
+  export let repairers: Creep[] = [];
+  export let wallRepairers: Creep[] = [];
 
   /**
    * Run creeps that exist in a room.
@@ -236,7 +236,7 @@ export namespace CreepManager {
     let repairers: Repairer[] = [];
     let wallRepairers: WallRepairer[] = [];
 
-    _.forEach(creeps, function (creep: Creep, creepName: string) {
+    _.forEach(creeps, (creep: Creep, creepName: string) => {
       if (creep.memory.role == 'harvester') {
         let harvester = new Harvester();
         harvester.setCreep(creep);
@@ -304,7 +304,7 @@ export namespace CreepManager {
     };
 
     _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      let status: number | string = spawn.canCreateCreep(bodyParts, name);
       if (status == OK) {
         status = spawn.createCreep(bodyParts, name, properties);
 
@@ -338,7 +338,7 @@ export namespace CreepManager {
     };
 
     _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      let status: number | string = spawn.canCreateCreep(bodyParts, name);
       if (status == OK) {
         status = spawn.createCreep(bodyParts, name, properties);
 
@@ -374,7 +374,7 @@ export namespace CreepManager {
     }
 
     _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      let status: number | string = spawn.canCreateCreep(bodyParts, name);
       if (status == OK) {
         status = spawn.createCreep(bodyParts, name, properties);
 
@@ -410,7 +410,7 @@ export namespace CreepManager {
     }
 
     _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      let status: number | string = spawn.canCreateCreep(bodyParts, name);
       if (status == OK) {
         status = spawn.createCreep(bodyParts, name, properties);
 
@@ -444,7 +444,7 @@ export namespace CreepManager {
     }
 
     _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-      var status: number | string = spawn.canCreateCreep(bodyParts, name);
+      let status: number | string = spawn.canCreateCreep(bodyParts, name);
       if (status == OK) {
         status = spawn.createCreep(bodyParts, name, properties);
 

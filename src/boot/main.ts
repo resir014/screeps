@@ -10,7 +10,7 @@
 
 import { GameManager } from './../gameManager';
 
-declare var module: any;
+declare const module: any;
 
 /*
  * Singleton object. Since GameManager doesn't need multiple instances we can use it as singleton object.

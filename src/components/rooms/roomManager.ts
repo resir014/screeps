@@ -2,8 +2,8 @@ import { Config } from './../../config/config';
 
 export namespace RoomManager {
 
-  export var rooms: Room[] = [];
-  export var roomNames: string[] = [];
+  export let rooms: Room[] = [];
+  export let roomNames: string[] = [];
 
   export function loadRooms() {
     for (let room in Game.rooms) {

@@ -1,27 +1,27 @@
 'use strict';
 
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var tsproject = require('tsproject');
-var clean = require('gulp-clean');
-var runSequence = require('run-sequence');
-var https = require('https');
-var fs = require('fs');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const tsproject = require('tsproject');
+const clean = require('gulp-clean');
+const runSequence = require('run-sequence');
+const https = require('https');
+const fs = require('fs');
 
-var config = require('./config.json');
+const config = require('./config.json');
 
-gulp.task('clean', function () {
+gulp.task('clean', () => {
   return gulp.src('dist', { read: false })
     .pipe(clean());
 });
 
-gulp.task('compile', ['clean'], function () {
+gulp.task('compile', ['clean'], () => {
   return tsproject.src('./tsconfig.json')
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('upload-sim', ['compile'], function () {
-  var screeps = {
+gulp.task('upload-sim', ['compile'], () => {
+  let screeps = {
     email: config.email,
     password: config.password,
     data: {
@@ -32,7 +32,7 @@ gulp.task('upload-sim', ['compile'], function () {
     }
   };
 
-  var req = https.request({
+  let req = https.request({
     hostname: 'screeps.com',
     port: 443,
     path: '/api/user/code',
@@ -41,7 +41,7 @@ gulp.task('upload-sim', ['compile'], function () {
     headers: {
       'Content-Type': 'application/json; charset=utf-8'
     }
-  }, function (res) {
+  }, (res) => {
     gutil.log('Build ' + gutil.colors.cyan('completed') + ' with HTTPS response ' + gutil.colors.magenta(res.statusCode));
   });
 
@@ -49,7 +49,7 @@ gulp.task('upload-sim', ['compile'], function () {
   req.end();
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', () => {
   gulp.watch('./src/**/*.ts', ['compile']);
 });
 

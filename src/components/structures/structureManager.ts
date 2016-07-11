@@ -3,8 +3,8 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace StructureManager {
 
-  export var structures: Structure[];
-  export var structureCount: number = 0;
+  export let structures: Structure[];
+  export let structureCount: number = 0;
 
   export function loadStructures(room: Room) {
     structures = room.find<Structure>(FIND_STRUCTURES);
