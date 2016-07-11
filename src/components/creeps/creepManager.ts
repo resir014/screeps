@@ -94,7 +94,7 @@ export namespace CreepManager {
         StructureManager.getDropOffPoint().id :
         SpawnManager.getFirstSpawn().id;
 
-      if (harvesters.length < 3 || room.energyCapacityAvailable <= 300) {
+      if (harvesters.length < 2 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
@@ -116,7 +116,7 @@ export namespace CreepManager {
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?
         SpawnManager.getFirstSpawn().id : null;
 
-      if (upgraders.length < 3 || room.energyCapacityAvailable <= 300) {
+      if (upgraders.length < 2 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
