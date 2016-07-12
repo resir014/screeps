@@ -23,12 +23,12 @@ export namespace MemoryManager {
   export function cleanupCreepMemory(): void {
     // refactor: brought in from gameManager
     // clean up memory for deleted creeps
-    for (let name in Memory.creeps) {
+    for (let name in memory.creeps) {
       if (Game.creeps[name] == null) {
         if (Config.VERBOSE) {
           console.log('[MemoryManager] Clearing non-existing creep memory:', name);
         }
-        delete Memory.creeps[name];
+        delete memory.creeps[name];
       }
     }
   }

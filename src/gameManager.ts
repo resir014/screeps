@@ -37,9 +37,6 @@ export namespace GameManager {
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
-    // after garbage collection, we update all existing creep memory entries.
-    // MemoryManager.updateCreepMemory();
-
     // specifies whether or not to use the new, experimental PathFinder object.
     PathFinder.use(true);
 
@@ -51,8 +48,8 @@ export namespace GameManager {
       SourceManager.load(room);
       ConstructionSiteManager.load(room);
       StructureManager.load(room);
-      TowerManager.run(room);
 
+      TowerManager.run(room);
       CreepManager.run(room);
     });
   }
