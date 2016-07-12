@@ -11,7 +11,7 @@ export namespace JobManager {
   export const wallRepairerJobs: number = 2;
 
   export function load() {
-    harvesterJobs = Config.MAX_HARVESTERS_PER_SOURCE;
+    harvesterJobs = 2;
 
     if (Config.VERBOSE) {
       console.log("JobManager loaded")
