@@ -10,27 +10,7 @@ export namespace Config {
   /**
    * @type {number}
    */
-  export const MAX_HARVESTERS_PER_SOURCE: number = 5;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_UPGRADERS_PER_CONTROLLER: number = 5;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_BUILDERS_IN_ROOM: number = 4;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_REPAIRERS_IN_ROOM: number = 4;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_WALL_REPAIRERS_IN_ROOM: number = 4;
+  export const MAX_HARVESTERS_PER_SOURCE: number = 2;
 
   /**
    * @type {number}
