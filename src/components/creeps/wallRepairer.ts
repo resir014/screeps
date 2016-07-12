@@ -47,16 +47,6 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
     }
   }
 
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
-    }
-  }
-
   public tryRepair(): number {
     return this.creep.repair(this.targetStructure);
   }

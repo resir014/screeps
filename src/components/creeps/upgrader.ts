@@ -43,16 +43,6 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
     }
   }
 
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
-    }
-  }
-
   public tryUpgrade(): number {
     return this.creep.upgradeController(this.targetController);
   }
