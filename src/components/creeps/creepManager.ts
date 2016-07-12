@@ -79,7 +79,7 @@ export namespace CreepManager {
         StructureManager.getDropOffPoint().id :
         SpawnManager.getFirstSpawn().id;
 
-      if (harvesters.length < 2 || room.energyCapacityAvailable <= 300) {
+      if (harvesters.length < 1 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
         bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
