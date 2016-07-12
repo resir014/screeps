@@ -1,5 +1,3 @@
-/// <reference path="./../../typings/index.d.ts" />
-
 /**
  * Application bootstrap.
  * BEFORE CHANGING THIS FILE, make sure you read this:
