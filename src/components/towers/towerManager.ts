@@ -5,6 +5,12 @@ export namespace TowerManager {
   export let hostiles: Creep[] = [];
   export let towers: Tower[] = [];
 
+  /**
+   * Executes all Tower actions.
+   *
+   * @export
+   * @param {Room} room
+   */
   export function run(room: Room): void {
     hostiles = room.find<Creep>(FIND_HOSTILE_CREEPS);
     towers = room.find<Tower>(FIND_MY_STRUCTURES, {

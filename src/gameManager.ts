@@ -26,7 +26,7 @@ export namespace GameManager {
 
     // Use this bootstrap wisely. You can cache some of your stuff to save CPU
     // You should extend prototypes before game loop in here.
-    RoomManager.loadRooms();
+    RoomManager.load();
   }
 
   export function loop() {
@@ -43,15 +43,15 @@ export namespace GameManager {
     // specifies whether or not to use the new, experimental PathFinder object.
     PathFinder.use(true);
 
-    FlagManager.loadFlags();
+    FlagManager.load();
 
     RoomManager.rooms.forEach((room: Room) => {
       JobManager.load();
-      SpawnManager.loadSpawns(room);
-      ControllerManager.loadController(room);
+      SpawnManager.load(room);
+      ControllerManager.load(room);
       SourceManager.loadSources(room);
-      ConstructionSiteManager.loadConstructionSites(room);
-      StructureManager.loadStructures(room);
+      ConstructionSiteManager.load(room);
+      StructureManager.load(room);
       TowerManager.run(room);
 
       CreepManager.run(room);

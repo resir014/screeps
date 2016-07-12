@@ -6,7 +6,13 @@ export namespace SourceManager {
   export let sources: Source[];
   export let sourceCount: number;
 
-  export function loadSources(room: Room) {
+  /**
+   * Initialization scripts for the SourceManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room) {
     sources = room.find<Source>(FIND_SOURCES_ACTIVE);
     sourceCount = _.size(sources);
 
@@ -15,6 +21,12 @@ export namespace SourceManager {
     }
   }
 
+  /**
+   * Returns the first source from the list.
+   *
+   * @export
+   * @returns {Source}
+   */
   export function getFirstSource(): Source {
     return sources[0];
   }

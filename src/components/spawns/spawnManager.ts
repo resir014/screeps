@@ -6,7 +6,13 @@ export namespace SpawnManager {
   export let spawnNames: string[] = [];
   export let spawnCount: number = 0;
 
-  export function loadSpawns(room: Room) {
+  /**
+   * Initialization scripts for the SpawnManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room) {
     spawns = room.find<Spawn>(FIND_MY_SPAWNS);
     spawnCount = _.size(spawns);
 
@@ -17,6 +23,12 @@ export namespace SpawnManager {
     }
   }
 
+  /**
+   * Returns the first spawn from the list.
+   *
+   * @export
+   * @returns {Spawn}
+   */
   export function getFirstSpawn(): Spawn {
     return spawns[spawnNames[0]];
   }
@@ -46,7 +58,10 @@ export namespace SpawnManager {
     }
   }
 
-  function _loadSpawnNames() {
+  /**
+   * Loads all Spawn names and returns them into an array.
+   */
+  function _loadSpawnNames(): void {
     for (let spawnName in spawns) {
       if (spawns.hasOwnProperty(spawnName)) {
         spawnNames.push(spawnName);

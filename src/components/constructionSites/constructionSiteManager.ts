@@ -14,7 +14,13 @@ export namespace ConstructionSiteManager {
   export let towers: ConstructionSite[] = [];
   export let storages: ConstructionSite[] = [];
 
-  export function loadConstructionSites(room: Room) {
+  /**
+   * Initialization script for ConstructionSiteManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room) {
     constructionSites = room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
     constructionSiteCount = _.size(constructionSites);
 
@@ -26,7 +32,7 @@ export namespace ConstructionSiteManager {
   }
 
   /**
-   * Retrieves the first construction site in the list.
+   * Returns the first construction site in the list.
    *
    * @return {ConstructionSite}
    */
@@ -35,7 +41,7 @@ export namespace ConstructionSiteManager {
   }
 
   /**
-   * Retrieves a prioritised list of  available construction sites.
+   * Returns a prioritised list of  available construction sites.
    *
    * @export
    * @return {ConstructionSite}
@@ -65,6 +71,10 @@ export namespace ConstructionSiteManager {
     return target;
   }
 
+  /**
+   * Returns all construction site and pushes them to each structure type's
+   * corresponding arrays.
+   */
   function _loadStructureCounts(): void {
     roads = constructionSites.filter((constructionSite: ConstructionSite) => {
       return constructionSite.structureType === STRUCTURE_ROAD;
@@ -88,7 +98,7 @@ export namespace ConstructionSiteManager {
       });
     }
 
-    if (walls.length === 0){
+    if (walls.length === 0) {
       ramparts = constructionSites.filter((constructionSite: ConstructionSite) => {
         return constructionSite.structureType === STRUCTURE_RAMPART;
       });

@@ -25,7 +25,7 @@ export namespace CreepManager {
   export let wallRepairers: Creep[] = [];
 
   /**
-   * Run creeps that exist in a room.
+   * Initialization scripts for CreepManager namespace.
    *
    * @export
    * @param {Room} room
@@ -44,7 +44,7 @@ export namespace CreepManager {
     creepCount = _.size(creeps);
 
     _loadCreepNames();
-    _loadCreepRoleCounts();
+    _loadCreepRoles();
 
     // TODO i put this here. this looks like a good place for this. - shawn
     _.each(creeps, (creep: Creep) => MemoryManager.updateCreepMemory(creep));
@@ -56,7 +56,8 @@ export namespace CreepManager {
 
   /**
    * Creates a new creep if we still have enough space.
-   * TODO: add some load balancing, have the limit gradually increase as resources increase.
+   * TODO: add some load balancing, have the limit gradually increase as
+   * resources increase.
    *
    * @param {Room} room
    */
@@ -71,7 +72,7 @@ export namespace CreepManager {
     let name: string = null;
 
     // default creep properties
-    let properties: { [key: string]: any} = null;
+    let properties: { [key: string]: any } = null;
 
     // TODO: make this more non-repeating to maintain DRY-ness
     if (harvesters.length < JobManager.harvesterJobs) {
@@ -270,7 +271,7 @@ export namespace CreepManager {
   }
 
   /**
-   * Loads all Creep names.
+   * Loads all Creep names and pushes them into an array.
    */
   function _loadCreepNames(): void {
     for (let creepName in creeps) {
@@ -280,7 +281,11 @@ export namespace CreepManager {
     }
   }
 
-  function _loadCreepRoleCounts(): void {
+  /**
+   * Iterates through each creep and pushes them into an array with the
+   * corresponding roles.
+   */
+  function _loadCreepRoles(): void {
     // TODO: find a way to avoid API calls.
     harvesters = _.filter(creeps, (creep) => creep.memory.role == 'harvester');
     upgraders = _.filter(creeps, (creep) => creep.memory.role == 'upgrader');

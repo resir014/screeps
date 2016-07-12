@@ -6,7 +6,13 @@ export namespace StructureManager {
   export let structures: Structure[];
   export let structureCount: number = 0;
 
-  export function loadStructures(room: Room) {
+  /**
+   * Initialization scripts for the StructureManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room) {
     structures = room.find<Structure>(FIND_STRUCTURES);
     structureCount = _.size(structures);
 
@@ -80,7 +86,7 @@ export namespace StructureManager {
     let targets: Structure[] = structures.filter((structure: Structure) => {
       return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
         && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD
-        && structure.structureType !== STRUCTURE_RAMPART)));
+          && structure.structureType !== STRUCTURE_RAMPART)));
     });
 
     if (targets.length == 0) {
@@ -100,6 +106,8 @@ export namespace StructureManager {
     return targets[0];
   }
 
+  // TODO find() calls are much more expensive, let's try to find() once and
+  // cache the result
   export function getDefensiveStructuresToRepair(): Structure {
     let targets: Structure[] = structures.filter((structure: Structure) => {
       return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);

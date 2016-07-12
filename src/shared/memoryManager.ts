@@ -77,10 +77,10 @@ export namespace MemoryManager {
     /* TODO */
     if (creep == null) return false;
 
-    let value: string = <string> creep.memory[key];
+    let value: string = <string>creep.memory[key];
     let isValid: boolean = (
       (value != null) &&
-      (value !== '')  &&
+      (value !== '') &&
       (Game.getObjectById(value) != null)
     );
 

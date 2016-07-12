@@ -5,7 +5,13 @@ export namespace ControllerManager {
 
   export let controller: Controller;
 
-  export function loadController(room: Room): void {
+  /**
+   * Initialization script for ControllerManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room): void {
     controller = room.controller;
   }
 

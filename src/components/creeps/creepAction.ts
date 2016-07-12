@@ -11,7 +11,7 @@ export interface ICreepAction {
   /**
    * Wrapper for Creep.moveTo() method.
    */
-  moveTo(target: RoomPosition | {pos: RoomPosition}): number;
+  moveTo(target: RoomPosition | { pos: RoomPosition }): number;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -43,10 +43,10 @@ export class CreepAction implements ICreepAction {
   /**
    * Wrapper for Creep.moveTo() method.
    *
-   * @param {(RoomPosition | {pos: RoomPosition})} target
+   * @param {(RoomPosition | { pos: RoomPosition })} target
    * @returns {number}
    */
-  public moveTo(target: RoomPosition | {pos: RoomPosition}): number {
+  public moveTo(target: RoomPosition | { pos: RoomPosition }): number {
     return this.creep.moveTo(target);
   }
 
@@ -113,6 +113,12 @@ export class CreepAction implements ICreepAction {
     }
   }
 
+  /**
+   * Runs all the actions that this creep is required to do.
+   * This method will be called every loop.
+   *
+   * @returns {boolean}
+   */
   public action(): boolean {
     return true;
   }

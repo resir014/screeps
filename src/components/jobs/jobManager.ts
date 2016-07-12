@@ -10,11 +10,16 @@ export namespace JobManager {
   export const repairerJobs: number = 2;
   export const wallRepairerJobs: number = 2;
 
+  /**
+   * Initialization scripts for the JobManager namespace.
+   *
+   * @export
+   */
   export function load() {
     harvesterJobs = 2;
 
     if (Config.VERBOSE) {
-      console.log("JobManager loaded")
+      console.log("[JobManager] Successfully loaded")
     }
   }
 
