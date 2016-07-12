@@ -82,9 +82,9 @@ export namespace CreepManager {
       if (harvesters.length < 1 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
       }
 
       properties = {
@@ -104,9 +104,9 @@ export namespace CreepManager {
       if (upgraders.length < 2 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
       }
 
       properties = {
@@ -132,9 +132,9 @@ export namespace CreepManager {
       if (room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
       }
 
       properties = {
@@ -160,9 +160,9 @@ export namespace CreepManager {
       if (repairers.length < 1 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
       }
 
       properties = {
@@ -188,9 +188,9 @@ export namespace CreepManager {
       if (wallRepairers.length < 1 || room.energyCapacityAvailable <= 300) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
       } else if (room.energyCapacityAvailable > 300 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
       } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
       }
 
       properties = {
