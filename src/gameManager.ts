@@ -48,26 +48,7 @@ export namespace GameManager {
       ConstructionSiteManager.loadConstructionSites(room);
       StructureManager.loadStructures(room);
 
-      // CreepManager.loadCreeps(room);
       CreepManager.run(room);
-
-      /*if (CreepManager.harvesters.length < Config.MAX_HARVESTERS_PER_SOURCE) {
-        CreepManager.createHarvester();
-      } else if (CreepManager.upgraders.length < Config.MAX_UPGRADERS_PER_CONTROLLER) {
-        CreepManager.createUpgrader();
-      } else if (CreepManager.builders.length < Config.MAX_BUILDERS_IN_ROOM) {
-        CreepManager.createBuilder();
-      } else if (CreepManager.repairers.length < Config.MAX_REPAIRERS_IN_ROOM) {
-        CreepManager.createRepairer();
-      } else if (CreepManager.wallRepairers.length < Config.MAX_WALL_REPAIRERS_IN_ROOM) {
-        CreepManager.createWallRepairer();
-      }
-
-      CreepManager.harvestersGoToWork();
-      CreepManager.upgradersGoToWork();
-      CreepManager.buildersGoToWork();
-      CreepManager.repairersGoToWork();
-      CreepManager.wallRepairersGoToWork();*/
     });
   }
 
