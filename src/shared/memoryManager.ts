@@ -204,7 +204,7 @@ export namespace MemoryManager {
   function updateUpgradersMemory(creep: Creep): void {
 
     if (!checkObjectIdValidity(creep, 'target_controller_id')) {
-      creep.memory.target_controller_id = ControllerManager.getController().id;
+      creep.memory.target_controller_id = ControllerManager.controller.id;
     }
 
     // energy station ID exists?

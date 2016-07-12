@@ -111,7 +111,7 @@ export namespace CreepManager {
 
       properties = {
         role: 'upgrader',
-        target_controller_id: ControllerManager.getController().id,
+        target_controller_id: ControllerManager.controller.id,
         target_source_id: SourceManager.sources[0].id,
         target_energy_station_id: energyStation_id,
         renew_station_id: SpawnManager.getFirstSpawn().id,

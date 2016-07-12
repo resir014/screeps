@@ -3,6 +3,7 @@ import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
 import { JobManager } from './components/jobs/jobManager';
 import { SpawnManager } from './components/spawns/spawnManager';
+import { ControllerManager } from './components/controllers/controllerManager';
 import { SourceManager } from './components/sources/sourceManager';
 import { FlagManager } from './components/flags/flagManager';
 import { CreepManager } from './components/creeps/creepManager';
@@ -47,6 +48,7 @@ export namespace GameManager {
     RoomManager.rooms.forEach((room: Room) => {
       JobManager.load();
       SpawnManager.loadSpawns(room);
+      ControllerManager.loadController(room);
       SourceManager.loadSources(room);
       ConstructionSiteManager.loadConstructionSites(room);
       StructureManager.loadStructures(room);
