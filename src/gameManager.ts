@@ -49,7 +49,7 @@ export namespace GameManager {
       JobManager.load();
       SpawnManager.load(room);
       ControllerManager.load(room);
-      SourceManager.loadSources(room);
+      SourceManager.load(room);
       ConstructionSiteManager.load(room);
       StructureManager.load(room);
       TowerManager.run(room);
