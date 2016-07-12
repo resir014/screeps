@@ -1,5 +1,6 @@
 import { Config } from './../../config/config';
 import { MemoryManager } from './../../shared/memoryManager';
+import { JobManager } from './../jobs/jobManager';
 import { SourceManager } from './../sources/sourceManager';
 import { SpawnManager } from './../spawns/spawnManager';
 import { StructureManager } from './../structures/structureManager';
@@ -73,7 +74,7 @@ export namespace CreepManager {
     let properties: { [key: string]: any} = null;
 
     // TODO: make this more non-repeating to maintain DRY-ness
-    if (harvesters.length < 2) {
+    if (harvesters.length < JobManager.harvesterJobs) {
       let dropoff_id: string = StructureManager.getDropOffPoint() ?
         StructureManager.getDropOffPoint().id :
         SpawnManager.getFirstSpawn().id;
@@ -96,7 +97,7 @@ export namespace CreepManager {
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
-    } else if (upgraders.length < 4) {
+    } else if (upgraders.length < JobManager.upgraderJobs) {
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?
         SpawnManager.getFirstSpawn().id : null;
 
@@ -120,7 +121,7 @@ export namespace CreepManager {
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
-    } else if (builders.length < 1) {
+    } else if (builders.length < JobManager.builderJobs) {
       let targetSource_id: string = SourceManager.sourceCount > 1 ?
         SourceManager.sources[1].id : null;
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?
@@ -148,7 +149,7 @@ export namespace CreepManager {
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
-    } else if (repairers.length < 2) {
+    } else if (repairers.length < JobManager.repairerJobs) {
       let targetSource_id: string = SourceManager.sourceCount > 1 ?
         SourceManager.sources[1].id : null;
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?
@@ -176,7 +177,7 @@ export namespace CreepManager {
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
-    } else if (wallRepairers.length < 2) {
+    } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
       let targetSource_id: string = SourceManager.sourceCount > 1 ?
         SourceManager.sources[1].id : null;
       let energyStation_id: string = SpawnManager.getFirstSpawn() ?

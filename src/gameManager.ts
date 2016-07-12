@@ -1,6 +1,7 @@
 import { Config } from './config/config';
 import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
+import { JobManager } from './components/jobs/jobManager';
 import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
 import { FlagManager } from './components/flags/flagManager';
@@ -43,6 +44,7 @@ export namespace GameManager {
     FlagManager.loadFlags();
 
     RoomManager.rooms.forEach((room: Room) => {
+      JobManager.load();
       SpawnManager.loadSpawns(room);
       SourceManager.loadSources(room);
       ConstructionSiteManager.loadConstructionSites(room);
