@@ -8,6 +8,7 @@ import { FlagManager } from './components/flags/flagManager';
 import { CreepManager } from './components/creeps/creepManager';
 import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
 import { StructureManager } from './components/structures/structureManager';
+import { TowerManager } from './components/towers/towerManager';
 
 /**
  * Singleton object.
@@ -49,6 +50,7 @@ export namespace GameManager {
       SourceManager.loadSources(room);
       ConstructionSiteManager.loadConstructionSites(room);
       StructureManager.loadStructures(room);
+      TowerManager.run(room);
 
       CreepManager.run(room);
     });
