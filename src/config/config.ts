@@ -28,7 +28,7 @@ export namespace Config {
   export const MIN_RAMPART_HEALTH: number = 150000;
 
   /**
-   * Default amount of minimal ticksToLive Screep can have, before it goes
+   * Default amount of minimal ticksToLive a creep can have, before it goes
    * to renew. This is only default value, that don't have to be used.
    * So it doesn't cover all Screeps.
    *
