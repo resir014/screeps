@@ -19,6 +19,8 @@ export namespace MemoryManager {
   /**
    * Clean up creep memory. Delete any creeps in memory that no longer exist in
    * the game.
+   *
+   * @export
    */
   export function cleanupCreepMemory(): void {
     // refactor: brought in from gameManager
@@ -33,6 +35,12 @@ export namespace MemoryManager {
     }
   }
 
+  /**
+   * Update memory for a creep. This function will call whichever update function
+   * is appropriate given the creep's role.
+   *
+   * @export
+   */
   export function updateCreepMemory(creep: Creep): void {
     if (Config.VERBOSE) {
       console.log('[MemoryManager] Updating memory for creep:', creep.name);
@@ -54,7 +62,7 @@ export namespace MemoryManager {
   }
 
   /**
-   * Update memory shared by many creeps (i.e. thru CreepAction superclass)
+   * Update memory shared by many creeps (i.e. thru CreepAction superclass).
    */
   function updateSharedCreepMemory(creep: Creep): void {
     if (!creep.memory.renew_station_id) {
