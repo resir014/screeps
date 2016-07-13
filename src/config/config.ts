@@ -8,37 +8,9 @@ export namespace Config {
   export const VERBOSE: boolean = true;
 
   /**
-   * Specify whether to use the new experimental pathfinder in game objects
-   * methods.
-   *
-   * @type {boolean}
-   */
-  export const USE_PATHFINDER: boolean = true;
-
-  /**
    * @type {number}
    */
-  export const MAX_HARVESTERS_PER_SOURCE: number = 5;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_UPGRADERS_PER_CONTROLLER: number = 5;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_BUILDERS_IN_ROOM: number = 4;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_REPAIRERS_IN_ROOM: number = 4;
-
-  /**
-   * @type {number}
-   */
-  export const MAX_WALL_REPAIRERS_IN_ROOM: number = 4;
+  export const MAX_HARVESTERS_PER_SOURCE: number = 2;
 
   /**
    * @type {number}
@@ -56,7 +28,7 @@ export namespace Config {
   export const MIN_RAMPART_HEALTH: number = 150000;
 
   /**
-   * Default amount of minimal ticksToLive Screep can have, before it goes
+   * Default amount of minimal ticksToLive a creep can have, before it goes
    * to renew. This is only default value, that don't have to be used.
    * So it doesn't cover all Screeps.
    *

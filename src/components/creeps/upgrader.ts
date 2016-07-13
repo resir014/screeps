@@ -5,7 +5,6 @@ export interface IUpgrader {
 
   energyStation: Spawn | Structure;
   targetController: StructureController;
-  targetSource: Source;
 
   hasEmptyBag(): boolean;
   isBagFull(): boolean;
@@ -22,22 +21,12 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
 
   public targetController: StructureController;
   public energyStation: Spawn | Structure;
-  public targetSource: Source;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetController = <StructureController>Game.getObjectById(this.creep.memory.target_controller_id);
-    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
-  }
-
-  public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
-  }
-
-  public isBagFull(): boolean {
-    return (this.creep.carry.energy == this.creep.carryCapacity);
+    this.targetController = Game.getObjectById<StructureController>(this.creep.memory.target_controller_id);
+    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
   }
 
   public askForEnergy(): number {
@@ -51,16 +40,6 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
   public moveToAskEnergy(): void {
     if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
       this.moveTo(this.energyStation);
-    }
-  }
-
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
     }
   }
 
@@ -82,9 +61,7 @@ export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
       this.creep.memory.upgrading = true;
     }
 
-    if (this.needsRenew()) {
-      this.moveToRenew();
-    } else if (this.creep.memory.upgrading) {
+    if (this.creep.memory.upgrading) {
       this.moveToUpgrade();
     } else {
       if (this.creep.memory.target_source_id) {

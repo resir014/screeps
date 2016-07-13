@@ -6,7 +6,6 @@ interface IWallRepairer {
 
   targetStructure: Structure;
   energyStation: Spawn | Structure;
-  targetSource: Source;
   _minWallHealth: number;
 
   hasEmptyBag(): boolean;
@@ -24,24 +23,14 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
 
   public targetStructure: Structure;
   public energyStation: Spawn | Structure;
-  public targetSource: Source;
 
   public _minWallHealth: number = Config.MIN_WALL_HEALTH;
 
   public setCreep(creep: Creep) {
     super.setCreep(creep);
 
-    this.targetStructure = <Structure>Game.getObjectById(this.creep.memory.target_repair_site_id);
-    this.energyStation = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_station_id);
-    this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
-  }
-
-  public hasEmptyBag(): boolean {
-    return (this.creep.carry.energy == 0 || this.creep.carry.energy <= Config.MAX_ENERGY_REFILL_THRESHOLD);
-  }
-
-  public isBagFull(): boolean {
-    return (this.creep.carry.energy == this.creep.carryCapacity);
+    this.targetStructure = Game.getObjectById<Structure>(this.creep.memory.target_repair_site_id);
+    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
   }
 
   public askForEnergy() {
@@ -55,16 +44,6 @@ export class WallRepairer extends CreepAction implements IWallRepairer, ICreepAc
   public moveToAskEnergy(): void {
     if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
       this.moveTo(this.energyStation);
-    }
-  }
-
-  public tryHarvest(): number {
-    return this.creep.harvest(this.targetSource);
-  }
-
-  public moveToHarvest(): void {
-    if (this.tryHarvest() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
     }
   }
 

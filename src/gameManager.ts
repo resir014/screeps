@@ -1,12 +1,15 @@
 import { Config } from './config/config';
 import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
+import { JobManager } from './components/jobs/jobManager';
 import { SpawnManager } from './components/spawns/spawnManager';
+import { ControllerManager } from './components/controllers/controllerManager';
 import { SourceManager } from './components/sources/sourceManager';
 import { FlagManager } from './components/flags/flagManager';
 import { CreepManager } from './components/creeps/creepManager';
 import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
 import { StructureManager } from './components/structures/structureManager';
+import { TowerManager } from './components/towers/towerManager';
 
 /**
  * Singleton object.
@@ -23,48 +26,32 @@ export namespace GameManager {
 
     // Use this bootstrap wisely. You can cache some of your stuff to save CPU
     // You should extend prototypes before game loop in here.
-
-    RoomManager.loadRooms();
-    SpawnManager.loadSpawns();
-    SourceManager.loadSources();
-    FlagManager.loadFlags();
+    RoomManager.load();
   }
 
   export function loop() {
     // Loop code starts here
     // This is executed every tick
-
     MemoryManager.loadMemory();
-    CreepManager.loadCreeps();
-    ConstructionSiteManager.loadConstructionSites();
-    StructureManager.loadStructures();
 
     // garbage collection. must run before any spawning logic.
     MemoryManager.cleanupCreepMemory();
 
-    // after garbage collection, we update all existing creep memory entries.
-    MemoryManager.updateCreepMemory();
-
-    if (CreepManager.harvesters.length < Config.MAX_HARVESTERS_PER_SOURCE) {
-      CreepManager.createHarvester();
-    } else if (CreepManager.upgraders.length < Config.MAX_UPGRADERS_PER_CONTROLLER) {
-      CreepManager.createUpgrader();
-    } else if (CreepManager.builders.length < Config.MAX_BUILDERS_IN_ROOM) {
-      CreepManager.createBuilder();
-    } else if (CreepManager.repairers.length < Config.MAX_REPAIRERS_IN_ROOM) {
-      CreepManager.createRepairer();
-    } else if (CreepManager.wallRepairers.length < Config.MAX_WALL_REPAIRERS_IN_ROOM) {
-      CreepManager.createWallRepairer();
-    }
-
     // specifies whether or not to use the new, experimental PathFinder object.
-    PathFinder.use(Config.USE_PATHFINDER);
+    PathFinder.use(true);
 
-    CreepManager.harvestersGoToWork();
-    CreepManager.upgradersGoToWork();
-    CreepManager.buildersGoToWork();
-    CreepManager.repairersGoToWork();
-    CreepManager.wallRepairersGoToWork();
+    RoomManager.rooms.forEach((room: Room) => {
+      JobManager.load();
+      SpawnManager.load(room);
+      ControllerManager.load(room);
+      FlagManager.load();
+      SourceManager.load(room);
+      ConstructionSiteManager.load(room);
+      StructureManager.load(room);
+
+      TowerManager.run(room);
+      CreepManager.run(room);
+    });
   }
 
 }

@@ -3,8 +3,16 @@ import { RoomManager } from './../rooms/roomManager';
 
 export namespace ControllerManager {
 
-  export function getController(): StructureController {
-    return RoomManager.getFirstRoom().controller;
+  export let controller: Controller;
+
+  /**
+   * Initialization script for ControllerManager namespace.
+   *
+   * @export
+   * @param {Room} room
+   */
+  export function load(room: Room): void {
+    controller = room.controller;
   }
 
 }
