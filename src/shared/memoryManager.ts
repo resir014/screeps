@@ -66,7 +66,9 @@ export namespace MemoryManager {
    */
   function updateSharedCreepMemory(creep: Creep): void {
     if (!creep.memory.renew_station_id) {
-      creep.memory.renew_station_id = SpawnManager.getFirstSpawn() ? SpawnManager.getFirstSpawn().id : null;
+      creep.memory.renew_station_id = SpawnManager.getFirstSpawn()
+        ? SpawnManager.getFirstSpawn().id
+        : null;
     }
   }
 
@@ -163,12 +165,14 @@ export namespace MemoryManager {
 
     // HACK: this happened to be here since for some reason we can't do null-checking on
     // target_repair_site_id. Well, either that or the fact that obsolete repair site ids won't resolve to null.
-    creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
-      StructureManager.getStructuresToRepair().id : null;
+    creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair()
+      ? StructureManager.getStructuresToRepair().id
+      : null;
 
     if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
-      creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair() ?
-        StructureManager.getStructuresToRepair().id : null;
+      creep.memory.target_repair_site_id = StructureManager.getStructuresToRepair()
+        ? StructureManager.getStructuresToRepair().id
+        : null;
     }
 
     // energy station ID exists?
@@ -187,13 +191,15 @@ export namespace MemoryManager {
 
     // HACK: this happened to be here since for some reason we can't do null-checking on
     // target_repair_site_id. Well, either that or the fact that obsolete repair site ids won't resolve to null.
-    creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
-      StructureManager.getDefensiveStructuresToRepair().id : null;
+    creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair()
+      ? StructureManager.getDefensiveStructuresToRepair().id
+      : null;
 
     // target structure ID exists?
     if (!checkObjectIdValidity(creep, 'target_repair_site_id')) {
-      creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair() ?
-        StructureManager.getDefensiveStructuresToRepair().id : null;
+      creep.memory.target_repair_site_id = StructureManager.getDefensiveStructuresToRepair()
+        ? StructureManager.getDefensiveStructuresToRepair().id
+        : null;
     }
 
     // energy station ID exists?

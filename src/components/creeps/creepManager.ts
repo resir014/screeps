@@ -76,9 +76,9 @@ export namespace CreepManager {
 
     // TODO: make this more non-repeating to maintain DRY-ness
     if (harvesters.length < JobManager.harvesterJobs) {
-      let dropoff_id: string = StructureManager.getDropOffPoint() ?
-        StructureManager.getDropOffPoint().id :
-        SpawnManager.getFirstSpawn().id;
+      let dropoff_id: string = StructureManager.getDropOffPoint()
+        ? StructureManager.getDropOffPoint().id
+        : SpawnManager.getFirstSpawn().id;
 
       if (harvesters.length < 1 || room.energyCapacityAvailable <= 500) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
@@ -99,8 +99,9 @@ export namespace CreepManager {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     } else if (upgraders.length < JobManager.upgraderJobs) {
-      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
-        SpawnManager.getFirstSpawn().id : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn()
+        ? SpawnManager.getFirstSpawn().id
+        : null;
 
       if (upgraders.length < 2 || room.energyCapacityAvailable <= 500) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
@@ -123,12 +124,15 @@ export namespace CreepManager {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     } else if (builders.length < JobManager.builderJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
-        SpawnManager.getFirstSpawn().id : null;
-      let constructionSite_id: string = ConstructionSiteManager.getConstructionSite() ?
-        ConstructionSiteManager.getConstructionSite().id : null;
+      let targetSource_id: string = SourceManager.sourceCount > 1
+        ? SourceManager.sources[1].id
+        : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn()
+        ? SpawnManager.getFirstSpawn().id
+        : null;
+      let constructionSite_id: string = ConstructionSiteManager.getConstructionSite()
+        ? ConstructionSiteManager.getConstructionSite().id
+        : null;
 
       if (room.energyCapacityAvailable <= 500) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
@@ -151,12 +155,15 @@ export namespace CreepManager {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     } else if (repairers.length < JobManager.repairerJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
-        SpawnManager.getFirstSpawn().id : null;
-      let toRepair_id: string = StructureManager.getStructuresToRepair() ?
-        StructureManager.getStructuresToRepair().id : null;
+      let targetSource_id: string = SourceManager.sourceCount > 1
+        ? SourceManager.sources[1].id
+        : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn()
+        ? SpawnManager.getFirstSpawn().id
+        : null;
+      let toRepair_id: string = StructureManager.getStructuresToRepair()
+        ? StructureManager.getStructuresToRepair().id
+        : null;
 
       if (repairers.length < 1 || room.energyCapacityAvailable <= 500) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
@@ -179,12 +186,15 @@ export namespace CreepManager {
         SpawnManager.spawnCreep(spawn, bodyParts, properties);
       });
     } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1 ?
-        SourceManager.sources[1].id : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn() ?
-        SpawnManager.getFirstSpawn().id : null;
-      let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair() ?
-        StructureManager.getDefensiveStructuresToRepair().id : null;
+      let targetSource_id: string = SourceManager.sourceCount > 1
+        ? SourceManager.sources[1].id
+        : null;
+      let energyStation_id: string = SpawnManager.getFirstSpawn()
+        ? SpawnManager.getFirstSpawn().id
+        : null;
+      let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair()
+        ? StructureManager.getDefensiveStructuresToRepair().id
+        : null;
 
       if (wallRepairers.length < 1 || room.energyCapacityAvailable <= 500) {
         bodyParts = [MOVE, MOVE, CARRY, WORK];
