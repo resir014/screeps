@@ -23,11 +23,11 @@ export namespace MemoryManager {
    * @param {Room} room The current room.
    */
   export function refreshMiningPositions(room: Room) {
-    if (!MemoryManager.memory[room.name]) {
-      MemoryManager.memory[room.name] = {};
+    if (!memory[room.name]) {
+      memory[room.name] = {};
     }
-    if (!MemoryManager.memory[room.name]['unoccupied_mining_positions']) {
-      MemoryManager.memory[room.name]['unoccupied_mining_positions'] = [];
+    if (!memory[room.name]['unoccupied_mining_positions']) {
+      memory[room.name]['unoccupied_mining_positions'] = [];
     }
   }
 
@@ -41,19 +41,19 @@ export namespace MemoryManager {
   export function cleanupCreepMemory(room: Room): void {
     // refactor: brought in from gameManager
     // clean up memory for deleted creeps
-    for (let name in MemoryManager.memory.creeps) {
-      let creep: any = MemoryManager.memory.creeps[name];
+    for (let name in memory.creeps) {
+      let creep: any = memory.creeps[name];
 
       if (creep.room == room.name) {
         if (!Game.creeps[name]) {
-          if (MemoryManager.memory.creeps[name]['role'] === 'sourceMiner') {
-            MemoryManager.memory[room.name]['unOccupiedMiningPositions'].push(MemoryManager.memory.creeps[name]["occupiedMiningPosition"]);
+          if (memory.creeps[name]['role'] === 'sourceMiner') {
+            memory[room.name]['unoccupied_mining_positions'].push(MemoryManager.memory.creeps[name]['occupied_mining_position']);
           }
 
-          delete MemoryManager.memory.creeps[name];
+          delete memory.creeps[name];
         }
-      } else if (_.keys(MemoryManager.memory.creeps[name]).length == 0) {
-        delete MemoryManager.memory.creeps[name];
+      } else if (_.keys(memory.creeps[name]).length == 0) {
+        delete memory.creeps[name];
       }
     }
   }

@@ -1,6 +1,7 @@
 import { MemoryManager } from './../../../shared/memoryManager';
 
 export namespace SourceMiner {
+
   let availablePositions: RoomPosition[];
   let assignedPosition: RoomPosition;
   let targetSource: Source
