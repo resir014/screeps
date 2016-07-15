@@ -9,7 +9,7 @@ export namespace SourceMiner {
 
     availablePositions = MemoryManager.memory[room.name]['unoccupied_mining_positions'];
 
-    if (availablePositions.length > 0 && creep.memory['occupied_mining_position'] == null) {
+    if (availablePositions.length > 0 && creep.memory['occupied_mining_position'] === null) {
       creep.memory['occupied_mining_position'] = availablePositions.pop();
       assignedPosition = new RoomPosition(
         creep.memory['occupied_mining_position'].x,

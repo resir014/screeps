@@ -49,7 +49,7 @@ export namespace CreepManager {
     _loadCreepRoles();
 
     // TODO i put this here. this looks like a good place for this. - shawn
-    _.each(creeps, (creep: Creep) => MemoryManager.updateCreepMemory(creep));
+    // _.each(creeps, (creep: Creep) => MemoryManager.updateCreepMemory(creep));
 
     if (Config.VERBOSE) {
       console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');

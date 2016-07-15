@@ -23,10 +23,10 @@ export namespace MemoryManager {
    * @param {Room} room The current room.
    */
   export function refreshMiningPositions(room: Room) {
-    if (typeof MemoryManager.memory[room.name] === 'undefined') {
+    if (!MemoryManager.memory[room.name]) {
       MemoryManager.memory[room.name] = {};
     }
-    if (typeof MemoryManager.memory[room.name]['unoccupied_mining_positions'] === 'undefined') {
+    if (!MemoryManager.memory[room.name]['unoccupied_mining_positions']) {
       MemoryManager.memory[room.name]['unoccupied_mining_positions'] = [];
     }
   }
