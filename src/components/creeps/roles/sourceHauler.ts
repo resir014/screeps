@@ -9,6 +9,13 @@ export namespace SourceHauler {
   export let targetExtensions: Extension[];
   export let targetStorages: Storage[];
 
+  /**
+   * Run all SourceHauler actions.
+   *
+   * @export
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
   export function run(creep: Creep, room: Room): void {
     if (typeof creep.memory['delivering'] == 'undefined') {
       creep.memory['delivering'] = false;

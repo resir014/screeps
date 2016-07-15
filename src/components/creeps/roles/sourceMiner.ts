@@ -6,6 +6,13 @@ export namespace SourceMiner {
   export let assignedPosition: RoomPosition;
   export let targetSource: Source
 
+  /**
+   * Run all SourceMiner actions.
+   *
+   * @export
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
   export function run(creep: Creep, room: Room): void {
 
     availablePositions = MemoryManager.memory[room.name]['unoccupied_mining_positions'];

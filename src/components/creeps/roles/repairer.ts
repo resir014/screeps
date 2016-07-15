@@ -9,6 +9,13 @@ export namespace Repairer {
   export let targetSource: Resource;
   export let targetContainer: Container;
 
+  /**
+   * Run all Repairer actions.
+   *
+   * @export
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
   export function run(creep: Creep, room: Room): void {
 
     structures = StructureManager.structures;

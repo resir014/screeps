@@ -8,6 +8,13 @@ export namespace Builder {
   export let targetContainer: Container;
   export let targetConstructionSite: ConstructionSite;
 
+  /**
+   * Run all Builder actions.
+   *
+   * @export
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
   export function run(creep: Creep, room: Room): void {
     if (creep.memory['building'] && creep.carry.energy === 0) {
       creep.memory['building'] = false;
