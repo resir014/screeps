@@ -206,7 +206,7 @@ export namespace CreepManager {
 
     let harvesters: Harvester[] = [];
     let upgraders: Upgrader[] = [];
-    let builders: Builder[] = [];
+    let builders: Creep[] = [];
     let repairers: Repairer[] = [];
     let wallRepairers: WallRepairer[] = [];
 
@@ -226,11 +226,8 @@ export namespace CreepManager {
         upgraders.push(upgrader);
       }
       if (creep.memory.role == 'builder') {
-        let builder = new Builder();
-        builder.setCreep(creep);
-        builder.action();
-
-        builders.push(builder);
+        Builder.run(creep, room);
+        builders.push(creep);
       }
       if (creep.memory.role == 'repairer') {
         let repairer = new Repairer();
