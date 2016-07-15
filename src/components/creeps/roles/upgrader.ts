@@ -1,7 +1,7 @@
 export namespace Upgrader {
 
-  let targetSource: Resource;
-  let targetContainer: Container;
+  export let targetSource: Resource;
+  export let targetContainer: Container;
 
   export function run(creep: Creep, room: Room): void {
     if (typeof creep.memory['upgrading'] === 'undefined') {

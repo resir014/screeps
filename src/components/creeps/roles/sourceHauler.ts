@@ -1,13 +1,13 @@
 // TODO: some of these can be refactored towards StructureManager. -r
 export namespace SourceHauler {
 
-  let targetSource: Resource;
-  let targetContainers: Structure[] | Container[];
-  let targetContainer: Structure | Container;
-  let targetTowers: Tower[];
-  let targetSpawn: Spawn;
-  let targetExtensions: Extension[];
-  let targetStorages: Storage[];
+  export let targetSource: Resource;
+  export let targetContainers: Structure[] | Container[];
+  export let targetContainer: Structure | Container;
+  export let targetTowers: Tower[];
+  export let targetSpawn: Spawn;
+  export let targetExtensions: Extension[];
+  export let targetStorages: Storage[];
 
   export function run(creep: Creep, room: Room): void {
     if (typeof creep.memory['delivering'] == 'undefined') {

@@ -2,11 +2,11 @@ import {ConstructionSiteManager} from "../../constructionSites/constructionSiteM
 
 export namespace Builder {
 
-  let constructionSites: ConstructionSite[] = ConstructionSiteManager.constructionSites;
+  export let constructionSites: ConstructionSite[] = ConstructionSiteManager.constructionSites;
 
-  let targetSource: Resource;
-  let targetContainer: Container;
-  let targetConstructionSite: ConstructionSite;
+  export let targetSource: Resource;
+  export let targetContainer: Container;
+  export let targetConstructionSite: ConstructionSite;
 
   export function run(creep: Creep, room: Room): void {
     if (creep.memory["building"] && creep.carry.energy == 0) {

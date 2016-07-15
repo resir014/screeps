@@ -2,9 +2,9 @@ import { MemoryManager } from './../../../shared/memoryManager';
 
 export namespace SourceMiner {
 
-  let availablePositions: RoomPosition[];
-  let assignedPosition: RoomPosition;
-  let targetSource: Source
+  export let availablePositions: RoomPosition[];
+  export let assignedPosition: RoomPosition;
+  export let targetSource: Source
 
   export function run(creep: Creep, room: Room): void {
 

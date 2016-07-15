@@ -3,11 +3,11 @@ import { StructureManager } from './../../structures/structureManager';
 export namespace Repairer {
 
   // TODO: refactor these over to getStructuresToRepair(). -r
-  let structures: Structure[];
-  let structureToRepair: Structure[];
+  export let structures: Structure[];
+  export let structureToRepair: Structure[];
 
-  let targetSource: Resource;
-  let targetContainer: Container;
+  export let targetSource: Resource;
+  export let targetContainer: Container;
 
   export function run(creep: Creep, room: Room): void {
 
