@@ -75,9 +75,9 @@ export namespace CreepManager {
     let properties: { [key: string]: any } = null;
 
     if (room.energyCapacityAvailable <= 800) {
-      bodyParts = [MOVE, MOVE, CARRY, WORK];
+      bodyParts = [WORK, WORK, CARRY, MOVE];
     } else if (room.energyCapacityAvailable > 800 && room.energyCapacityAvailable <= 1200) {
-      bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
+      bodyParts = [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
     }
 
     // TODO: make this more non-repeating to maintain DRY-ness
