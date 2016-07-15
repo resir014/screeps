@@ -6,11 +6,11 @@ import { SpawnManager } from './../spawns/spawnManager';
 import { StructureManager } from './../structures/structureManager';
 import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
 import { ControllerManager } from './../controllers/controllerManager';
-import { Harvester } from './harvester';
-import { Upgrader } from './upgrader';
-import { Builder } from './builder';
-import { Repairer } from './repairer';
-import { WallRepairer } from './wallRepairer';
+import { Harvester } from './roles/harvester';
+import { Upgrader } from './roles/upgrader';
+import { Builder } from './roles/builder';
+import { Repairer } from './roles/repairer';
+import { WallRepairer } from './roles/wallRepairer';
 
 export namespace CreepManager {
 

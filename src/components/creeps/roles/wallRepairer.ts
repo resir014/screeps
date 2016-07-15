@@ -1,6 +1,6 @@
-import { Config } from './../../config/config';
-import { ICreepAction, CreepAction } from './creepAction';
-import { FlagManager } from '../flags/flagManager';
+import { Config } from './../../../config/config';
+import { ICreepAction, CreepAction } from './../creepAction';
+import { FlagManager } from './../../flags/flagManager';
 
 interface IWallRepairer {
 

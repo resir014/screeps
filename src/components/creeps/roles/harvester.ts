@@ -1,5 +1,5 @@
-import { Config } from './../../config/config';
-import { ICreepAction, CreepAction } from './creepAction';
+import { Config } from './../../../config/config';
+import { ICreepAction, CreepAction } from './../creepAction';
 
 export interface IHarvester {
 
