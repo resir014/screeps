@@ -1,89 +1,62 @@
-import { Config } from './../../../config/config';
-import { ICreepAction, CreepAction } from './../creepAction';
-import { FlagManager } from './../../flags/flagManager';
+import { StructureManager } from './../../structures/structureManager';
 
-export interface IRepairer {
+export namespace Repairer {
 
-  targetStructure: Structure;
-  energyStation: Spawn | Structure;
-  _minHitsBeforeNeedsRepair: number;
+  // TODO: refactor these over to getStructuresToRepair(). -r
+  let structures: Structure[];
+  let structureToRepair: Structure[];
 
-  hasEmptyBag(): boolean;
-  isBagFull(): boolean;
-  askForEnergy(): number;
-  moveToAskEnergy(): void;
-  tryRepair(): number;
-  moveToRepair(): void;
+  let targetSource: Resource;
+  let targetContainer: Container;
 
-  action(): boolean;
+  export function run(creep: Creep, room: Room): void {
 
-}
+    structures = StructureManager.structures;
 
-export class Repairer extends CreepAction implements IRepairer, ICreepAction {
+    if (_.sum(creep.carry) > 0) {
+      structureToRepair = structures.filter((structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4)) && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
+      });
 
-  public targetStructure: Structure;
-  public energyStation: Spawn | Structure;
+      if (structureToRepair.length == 0) {
+        structureToRepair = structures.filter((structure: Structure) => {
+          return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4)) && (structure.structureType !== STRUCTURE_WALL)));
+        });
+      }
 
-  public _minHitsBeforeNeedsRepair: number = Config.DEFAULT_MIN_HITS_BEFORE_NEEDS_REPAIR;
-
-  public setCreep(creep: Creep) {
-    super.setCreep(creep);
-
-    this.targetStructure = Game.getObjectById<Structure>(this.creep.memory.target_repair_site_id);
-    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
-  }
-
-  public askForEnergy() {
-    if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
-      return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
-    } else if (this.energyStation instanceof StructureContainer || this.energyStation instanceof StructureStorage) {
-      return (<StructureContainer | StructureStorage>this.energyStation).transfer(this.creep, RESOURCE_ENERGY);
-    }
-  }
-
-  public moveToAskEnergy(): void {
-    if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.energyStation);
-    }
-  }
-
-  public tryRepair(): number {
-    return this.creep.repair(this.targetStructure);
-  }
-
-  public moveToRepair(): void {
-    if (this.tryRepair() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetStructure);
-    }
-  }
-
-  public action(): boolean {
-    if ((this.creep.memory.repairing && this.hasEmptyBag()) || this.creep.memory.target_repair_site_id === null) {
-      this.creep.memory.repairing = false;
-    }
-    if ((!this.creep.memory.repairing && this.isBagFull()) && this.creep.memory.target_repair_site_id !== null) {
-      this.creep.memory.repairing = true;
-    }
-
-    if (this.creep.memory.repairing) {
-      this.moveToRepair();
+      if (creep.pos.isNearTo(structureToRepair[0])) {
+        creep.repair(structureToRepair[0]);
+      } else {
+        creep.moveTo(structureToRepair[0]);
+      }
     } else {
-      if (this.creep.memory.target_source_id) {
-        if (!this.isBagFull()) {
-          this.moveToHarvest();
+      targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+
+      if (targetSource != null) {
+        if (creep.pos.isNearTo(targetSource)) {
+          creep.pickup(targetSource);
         } else {
-          this.moveTo(FlagManager.getFlag('RepairersPost'));
+          creep.moveTo(targetSource);
         }
       } else {
-        if (!this.isBagFull()) {
-          this.moveToAskEnergy();
+        targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
+          filter: ((structure) => {
+            if (structure.structureType == STRUCTURE_CONTAINER) {
+              let container = <Container>structure;
+              if (_.sum(container.store) > (500)) {
+                return container;
+              }
+            }
+          })
+        });
+
+        if (creep.pos.isNearTo(targetContainer)) {
+          creep.withdraw(targetContainer, RESOURCE_ENERGY);
         } else {
-          this.moveTo(FlagManager.getFlag('RepairersPost'));
+          creep.moveTo(targetContainer);
         }
       }
     }
-
-    return true;
   }
 
 }

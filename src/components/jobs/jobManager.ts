@@ -2,7 +2,7 @@ import { Config } from './../../config/config';
 
 export namespace JobManager {
 
-  export let harvesterJobs: number = 0;
+  export let sourceMiningJobs: number = 0;
 
   export const haulerJobs: number = 3; // not used yet.
   export const upgraderJobs: number = 5;
@@ -16,7 +16,7 @@ export namespace JobManager {
    * @export
    */
   export function load() {
-    harvesterJobs = 2;
+    sourceMiningJobs = 2;
 
     if (Config.VERBOSE) {
       console.log("[JobManager] Successfully loaded")

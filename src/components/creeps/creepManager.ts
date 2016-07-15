@@ -7,6 +7,8 @@ import { StructureManager } from './../structures/structureManager';
 import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
 import { ControllerManager } from './../controllers/controllerManager';
 import { Harvester } from './roles/harvester';
+import { SourceMiner } from './roles/sourceMiner';
+import { SourceHauler } from './roles/sourceHauler';
 import { Upgrader } from './roles/upgrader';
 import { Builder } from './roles/builder';
 import { Repairer } from './roles/repairer';
@@ -18,7 +20,8 @@ export namespace CreepManager {
   export let creepNames: string[] = [];
   export let creepCount: number = 0;
 
-  export let harvesters: Creep[] = [];
+  export let sourceMiners: Creep[] = [];
+  export let sourceHaulers: Creep[] = [];
   export let upgraders: Creep[] = [];
   export let builders: Creep[] = [];
   export let repairers: Creep[] = [];
@@ -81,118 +84,44 @@ export namespace CreepManager {
     }
 
     // TODO: make this more non-repeating to maintain DRY-ness
-    if (harvesters.length < JobManager.harvesterJobs) {
-      let dropoff_id: string = StructureManager.getDropOffPoint()
-        ? StructureManager.getDropOffPoint().id
-        : SpawnManager.getFirstSpawn().id;
-
+    if (sourceMiners.length < JobManager.sourceMiningJobs) {
       // In case we ran out of creeps.
-      if (harvesters.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
-
-      properties = {
-        role: 'harvester',
-        target_source_id: SourceManager.sources[0].id,
-        target_energy_dropoff_id: dropoff_id,
-        renew_station_id: SpawnManager.getFirstSpawn().id
-      }
+      if (sourceMiners.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceMiner' });
+      });
+    } else if (sourceHaulers.length < JobManager.haulerJobs) {
+      // In case we ran out of creeps.
+      if (sourceHaulers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+
+      _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceHauler' });
       });
     } else if (upgraders.length < JobManager.upgraderJobs) {
-      let energyStation_id: string = SpawnManager.getFirstSpawn()
-        ? SpawnManager.getFirstSpawn().id
-        : null;
-
       // In case we ran out of creeps.
       if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
-      properties = {
-        role: 'upgrader',
-        target_controller_id: ControllerManager.controller.id,
-        target_source_id: SourceManager.sources[0].id,
-        target_energy_station_id: energyStation_id,
-        renew_station_id: SpawnManager.getFirstSpawn().id,
-        upgrading: false
-      };
-
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'upgrader' });
       });
     } else if (builders.length < JobManager.builderJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1
-        ? SourceManager.sources[1].id
-        : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn()
-        ? SpawnManager.getFirstSpawn().id
-        : null;
-      let constructionSite_id: string = ConstructionSiteManager.getConstructionSite()
-        ? ConstructionSiteManager.getConstructionSite().id
-        : null;
-
-      properties = {
-        role: 'builder',
-        target_construction_site_id: constructionSite_id,
-        target_source_id: targetSource_id,
-        target_energy_station_id: energyStation_id,
-        renew_station_id: SpawnManager.getFirstSpawn().id,
-        building: false
-      };
-
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'builder' });
       });
     } else if (repairers.length < JobManager.repairerJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1
-        ? SourceManager.sources[1].id
-        : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn()
-        ? SpawnManager.getFirstSpawn().id
-        : null;
-      let toRepair_id: string = StructureManager.getStructuresToRepair()
-        ? StructureManager.getStructuresToRepair().id
-        : null;
-
       // In case we ran out of creeps.
-      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
-
-      properties = {
-        role: 'repairer',
-        target_repair_site_id: toRepair_id,
-        target_source_id: targetSource_id,
-        target_energy_station_id: energyStation_id,
-        renew_station_id: SpawnManager.getFirstSpawn().id,
-        repairing: false
-      }
+      if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'repairer' });
       });
     } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
-      let targetSource_id: string = SourceManager.sourceCount > 1
-        ? SourceManager.sources[1].id
-        : null;
-      let energyStation_id: string = SpawnManager.getFirstSpawn()
-        ? SpawnManager.getFirstSpawn().id
-        : null;
-      let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair()
-        ? StructureManager.getDefensiveStructuresToRepair().id
-        : null;
-
       // In case we ran out of creeps.
-      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
-
-      properties = {
-        role: 'wallRepairer',
-        target_repair_site_id: toRepair_id,
-        target_source_id: targetSource_id,
-        target_energy_station_id: energyStation_id,
-        renew_station_id: SpawnManager.getFirstSpawn().id,
-        repairing: false
-      }
+      if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, properties);
+        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'wallRepairer' });
       });
     }
   }
@@ -204,49 +133,43 @@ export namespace CreepManager {
    */
   function _creepsGoToWork(room: Room): void {
 
-    let harvesters: Harvester[] = [];
-    let upgraders: Upgrader[] = [];
+    let sourceMiners: Creep[] = [];
+    let sourceHaulers: Creep[] = [];
+    let upgraders: Creep[] = [];
     let builders: Creep[] = [];
-    let repairers: Repairer[] = [];
-    let wallRepairers: WallRepairer[] = [];
+    let repairers: Creep[] = [];
+    let wallRepairers: Creep[] = [];
 
     _.forEach(creeps, (creep: Creep, creepName: string) => {
-      if (creep.memory.role == 'harvester') {
-        let harvester = new Harvester();
-        harvester.setCreep(creep);
-        harvester.action();
-
-        harvesters.push(harvester);
+      if (creep.memory.role == 'sourceMiner') {
+        SourceMiner.run(creep, room);
+        sourceMiners.push(creep);
+      }
+      if (creep.memory.role == 'sourceHauler') {
+        SourceHauler.run(creep, room);
+        sourceHaulers.push(creep);
       }
       if (creep.memory.role == 'upgrader') {
-        let upgrader = new Upgrader();
-        upgrader.setCreep(creep);
-        upgrader.action();
-
-        upgraders.push(upgrader);
+        Upgrader.run(creep, room);
+        upgraders.push(creep);
       }
       if (creep.memory.role == 'builder') {
         Builder.run(creep, room);
         builders.push(creep);
       }
       if (creep.memory.role == 'repairer') {
-        let repairer = new Repairer();
-        repairer.setCreep(creep);
-        repairer.action();
-
-        repairers.push(repairer);
+        Repairer.run(creep, room);
+        repairers.push(creep);
       }
       if (creep.memory.role == 'wallRepairer') {
-        let wallRepairer = new WallRepairer();
-        wallRepairer.setCreep(creep);
-        wallRepairer.action();
-
-        wallRepairers.push(wallRepairer);
+        WallRepairer.run(creep, room);
+        wallRepairers.push(creep);
       }
     });
 
     if (Config.VERBOSE) {
-      console.log('[CreepManager] ' + harvesters.length + ' harvesters reported on duty today!');
+      console.log('[CreepManager] ' + sourceMiners.length + ' miners reported on duty today!');
+      console.log('[CreepManager] ' + sourceHaulers.length + ' haulers reported on duty today!');
       console.log('[CreepManager] ' + upgraders.length + ' upgraders reported on duty today!');
       console.log('[CreepManager] ' + builders.length + ' builders reported on duty today!');
       console.log('[CreepManager] ' + repairers.length + ' repairers reported on duty today!');
@@ -272,7 +195,8 @@ export namespace CreepManager {
    */
   function _loadCreepRoles(): void {
     // TODO: find a way to avoid API calls.
-    harvesters = _.filter(creeps, (creep) => creep.memory.role == 'harvester');
+    sourceMiners = _.filter(creeps, (creep) => creep.memory.role == 'sourceMiner');
+    sourceHaulers = _.filter(creeps, (creep) => creep.memory.role == 'sourceHauler');
     upgraders = _.filter(creeps, (creep) => creep.memory.role == 'upgrader');
     builders = _.filter(creeps, (creep) => creep.memory.role == 'builder');
     repairers = _.filter(creeps, (creep) => creep.memory.role == 'repairer');

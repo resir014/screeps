@@ -1,76 +1,64 @@
-import { Config } from './../../../config/config';
-import { ICreepAction, CreepAction } from './../creepAction';
+export namespace Upgrader {
 
-export interface IUpgrader {
+  let targetSource: Resource;
+  let targetContainer: Container;
 
-  energyStation: Spawn | Structure;
-  targetController: StructureController;
-
-  hasEmptyBag(): boolean;
-  isBagFull(): boolean;
-  askForEnergy(): number;
-  moveToAskEnergy(): void;
-  tryUpgrade(): number;
-  moveToUpgrade(): void;
-
-  action(): boolean;
-
-}
-
-export class Upgrader extends CreepAction implements IUpgrader, ICreepAction {
-
-  public targetController: StructureController;
-  public energyStation: Spawn | Structure;
-
-  public setCreep(creep: Creep) {
-    super.setCreep(creep);
-
-    this.targetController = Game.getObjectById<StructureController>(this.creep.memory.target_controller_id);
-    this.energyStation = Game.getObjectById<Spawn | Structure>(this.creep.memory.target_energy_station_id);
-  }
-
-  public askForEnergy(): number {
-    if (this.energyStation instanceof Spawn || this.energyStation instanceof StructureExtension) {
-      return (<Spawn | StructureExtension>this.energyStation).transferEnergy(this.creep);
-    } else if (this.energyStation instanceof StructureContainer || this.energyStation instanceof StructureStorage) {
-      return (<StructureContainer | StructureStorage>this.energyStation).transfer(this.creep, RESOURCE_ENERGY);
-    }
-  }
-
-  public moveToAskEnergy(): void {
-    if (this.askForEnergy() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.energyStation);
-    }
-  }
-
-  public tryUpgrade(): number {
-    return this.creep.upgradeController(this.targetController);
-  }
-
-  public moveToUpgrade(): void {
-    if (this.tryUpgrade() == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetController);
-    }
-  }
-
-  public action(): boolean {
-    if (this.creep.memory.upgrading && this.hasEmptyBag()) {
-      this.creep.memory.upgrading = false;
-    }
-    if (!this.creep.memory.upgrading && this.isBagFull()) {
-      this.creep.memory.upgrading = true;
+  export function run(creep: Creep, room: Room): void {
+    if (typeof creep.memory['upgrading'] === 'undefined') {
+      creep.memory['upgrading'] = false;
     }
 
-    if (this.creep.memory.upgrading) {
-      this.moveToUpgrade();
+    if (creep.memory['upgrading'] && creep.carry.energy == 0) {
+      creep.memory['upgrading'] = false;
+    }
+
+    if (!creep.memory['upgrading'] && creep.carry.energy == creep.carryCapacity) {
+      creep.memory['upgrading'] = true;
+    }
+
+
+    if (creep.memory['upgrading']) {
+      if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(creep.room.controller);
+      }
     } else {
-      if (this.creep.memory.target_source_id) {
-        this.moveToHarvest();
+      targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+
+      if (targetSource != null) {
+        if (creep.pos.isNearTo(targetSource)) {
+          creep.pickup(targetSource);
+        } else {
+          creep.moveTo(targetSource);
+        }
       } else {
-        this.moveToAskEnergy();
+        targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+
+        if (targetSource != null) {
+          if (creep.pos.isNearTo(targetSource)) {
+            creep.pickup(targetSource);
+          } else {
+            creep.moveTo(targetSource);
+          }
+        } else {
+          targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
+            filter: ((structure) => {
+              if (structure.structureType == STRUCTURE_CONTAINER) {
+                let container = <Container>structure;
+                if (_.sum(container.store) > (500)) {
+                  return container;
+                }
+              }
+            })
+          });
+
+          if (creep.pos.isNearTo(targetContainer)) {
+            creep.withdraw(targetContainer, RESOURCE_ENERGY);
+          } else {
+            creep.moveTo(targetContainer);
+          }
+        }
       }
     }
-
-    return true
   }
+
 }

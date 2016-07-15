@@ -34,13 +34,15 @@ export namespace GameManager {
     // This is executed every tick
     MemoryManager.loadMemory();
 
-    // garbage collection. must run before any spawning logic.
-    MemoryManager.cleanupCreepMemory();
-
     // specifies whether or not to use the new, experimental PathFinder object.
     PathFinder.use(true);
 
     RoomManager.rooms.forEach((room: Room) => {
+      MemoryManager.refreshMiningPositions(room);
+
+      // garbage collection. must run before any spawning logic.
+      MemoryManager.cleanupCreepMemory(room);
+
       JobManager.load();
       SpawnManager.load(room);
       ControllerManager.load(room);
