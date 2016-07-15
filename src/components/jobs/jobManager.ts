@@ -4,10 +4,10 @@ export namespace JobManager {
 
   export let harvesterJobs: number = 0;
 
-  export const haulerJobs: number = 4; // not used yet.
-  export const upgraderJobs: number = 4;
+  export const haulerJobs: number = 3; // not used yet.
+  export const upgraderJobs: number = 5;
   export const builderJobs: number = 1;
-  export const repairerJobs: number = 2;
+  export const repairerJobs: number = 3;
   export const wallRepairerJobs: number = 2;
 
   /**
