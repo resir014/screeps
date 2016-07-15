@@ -6,7 +6,6 @@ import { SpawnManager } from './../spawns/spawnManager';
 import { StructureManager } from './../structures/structureManager';
 import { ConstructionSiteManager } from './../constructionSites/constructionSiteManager';
 import { ControllerManager } from './../controllers/controllerManager';
-import { Harvester } from './roles/harvester';
 import { SourceMiner } from './roles/sourceMiner';
 import { SourceHauler } from './roles/sourceHauler';
 import { Upgrader } from './roles/upgrader';
