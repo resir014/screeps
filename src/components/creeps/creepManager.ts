@@ -74,19 +74,20 @@ export namespace CreepManager {
     // default creep properties
     let properties: { [key: string]: any } = null;
 
+    if (room.energyCapacityAvailable <= 800) {
+      bodyParts = [WORK, WORK, CARRY, MOVE];
+    } else if (room.energyCapacityAvailable > 800 && room.energyCapacityAvailable <= 1200) {
+      bodyParts = [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+    }
+
     // TODO: make this more non-repeating to maintain DRY-ness
     if (harvesters.length < JobManager.harvesterJobs) {
       let dropoff_id: string = StructureManager.getDropOffPoint()
         ? StructureManager.getDropOffPoint().id
         : SpawnManager.getFirstSpawn().id;
 
-      if (harvesters.length < 1 || room.energyCapacityAvailable <= 500) {
-        bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable > 500 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
-      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
-      }
+      // In case we ran out of creeps.
+      if (harvesters.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'harvester',
@@ -103,13 +104,8 @@ export namespace CreepManager {
         ? SpawnManager.getFirstSpawn().id
         : null;
 
-      if (upgraders.length < 2 || room.energyCapacityAvailable <= 500) {
-        bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable > 500 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
-      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
-      }
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'upgrader',
@@ -134,14 +130,6 @@ export namespace CreepManager {
         ? ConstructionSiteManager.getConstructionSite().id
         : null;
 
-      if (room.energyCapacityAvailable <= 500) {
-        bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable > 500 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
-      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
-      }
-
       properties = {
         role: 'builder',
         target_construction_site_id: constructionSite_id,
@@ -165,13 +153,8 @@ export namespace CreepManager {
         ? StructureManager.getStructuresToRepair().id
         : null;
 
-      if (repairers.length < 1 || room.energyCapacityAvailable <= 500) {
-        bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable > 500 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
-      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
-      }
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'repairer',
@@ -196,13 +179,8 @@ export namespace CreepManager {
         ? StructureManager.getDefensiveStructuresToRepair().id
         : null;
 
-      if (wallRepairers.length < 1 || room.energyCapacityAvailable <= 500) {
-        bodyParts = [MOVE, MOVE, CARRY, WORK];
-      } else if (room.energyCapacityAvailable > 500 && room.energyCapacityAvailable <= 700) {
-        bodyParts = [MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK];
-      } else if (room.energyCapacityAvailable > 700 && room.energyCapacityAvailable <= 1200) {
-        bodyParts = [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK];
-      }
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'wallRepairer',
