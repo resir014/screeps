@@ -85,15 +85,17 @@ export namespace CreepManager {
 
     // TODO: make this more non-repeating to maintain DRY-ness
     if (sourceMiners.length < JobManager.sourceMiningJobs) {
-      // In case we ran out of creeps.
-      if (sourceMiners.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+      if (sourceMiners.length < 1 || room.energyCapacityAvailable <= 800) {
+        bodyParts = [WORK, WORK, MOVE];
+      } else if (room.energyCapacityAvailable > 800) {
+        bodyParts = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE];
+      }
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceMiner' });
       });
     } else if (sourceHaulers.length < JobManager.haulerJobs) {
-      // In case we ran out of creeps.
-      if (sourceHaulers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+      bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 
       _.forEach(SpawnManager.spawns, (spawn: Spawn) => {
         SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceHauler' });
