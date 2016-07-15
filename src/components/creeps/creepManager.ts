@@ -86,6 +86,9 @@ export namespace CreepManager {
         ? StructureManager.getDropOffPoint().id
         : SpawnManager.getFirstSpawn().id;
 
+      // In case we ran out of creeps.
+      if (harvesters.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+
       properties = {
         role: 'harvester',
         target_source_id: SourceManager.sources[0].id,
@@ -100,6 +103,9 @@ export namespace CreepManager {
       let energyStation_id: string = SpawnManager.getFirstSpawn()
         ? SpawnManager.getFirstSpawn().id
         : null;
+
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'upgrader',
@@ -147,6 +153,9 @@ export namespace CreepManager {
         ? StructureManager.getStructuresToRepair().id
         : null;
 
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+
       properties = {
         role: 'repairer',
         target_repair_site_id: toRepair_id,
@@ -169,6 +178,9 @@ export namespace CreepManager {
       let toRepair_id: string = StructureManager.getDefensiveStructuresToRepair()
         ? StructureManager.getDefensiveStructuresToRepair().id
         : null;
+
+      // In case we ran out of creeps.
+      if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       properties = {
         role: 'wallRepairer',
