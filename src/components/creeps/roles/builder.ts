@@ -9,15 +9,15 @@ export namespace Builder {
   export let targetConstructionSite: ConstructionSite;
 
   export function run(creep: Creep, room: Room): void {
-    if (creep.memory["building"] && creep.carry.energy == 0) {
-      creep.memory["building"] = false;
+    if (creep.memory['building'] && creep.carry.energy === 0) {
+      creep.memory['building'] = false;
     }
 
-    if (!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-      creep.memory["building"] = true;
+    if (!creep.memory.building && creep.carry.energy === creep.carryCapacity) {
+      creep.memory['building'] = true;
     }
 
-    if (creep.memory["building"]) {
+    if (creep.memory['building']) {
 
       targetConstructionSite = ConstructionSiteManager.getConstructionSite()
         ? ConstructionSiteManager.getConstructionSite()
@@ -32,7 +32,7 @@ export namespace Builder {
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-      if (targetSource != null) {
+      if (targetSource) {
         if (creep.pos.isNearTo(targetSource)) {
           creep.pickup(targetSource);
         } else {

@@ -32,7 +32,7 @@ export namespace Repairer {
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-      if (targetSource != null) {
+      if (targetSource) {
         if (creep.pos.isNearTo(targetSource)) {
           creep.pickup(targetSource);
         } else {

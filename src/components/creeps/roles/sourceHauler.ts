@@ -18,10 +18,10 @@ export namespace SourceHauler {
       creep.memory['delivering'] = false;
     }
 
-    if (_.sum(creep.carry) < creep.carryCapacity && creep.memory['delivering'] == false) {
+    if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory['delivering']) {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-      if (targetSource != null) {
+      if (targetSource) {
         if (creep.pos.isNearTo(targetSource)) {
           creep.pickup(targetSource);
         } else {
@@ -31,7 +31,7 @@ export namespace SourceHauler {
         targetContainers = creep.room.find<Container>(FIND_STRUCTURES, {
           filter: (structure: Structure) => {
             if (structure.structureType == STRUCTURE_CONTAINER) {
-              let container = <Container>structure;
+              let container: Container = <Container>structure;
               if (_.sum(container.store) > 200) {
                 return container;
               }

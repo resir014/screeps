@@ -14,8 +14,8 @@ export namespace WallRepairer {
     structures = StructureManager.structures;
 
     if (_.sum(creep.carry) > 0) {
-      structureToRepair = structures.filter(function (object) {
-        return ((object.structureType === STRUCTURE_WALL || object.structureType === STRUCTURE_RAMPART) && object.hits < 700000);
+      structureToRepair = structures.filter((structure: Structure) => {
+        return ((structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART) && structure.hits < 700000);
       });
 
       if (creep.pos.isNearTo(structureToRepair[0])) {
@@ -26,7 +26,7 @@ export namespace WallRepairer {
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-      if (targetSource != null) {
+      if (targetSource) {
         if (creep.pos.isNearTo(targetSource)) {
           creep.pickup(targetSource);
         } else {
@@ -36,7 +36,7 @@ export namespace WallRepairer {
         targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
           filter: ((structure) => {
             if (structure.structureType == STRUCTURE_CONTAINER) {
-              let container = <Container>structure;
+              let container: Container = <Container>structure;
               if (_.sum(container.store) > (500)) {
                 return container;
               }

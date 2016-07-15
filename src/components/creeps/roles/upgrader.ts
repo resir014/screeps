@@ -8,23 +8,23 @@ export namespace Upgrader {
       creep.memory['upgrading'] = false;
     }
 
-    if (creep.memory['upgrading'] && creep.carry.energy == 0) {
+    if (creep.memory['upgrading'] && creep.carry.energy === 0) {
       creep.memory['upgrading'] = false;
     }
 
-    if (!creep.memory['upgrading'] && creep.carry.energy == creep.carryCapacity) {
+    if (!creep.memory['upgrading'] && creep.carry.energy === creep.carryCapacity) {
       creep.memory['upgrading'] = true;
     }
 
 
     if (creep.memory['upgrading']) {
-      if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+      if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
         creep.moveTo(creep.room.controller);
       }
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-      if (targetSource != null) {
+      if (targetSource) {
         if (creep.pos.isNearTo(targetSource)) {
           creep.pickup(targetSource);
         } else {
@@ -33,7 +33,7 @@ export namespace Upgrader {
       } else {
         targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-        if (targetSource != null) {
+        if (targetSource) {
           if (creep.pos.isNearTo(targetSource)) {
             creep.pickup(targetSource);
           } else {
@@ -43,7 +43,7 @@ export namespace Upgrader {
           targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
             filter: ((structure) => {
               if (structure.structureType == STRUCTURE_CONTAINER) {
-                let container = <Container>structure;
+                let container: Container = <Container>structure;
                 if (_.sum(container.store) > (500)) {
                   return container;
                 }
