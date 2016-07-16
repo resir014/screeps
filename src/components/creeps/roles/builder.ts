@@ -30,10 +30,12 @@ export namespace Builder {
         ? ConstructionSiteManager.getConstructionSite()
         : null;
 
-      if (creep.pos.isNearTo(targetConstructionSite)) {
-        creep.build(targetConstructionSite);
-      } else {
-        creep.moveTo(targetConstructionSite);
+      if (targetConstructionSite) {
+        if (creep.pos.isNearTo(targetConstructionSite)) {
+          creep.build(targetConstructionSite);
+        } else {
+          creep.moveTo(targetConstructionSite);
+        }
       }
 
     } else {
@@ -57,10 +59,12 @@ export namespace Builder {
           })
         });
 
-        if (creep.pos.isNearTo(targetContainer)) {
-          creep.withdraw(targetContainer, RESOURCE_ENERGY);
-        } else {
-          creep.moveTo(targetContainer);
+        if (targetContainer) {
+          if (creep.pos.isNearTo(targetContainer)) {
+            creep.withdraw(targetContainer, RESOURCE_ENERGY);
+          } else {
+            creep.moveTo(targetContainer);
+          }
         }
       }
     }
