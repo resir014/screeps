@@ -2,9 +2,7 @@ import { StructureManager } from './../../structures/structureManager';
 
 export namespace Repairer {
 
-  // TODO: refactor these over to getStructuresToRepair(). -r
-  export let structures: Structure[];
-  export let structureToRepair: Structure[];
+  export let structuresToRepair: Structure[];
 
   export let targetSource: Resource;
   export let targetContainer: Container;
@@ -18,23 +16,15 @@ export namespace Repairer {
    */
   export function run(creep: Creep, room: Room): void {
 
-    structures = StructureManager.structures;
-
     if (_.sum(creep.carry) > 0) {
-      structureToRepair = structures.filter((structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4)) && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
-      });
+      structuresToRepair = StructureManager.getStructuresToRepair();
 
-      if (structureToRepair.length == 0) {
-        structureToRepair = structures.filter((structure: Structure) => {
-          return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4)) && (structure.structureType !== STRUCTURE_WALL)));
-        });
-      }
-
-      if (creep.pos.isNearTo(structureToRepair[0])) {
-        creep.repair(structureToRepair[0]);
-      } else {
-        creep.moveTo(structureToRepair[0]);
+      if (structuresToRepair) {
+        if (creep.pos.isNearTo(structuresToRepair[0])) {
+          creep.repair(structuresToRepair[0]);
+        } else {
+          creep.moveTo(structuresToRepair[0]);
+        }
       }
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);

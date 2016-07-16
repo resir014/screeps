@@ -2,9 +2,7 @@ import { StructureManager } from './../../structures/structureManager';
 
 export namespace WallRepairer {
 
-  // TODO: refactor these over to getDefensiveStructuresToRepair(). -r
-  export let structures: Structure[];
-  export let structureToRepair: Structure[];
+  export let structuresToRepair: Structure[];
 
   export let targetSource: Resource;
   export let targetContainer: Container;
@@ -18,17 +16,15 @@ export namespace WallRepairer {
    */
   export function run(creep: Creep, room: Room): void {
 
-    structures = StructureManager.structures;
-
     if (_.sum(creep.carry) > 0) {
-      structureToRepair = structures.filter((structure: Structure) => {
-        return ((structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART) && structure.hits < 700000);
-      });
+      structuresToRepair = StructureManager.getWallsToRepair();
 
-      if (creep.pos.isNearTo(structureToRepair[0])) {
-        creep.repair(structureToRepair[0]);
-      } else {
-        creep.moveTo(structureToRepair[0]);
+      if (structuresToRepair) {
+        if (creep.pos.isNearTo(structuresToRepair[0])) {
+          creep.repair(structuresToRepair[0]);
+        } else {
+          creep.moveTo(structuresToRepair[0]);
+        }
       }
     } else {
       targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
