@@ -38,6 +38,7 @@ export namespace GameManager {
     PathFinder.use(true);
 
     RoomManager.rooms.forEach((room: Room) => {
+      // initialise all memory items
       MemoryManager.refreshMiningPositions(room);
 
       // garbage collection. must run before any spawning logic.
