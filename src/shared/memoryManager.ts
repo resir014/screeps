@@ -13,7 +13,7 @@ export namespace MemoryManager {
   export let memory: Memory;
 
   export function loadMemory(): void {
-    this.memory = Memory;
+    memory = Memory;
   }
 
   /**
@@ -24,9 +24,15 @@ export namespace MemoryManager {
    */
   export function refreshMiningPositions(room: Room) {
     if (!memory[room.name]) {
+      if (Config.VERBOSE) {
+        console.log('[MemoryManager] Refreshing mining positions...');
+      }
       memory[room.name] = {};
     }
     if (!memory[room.name]['unoccupied_mining_positions']) {
+      if (Config.VERBOSE) {
+        console.log('[MemoryManager] Refreshing mining positions...');
+      }
       memory[room.name]['unoccupied_mining_positions'] = [];
     }
   }
@@ -44,15 +50,22 @@ export namespace MemoryManager {
     for (let name in memory.creeps) {
       let creep: any = memory.creeps[name];
 
-      if (creep.room == room.name) {
+      if (creep.room === room.name) {
         if (!Game.creeps[name]) {
+          if (Config.VERBOSE) {
+            console.log('[MemoryManager] Clearing non-existing creep memory:', name);
+          }
+
           if (memory.creeps[name]['role'] === 'sourceMiner') {
-            memory[room.name]['unoccupied_mining_positions'].push(MemoryManager.memory.creeps[name]['occupied_mining_position']);
+            memory[room.name]['unoccupied_mining_positions'].push(memory.creeps[name]['occupied_mining_position']);
           }
 
           delete memory.creeps[name];
         }
-      } else if (_.keys(memory.creeps[name]).length == 0) {
+      } else if (_.keys(memory.creeps[name]).length === 0) {
+        if (Config.VERBOSE) {
+          console.log('[MemoryManager] Clearing non-existing creep memory:', name);
+        }
         delete memory.creeps[name];
       }
     }
