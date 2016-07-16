@@ -39,7 +39,7 @@ export namespace MemoryManager {
 
   /**
    * Clean up creep memory. Delete any creeps in memory that no longer exist in
-   * the game.
+   * a designated room.
    *
    * @export
    * @param {Room} room The current room.

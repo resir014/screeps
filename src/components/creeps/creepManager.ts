@@ -70,9 +70,6 @@ export namespace CreepManager {
     // default name (can be null)
     let name: string = null;
 
-    // default creep properties
-    let properties: { [key: string]: any } = null;
-
     if (room.energyCapacityAvailable <= 800) {
       bodyParts = [WORK, WORK, CARRY, MOVE];
     } else if (room.energyCapacityAvailable > 800 && room.energyCapacityAvailable <= 1200) {
@@ -88,38 +85,38 @@ export namespace CreepManager {
       }
 
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceMiner' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'sourceMiner');
       });
     } else if (sourceHaulers.length < JobManager.haulerJobs) {
       bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'sourceHauler' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'sourceHauler');
       });
     } else if (upgraders.length < JobManager.upgraderJobs) {
       // In case we ran out of creeps.
       if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'upgrader' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'upgrader');
       });
     } else if (builders.length < JobManager.builderJobs) {
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'builder' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'builder');
       });
     } else if (repairers.length < JobManager.repairerJobs) {
       // In case we ran out of creeps.
       if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'repairer' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'repairer');
       });
     } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
       // In case we ran out of creeps.
       if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
 
       _.each(SpawnManager.spawns, (spawn: Spawn) => {
-        SpawnManager.spawnCreep(spawn, bodyParts, { role: 'wallRepairer' });
+        SpawnManager.spawnCreep(spawn, bodyParts, 'wallRepairer');
       });
     }
   }
