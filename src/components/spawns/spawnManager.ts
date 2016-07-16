@@ -57,12 +57,16 @@ export namespace SpawnManager {
         console.log('[SpawnManager] Role: ' + role);
         console.log('[SpawnManager] Body: ' + body);
       }
-      return spawn.createCreep(body, null, properties);
+
+      status = spawn.createCreep(body, null, properties);
+
+      return _.isString(status) ? OK : status;
     } else {
       if (Config.VERBOSE) {
         console.log('[SpawnManager] Failed creating new creep: ' + status);
       }
-      return status = _.isString(status) ? OK : status;
+
+      return status;
     }
   }
 
