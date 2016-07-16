@@ -23,17 +23,17 @@ export namespace MemoryManager {
    * @param {Room} room The current room.
    */
   export function refreshMiningPositions(room: Room) {
-    if (!memory[room.name]) {
+    if (!memory['rooms'][room.name]) {
       if (Config.VERBOSE) {
         console.log('[MemoryManager] Refreshing mining positions...');
       }
-      memory[room.name] = {};
+      memory['rooms'][room.name] = {};
     }
-    if (!memory[room.name]['unoccupied_mining_positions']) {
+    if (!memory['rooms'][room.name]['unoccupied_mining_positions']) {
       if (Config.VERBOSE) {
         console.log('[MemoryManager] Refreshing mining positions...');
       }
-      memory[room.name]['unoccupied_mining_positions'] = [];
+      memory['rooms'][room.name]['unoccupied_mining_positions'] = [];
     }
   }
 
@@ -57,7 +57,7 @@ export namespace MemoryManager {
           }
 
           if (memory.creeps[name]['role'] === 'sourceMiner') {
-            memory[room.name]['unoccupied_mining_positions'].push(memory.creeps[name]['occupied_mining_position']);
+            memory['rooms'][room.name]['unoccupied_mining_positions'].push(memory.creeps[name]['occupied_mining_position']);
           }
 
           delete memory.creeps[name];

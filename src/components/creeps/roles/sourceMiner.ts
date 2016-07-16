@@ -15,7 +15,7 @@ export namespace SourceMiner {
    */
   export function run(creep: Creep, room: Room): void {
 
-    availablePositions = MemoryManager.memory[room.name]['unoccupied_mining_positions'];
+    availablePositions = MemoryManager.memory['rooms'][room.name]['unoccupied_mining_positions'];
 
     if (availablePositions.length > 0 && !creep.memory['occupied_mining_position']) {
       creep.memory['occupied_mining_position'] = availablePositions.pop();
@@ -24,7 +24,7 @@ export namespace SourceMiner {
         creep.memory['occupied_mining_position'].y,
         creep.memory['occupied_mining_position'].roomName
       );
-      MemoryManager.memory[room.name]['unoccupied_mining_positions'] = availablePositions;
+      MemoryManager.memory['rooms'][room.name]['unoccupied_mining_positions'] = availablePositions;
     } else {
       assignedPosition = new RoomPosition(
         creep.memory['occupied_mining_position'].x,
