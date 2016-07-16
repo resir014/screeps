@@ -43,9 +43,10 @@ export namespace SpawnManager {
    * @returns {(number | string)}
    */
   export function spawnCreep(spawn: Spawn, body: string[], properties: { [key: string]: any }): number | string {
-    let status = spawn.canCreateCreep(body, null);
+    let status: number | string = spawn.canCreateCreep(body, null);
 
-    if (status == OK) {
+    status = _.isString(status) ? OK : status;
+    if (status === OK) {
       if (Config.VERBOSE) {
         console.log('[SpawnManager] Started creating new creep');
       }
@@ -54,7 +55,7 @@ export namespace SpawnManager {
       if (Config.VERBOSE) {
         console.log('[SpawnManager] Failed creating new creep: ' + status);
       }
-      return status;
+      return status = _.isString(status) ? OK : status;
     }
   }
 
