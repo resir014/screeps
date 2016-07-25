@@ -92,7 +92,7 @@ export function run(creep: Creep, room: Room): void {
         }
       } else {
         targetExtensions = creep.room.find<Extension>(FIND_STRUCTURES, {
-          filter: (structure) => {
+          filter: (structure: Structure) => {
             if (structure.structureType == STRUCTURE_EXTENSION) {
               let extension = <Extension>structure;
               if (extension.energy < extension.energyCapacity) {
@@ -112,7 +112,7 @@ export function run(creep: Creep, room: Room): void {
           });
         } else {
           targetStorages = creep.room.find<Storage>(FIND_STRUCTURES, {
-            filter: (structure) => {
+            filter: (structure: Structure) => {
               if (structure.structureType == STRUCTURE_STORAGE) {
                 let storage = <Storage>structure;
                 if (_.sum(storage.store) < storage.storeCapacity) {

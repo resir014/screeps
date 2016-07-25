@@ -28,7 +28,7 @@ export function load() {
  * @returns {Room}
  */
 export function getFirstRoom(): Room {
-  return rooms[roomNames[0]];
+  return rooms[0];
 }
 
 /**

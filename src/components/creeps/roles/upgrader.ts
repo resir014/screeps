@@ -46,7 +46,7 @@ export function run(creep: Creep, room: Room): void {
         }
       } else {
         targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
-          filter: ((structure) => {
+          filter: ((structure: Structure) => {
             if (structure.structureType == STRUCTURE_CONTAINER) {
               let container: Container = <Container>structure;
               if (_.sum(container.store) > (500)) {

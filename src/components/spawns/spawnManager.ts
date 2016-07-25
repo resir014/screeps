@@ -28,7 +28,7 @@ export function load(room: Room) {
  * @returns {Spawn}
  */
 export function getFirstSpawn(): Spawn {
-  return spawns[spawnNames[0]];
+  return spawns[0];
 }
 
 /**
