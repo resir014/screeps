@@ -4,18 +4,18 @@
  * http://support.screeps.com/hc/en-us/articles/204825672-New-main-loop-architecture
  */
 
-import { Config } from './config/config';
-import { MemoryManager } from './shared/memoryManager';
-import { RoomManager } from './components/rooms/roomManager';
-import { JobManager } from './components/jobs/jobManager';
-import { SpawnManager } from './components/spawns/spawnManager';
-import { ControllerManager } from './components/controllers/controllerManager';
-import { SourceManager } from './components/sources/sourceManager';
-import { FlagManager } from './components/flags/flagManager';
-import { CreepManager } from './components/creeps/creepManager';
-import { ConstructionSiteManager } from './components/constructionSites/constructionSiteManager';
-import { StructureManager } from './components/structures/structureManager';
-import { TowerManager } from './components/towers/towerManager';
+import * as Config from './config/config';
+import * as MemoryManager from './shared/memoryManager';
+import * as RoomManager from './components/rooms/roomManager';
+import * as JobManager from './components/jobs/jobManager';
+import * as SpawnManager from './components/spawns/spawnManager';
+import * as ControllerManager from './components/controllers/controllerManager';
+import * as SourceManager from './components/sources/sourceManager';
+import * as FlagManager from './components/flags/flagManager';
+import * as CreepManager from './components/creeps/creepManager';
+import * as ConstructionSiteManager from './components/constructionSites/constructionSiteManager';
+import * as StructureManager from './components/structures/structureManager';
+import * as TowerManager from './components/towers/towerManager';
 
 // This code is executed only when Screeps system reloads your script.
 // Use this bootstrap wisely. You can cache some of your stuff to save CPU
