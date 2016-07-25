@@ -39,21 +39,33 @@ export namespace SpawnManager {
    * @export
    * @param {Spawn} spawn
    * @param {string[]} body
-   * @param {{ [key: string]: any }} properties
+   * @param {string} role
    * @returns {(number | string)}
    */
-  export function spawnCreep(spawn: Spawn, body: string[], properties: { [key: string]: any }): number | string {
-    let status = spawn.canCreateCreep(body, null);
+  export function spawnCreep(spawn: Spawn, body: string[], role: string): number | string {
+    let status: number | string = spawn.canCreateCreep(body, null);
 
-    if (status == OK) {
+    let properties: { [key: string]: any } = {
+      role: role,
+      room: spawn.room.name
+    };
+
+    status = _.isString(status) ? OK : status;
+    if (status === OK) {
       if (Config.VERBOSE) {
-        console.log('[SpawnManager] Started creating new creep');
+        console.log('[SpawnManager] Started creating new creep.');
+        console.log('[SpawnManager] Role: ' + role);
+        console.log('[SpawnManager] Body: ' + body);
       }
-      return spawn.createCreep(body, null, properties);
+
+      status = spawn.createCreep(body, null, properties);
+
+      return _.isString(status) ? OK : status;
     } else {
       if (Config.VERBOSE) {
         console.log('[SpawnManager] Failed creating new creep: ' + status);
       }
+
       return status;
     }
   }

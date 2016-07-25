@@ -107,34 +107,36 @@ export namespace StructureManager {
    * will never return a wall.
    *
    * @export
-   * @returns {Structure}
+   * @returns {Structure[]} an array of structures to repair.
    */
-  export function getStructuresToRepair(): Structure {
+  export function getStructuresToRepair(): Structure[] {
 
-    /* TODO - function name is getStructuresToRepair, but only returns a single
-       Structure. Can we refactor this so that this returns Structure[]? - sL */
+    let targets: Structure[];
 
-    let targets: Structure[] = structures.filter((structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+    // Initial search scope.
+    targets = structures.filter((structure: Structure) => {
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
         && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD
-          && structure.structureType !== STRUCTURE_RAMPART)));
+        && structure.structureType !== STRUCTURE_RAMPART)));
     });
 
+    // If nothing is found, expand search to include roads.
     if (targets.length == 0) {
       targets = structures.filter((structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
           && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
-      })
+      });
     }
 
+    // If we still find nothing, expand search to ramparts.
     if (targets.length == 0) {
       targets = structures.filter((structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
           && (structure.structureType !== STRUCTURE_WALL)));
-      })
+      });
     }
 
-    return targets[0];
+    return targets;
   }
 
   /**
@@ -143,19 +145,15 @@ export namespace StructureManager {
    * Returns `undefined` if there are no walls to be repaired.
    *
    * @export
-   * @returns {Structure}
+   * @returns {Structure[]} an array of walls to repair.
    */
-  export function getDefensiveStructuresToRepair(): Structure {
-
-    /* TODO - function name is getDefensiveStructuresToRepair, but only returns
-       a single Structure. Can we refactor this so that this returns Structure[]?
-       Also, this only returns walls. - sL */
+  export function getWallsToRepair(): Structure[] {
 
     let targets: Structure[] = structures.filter((structure: Structure) => {
-      return (structure.structureType === STRUCTURE_WALL && structure.hits < Config.MIN_WALL_HEALTH);
+      return ((structure.structureType === STRUCTURE_WALL) && structure.hits < 700000);
     });
 
-    return targets[0];
+    return targets;
   }
 
 }

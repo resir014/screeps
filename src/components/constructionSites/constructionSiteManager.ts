@@ -64,8 +64,7 @@ export namespace ConstructionSiteManager {
     } else if (storages.length > 0) {
       target = storages[0];
     } else {
-      let rand = Math.round(Math.random() * (constructionSites.length - 1) + 1);
-      target = constructionSites[rand];
+      target = constructionSites[0];
     }
 
     return target;
@@ -76,45 +75,33 @@ export namespace ConstructionSiteManager {
    * corresponding arrays.
    */
   function _loadStructureCounts(): void {
-    roads = constructionSites.filter((constructionSite: ConstructionSite) => {
-      return constructionSite.structureType === STRUCTURE_ROAD;
+    roads = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_ROAD;
     });
 
-    if (roads.length === 0) {
-      extensions = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_EXTENSION;
-      });
-    }
+    extensions = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_EXTENSION;
+    });
 
-    if (extensions.length === 0) {
-      containers = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_CONTAINER;
-      });
-    }
+    containers = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_CONTAINER;
+    });
 
-    if (containers.length === 0) {
-      walls = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_WALL;
-      });
-    }
+    walls = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_WALL;
+    });
 
-    if (walls.length === 0) {
-      ramparts = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_RAMPART;
-      });
-    }
+    ramparts = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_RAMPART;
+    });
 
-    if (ramparts.length === 0) {
-      towers = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_TOWER;
-      });
-    }
+    towers = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_TOWER;
+    });
 
-    if (towers.length === 0) {
-      storages = constructionSites.filter((constructionSite: ConstructionSite) => {
-        return constructionSite.structureType === STRUCTURE_STORAGE;
-      });
-    }
+    storages = constructionSites.filter((structure) => {
+      return structure.structureType === STRUCTURE_STORAGE;
+    });
   }
 
 }
