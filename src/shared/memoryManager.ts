@@ -1,5 +1,4 @@
 import { Config } from './../config/config';
-import { GameManager } from './../gameManager';
 import { CreepManager } from './../components/creeps/creepManager';
 import { SpawnManager } from './../components/spawns/spawnManager';
 import { SourceManager } from './../components/sources/sourceManager';

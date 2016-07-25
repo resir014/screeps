@@ -8,11 +8,11 @@
   },
   "compileOnSave": false,
   "exclude": "dist",
-  "files": ["typings/index.d.ts", "src/boot/main.ts"],
+  "files": ["typings/index.d.ts", "src/main.ts"],
   "bundles": {
     "main": {
       "files": [
-        "src/boot/main.ts"
+        "src/main.ts"
       ]
     }
   }
