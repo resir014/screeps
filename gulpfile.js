@@ -1,58 +1,72 @@
 'use strict';
 
-const gulp = require('gulp');
-const gutil = require('gulp-util');
-const tsproject = require('tsproject');
 const clean = require('gulp-clean');
-const runSequence = require('run-sequence');
-const https = require('https');
-const fs = require('fs');
+const gulp = require('gulp');
+const gulpDotFlatten = require('./libs/gulp-dot-flatten.js');
+const gulpRename = require('gulp-rename');
+const gulpScreepsUpload = require('./libs/gulp-screeps-upload.js');
+const path = require('path');
+const PluginError = require('gulp-util').PluginError;
+const ts = require('gulp-typescript');
+const tsconfigGlob = require('tsconfig-glob');
+const tslint = require('gulp-tslint');
+const tsconfig = ts.createProject('tsconfig.json');
 
 const config = require('./config.json');
+
+gulp.task('update-tsconfig-files', () => {
+  return tsconfigGlob({
+    configPath: '.',
+    indent: 2
+  });
+});
+
+gulp.task('lint', () => {
+  return gulp.src('./src/**/*.ts')
+    .pipe(tslint({ formatter: 'prose' }))
+    .pipe(tslint.report({
+      summarizeFailureOutput: true,
+      emitError: false
+    }));
+});
 
 gulp.task('clean', () => {
   return gulp.src('dist', { read: false })
     .pipe(clean());
 });
 
-gulp.task('compile', ['clean'], () => {
-  return tsproject.src('./tsconfig.json')
-    .pipe(gulp.dest('dist'));
+let compileFailed = false;
+
+gulp.task('compile', ['lint', 'clean', 'update-tsconfig-files'], () => {
+  compileFailed = false;
+  return tsconfig.src()
+    .pipe(ts(tsconfig))
+    .on('error', (err) => { compileFailed = true; })
+    .js.pipe(gulp.dest('dist'));
 });
 
-gulp.task('upload-sim', ['compile'], () => {
-  let screeps = {
-    email: config.email,
-    password: config.password,
-    data: {
-      branch: config.branch,
-      modules: {
-        main: fs.readFileSync('./dist/main.js', { encoding: "utf8" })
-      }
-    }
-  };
+gulp.task('checked-compile', ['compile'], () => {
+  if (!compileFailed)
+    return true;
+  throw new PluginError("gulp-typescript", "failed to compile: not executing further tasks");
+});
 
-  let req = https.request({
-    hostname: 'screeps.com',
-    port: 443,
-    path: '/api/user/code',
-    method: 'POST',
-    auth: screeps.email + ':' + screeps.password,
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    }
-  }, (res) => {
-    gutil.log('Build ' + gutil.colors.cyan('completed') + ' with HTTPS response ' + gutil.colors.magenta(res.statusCode));
-  });
+gulp.task('flatten', ['checked-compile'], () => {
+  return gulp.src('./dist/src/**/*.js')
+    .pipe(gulpDotFlatten(0))
+    .pipe(gulp.dest('./dist/flat'))
+});
 
-  req.write(JSON.stringify(screeps.data));
-  req.end();
+gulp.task('upload', ['flatten'], () => {
+  return gulp.src('./dist/flat/*.js')
+    .pipe(gulpRename(path => { path.extname = ''; }))
+    .pipe(gulpScreepsUpload(config.email, config.password, config.branch, 0))
 });
 
 gulp.task('watch', () => {
-  gulp.watch('./src/**/*.ts', ['compile']);
+  gulp.watch('./src/**/*.ts', ['build']);
 });
 
-gulp.task('build', ['upload-sim']);
-
+gulp.task('build', ['upload']);
+gulp.task('test', ['lint']);
 gulp.task('default', ['watch']);

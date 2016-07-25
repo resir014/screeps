@@ -4,16 +4,43 @@
     "target": "es6",
     "removeComments": true,
     "noResolve": false,
-    "noImplicitAny": false
+    "noImplicitAny": true,
+    "experimentalDecorators": true
   },
   "compileOnSave": false,
-  "exclude": "dist",
-  "files": ["typings/index.d.ts", "src/boot/main.ts"],
-  "bundles": {
-    "main": {
-      "files": [
-        "src/boot/main.ts"
-      ]
-    }
-  }
+  "exclude": [
+    "dist",
+    "node_modules",
+    "libs"
+  ],
+  "filesGlob": [
+    "typings/**/*.d.ts",
+    "src/**/*.ts"
+  ],
+  "files": [
+    "typings/globals/lodash/index.d.ts",
+    "typings/globals/screeps/index.d.ts",
+    "typings/index.d.ts",
+    "src/components/constructionSites/constructionSiteManager.ts",
+    "src/components/controllers/controllerManager.ts",
+    "src/components/creeps/creepManager.ts",
+    "src/components/creeps/roles/builder.ts",
+    "src/components/creeps/roles/repairer.ts",
+    "src/components/creeps/roles/sourceHauler.ts",
+    "src/components/creeps/roles/sourceMiner.ts",
+    "src/components/creeps/roles/upgrader.ts",
+    "src/components/creeps/roles/wallRepairer.ts",
+    "src/components/flags/flagManager.ts",
+    "src/components/jobs/jobManager.ts",
+    "src/components/minerals/mineralManager.ts",
+    "src/components/resources/resourceManager.ts",
+    "src/components/rooms/roomManager.ts",
+    "src/components/sources/sourceManager.ts",
+    "src/components/spawns/spawnManager.ts",
+    "src/components/structures/structureManager.ts",
+    "src/components/towers/towerManager.ts",
+    "src/config/config.ts",
+    "src/main.ts",
+    "src/shared/memoryManager.ts"
+  ]
 }
