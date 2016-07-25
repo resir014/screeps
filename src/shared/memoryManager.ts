@@ -23,6 +23,12 @@ export namespace MemoryManager {
    * @param {Room} room The current room.
    */
   export function refreshMiningPositions(room: Room) {
+    if (!memory['rooms']) {
+      if (Config.VERBOSE) {
+        console.log('[MemoryManager] Refreshing mining positions...');
+      }
+      memory['rooms'] = {};
+    }
     if (!memory['rooms'][room.name]) {
       if (Config.VERBOSE) {
         console.log('[MemoryManager] Refreshing mining positions...');
