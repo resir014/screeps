@@ -33,6 +33,15 @@ Then run the following the command to install the required npm packages and Type
 $ npm install
 ```
 
+### Initial setup
+
+If you just installed this code for the first time, it is **very important** that you perform the following tasks first!
+
+* Delete your currently active code. (This stops the game until you push the new code.)
+* Delete ALL currently active memory entries. (This will remove any memory conflicts.)
+
+You can also do these tasks to clean up your memory should things go wrong.
+
 ### Running the compiler
 
 ```bash
