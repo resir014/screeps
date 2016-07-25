@@ -6,6 +6,11 @@
     "forin": false,
     "interface-name": [false],
     "no-console": [false],
+    "no-shadowed-variable": false,
+    "no-string-literal": false,
+    "no-unused-variable": false,
+    "object-literal-sort-keys": false,
+    "trailing-comma": false,
     "variable-name": [
       true,
       "ban-keywords",
