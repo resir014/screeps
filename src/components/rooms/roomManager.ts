@@ -1,4 +1,4 @@
-import * as Config from './../../config/config';
+import * as Config from "./../../config/config";
 
 export let rooms: Room[] = [];
 export let roomNames: string[] = [];
@@ -17,7 +17,7 @@ export function load() {
 
   if (Config.VERBOSE) {
     let count = _.size(rooms);
-    console.log('[RoomManager] ' + count + ' rooms found.');
+    console.log("[RoomManager] " + count + " rooms found.");
   }
 }
 

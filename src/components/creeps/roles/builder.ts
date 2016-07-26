@@ -1,4 +1,4 @@
-import * as ConstructionSiteManager from "../../constructionSites/constructionSiteManager"
+import * as ConstructionSiteManager from "../../constructionSites/constructionSiteManager";
 
 export let constructionSites: ConstructionSite[] = ConstructionSiteManager.constructionSites;
 
@@ -14,15 +14,15 @@ export let targetConstructionSite: ConstructionSite;
  * @param {Room} room The current room.
  */
 export function run(creep: Creep, room: Room): void {
-  if (creep.memory['building'] && creep.carry.energy === 0) {
-    creep.memory['building'] = false;
+  if (creep.memory["building"] && creep.carry.energy === 0) {
+    creep.memory["building"] = false;
   }
 
   if (!creep.memory.building && creep.carry.energy === creep.carryCapacity) {
-    creep.memory['building'] = true;
+    creep.memory["building"] = true;
   }
 
-  if (creep.memory['building']) {
+  if (creep.memory["building"]) {
 
     targetConstructionSite = ConstructionSiteManager.getConstructionSite()
       ? ConstructionSiteManager.getConstructionSite()
@@ -48,8 +48,8 @@ export function run(creep: Creep, room: Room): void {
     } else {
       targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
         filter: ((structure: Structure) => {
-          if (structure.structureType == STRUCTURE_CONTAINER) {
-            let container = <Container>structure;
+          if (structure.structureType === STRUCTURE_CONTAINER) {
+            let container = <Container> structure;
             if (_.sum(container.store) > (500)) {
               return container;
             }

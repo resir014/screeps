@@ -1,4 +1,4 @@
-import * as Config from './../../config/config';
+import * as Config from "./../../config/config";
 
 export let spawns: Spawn[];
 export let spawnNames: string[] = [];
@@ -17,7 +17,7 @@ export function load(room: Room) {
   _loadSpawnNames();
 
   if (Config.VERBOSE) {
-    console.log('[SpawnManager] ' + spawnCount + ' spawns in room.');
+    console.log("[SpawnManager] " + spawnCount + " spawns in room.");
   }
 }
 
@@ -51,9 +51,9 @@ export function spawnCreep(spawn: Spawn, body: string[], role: string): number |
   status = _.isString(status) ? OK : status;
   if (status === OK) {
     if (Config.VERBOSE) {
-      console.log('[SpawnManager] Started creating new creep.');
-      console.log('[SpawnManager] Role: ' + role);
-      console.log('[SpawnManager] Body: ' + body);
+      console.log("[SpawnManager] Started creating new creep.");
+      console.log("[SpawnManager] Role: " + role);
+      console.log("[SpawnManager] Body: " + body);
     }
 
     status = spawn.createCreep(body, null, properties);
@@ -61,7 +61,7 @@ export function spawnCreep(spawn: Spawn, body: string[], role: string): number |
     return _.isString(status) ? OK : status;
   } else {
     if (Config.VERBOSE) {
-      console.log('[SpawnManager] Failed creating new creep: ' + status);
+      console.log("[SpawnManager] Failed creating new creep: " + status);
     }
 
     return status;

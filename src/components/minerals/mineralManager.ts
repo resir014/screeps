@@ -1,4 +1,4 @@
-import * as Config from './../../config/config';
+import * as Config from "./../../config/config";
 
 export let minerals: Mineral[];
 export let mineralCount: number = 0;
@@ -14,6 +14,6 @@ export function loadMinerals(room: Room) {
   mineralCount = _.size(minerals);
 
   if (Config.VERBOSE) {
-    console.log('[MineralManager] ' + mineralCount + ' minerals found.');
+    console.log("[MineralManager] " + mineralCount + " minerals found.");
   }
 }

@@ -1,5 +1,5 @@
-import * as Config from './../../config/config';
-import * as RoomManager from './../rooms/roomManager';
+import * as Config from "./../../config/config";
+import * as RoomManager from "./../rooms/roomManager";
 
 export let controller: Controller;
 

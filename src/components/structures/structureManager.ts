@@ -1,5 +1,5 @@
-import * as Config from './../../config/config';
-import * as RoomManager from './../rooms/roomManager';
+import * as Config from "./../../config/config";
+import * as RoomManager from "./../rooms/roomManager";
 
 export let structures: Structure[];
 export let structureCount: number = 0;
@@ -15,7 +15,7 @@ export function load(room: Room) {
   structureCount = _.size(structures);
 
   if (Config.VERBOSE) {
-    console.log('[StructureManager] ' + structureCount + ' structures in room.');
+    console.log("[StructureManager] " + structureCount + " structures in room.");
   }
 }
 
@@ -38,14 +38,14 @@ export function getFirstStructure(): Structure {
  */
 export function getStorageObject(): Structure {
   let targets: Structure[] = structures.filter((structure: StructureContainer) => {
-    return ((structure.structureType == STRUCTURE_CONTAINER)
+    return ((structure.structureType === STRUCTURE_CONTAINER)
       && _.sum(structure.store) < structure.storeCapacity);
   });
 
   // if we can't find any storage containers, use either the extension or spawn.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure: StructureExtension) => {
-      return ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+      return ((structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN) &&
         structure.energy < structure.energyCapacity);
     });
   }
@@ -63,32 +63,32 @@ export function getStorageObject(): Structure {
 export function getDropOffPoint(): Structure {
   let targets: Structure[] = structures.filter((structure) => {
     if (structure instanceof Spawn) {
-      return ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
+      return ((structure.structureType === STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);
     }
   });
 
   // If the spawn is full, we'll find any extensions/towers.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure) => {
       if (structure instanceof StructureExtension) {
-        return ((structure.structureType == STRUCTURE_EXTENSION)
+        return ((structure.structureType === STRUCTURE_EXTENSION)
           && structure.energy < structure.energyCapacity);
       }
     });
   }
 
   // Or if that's filled as well, look for towers.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure: StructureTower) => {
-      return ((structure.structureType == STRUCTURE_TOWER)
+      return ((structure.structureType === STRUCTURE_TOWER)
         && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.5));
     });
   }
 
   // Otherwise, look for storage containers.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure: StructureStorage) => {
-      return ((structure.structureType == STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity);
+      return ((structure.structureType === STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity);
     });
   }
   return targets[0];
@@ -96,7 +96,7 @@ export function getDropOffPoint(): Structure {
 
 /**
  * Get the first available structure that needs repair.
-
+ *
  * This does *not* initially include defensive structures (walls, roads,
  * ramparts). If there are no such structures to be repaired, this expands to
  * include roads, then ramparts.
@@ -119,7 +119,7 @@ export function getStructuresToRepair(): Structure[] {
   });
 
   // If nothing is found, expand search to include roads.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure: Structure) => {
       return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
         && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
@@ -127,7 +127,7 @@ export function getStructuresToRepair(): Structure[] {
   }
 
   // If we still find nothing, expand search to ramparts.
-  if (targets.length == 0) {
+  if (targets.length === 0) {
     targets = structures.filter((structure: Structure) => {
       return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
         && (structure.structureType !== STRUCTURE_WALL)));
