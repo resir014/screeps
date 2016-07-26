@@ -23,6 +23,7 @@
     "typings/index.d.ts",
     "src/components/constructionSites/constructionSiteManager.ts",
     "src/components/controllers/controllerManager.ts",
+    "src/components/creeps/creepAction.ts",
     "src/components/creeps/creepManager.ts",
     "src/components/creeps/roles/builder.ts",
     "src/components/creeps/roles/repairer.ts",
