@@ -1,4 +1,5 @@
 import * as Config from "./../../config/config";
+import * as MemoryManager from "./../../shared/memoryManager";
 
 export let spawns: Spawn[];
 export let spawnNames: string[] = [];
@@ -41,6 +42,7 @@ export function getFirstSpawn(): Spawn {
  * @returns {(number | string)}
  */
 export function spawnCreep(spawn: Spawn, body: string[], role: string): number | string {
+  let uuid: number = MemoryManager.memory["uuid"];
   let status: number | string = spawn.canCreateCreep(body, null);
 
   let properties: { [key: string]: any } = {
@@ -50,13 +52,15 @@ export function spawnCreep(spawn: Spawn, body: string[], role: string): number |
 
   status = _.isString(status) ? OK : status;
   if (status === OK) {
+    MemoryManager.memory["uuid"] = uuid + 1;
+    let creepName: string = spawn.room.name + " - " + role + uuid;
+
+    console.log("[SpawnManager] Started creating new creep: " + creepName);
     if (Config.VERBOSE) {
-      console.log("[SpawnManager] Started creating new creep.");
-      console.log("[SpawnManager] Role: " + role);
       console.log("[SpawnManager] Body: " + body);
     }
 
-    status = spawn.createCreep(body, null, properties);
+    status = spawn.createCreep(body, creepName, properties);
 
     return _.isString(status) ? OK : status;
   } else {
