@@ -3,7 +3,7 @@
  *
  * @type {boolean}
  */
-export const VERBOSE: boolean = true;
+export const VERBOSE: boolean = false;
 
 /**
  * @type {number}
