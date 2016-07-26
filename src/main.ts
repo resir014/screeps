@@ -35,6 +35,11 @@ export function loop() {
   // This is executed every tick
   MemoryManager.loadMemory();
 
+  // Check memory for null or out of bounds custom objects
+  if (!MemoryManager.memory["uuid"] || MemoryManager.memory["uuid"] > 100) {
+    MemoryManager.memory["uuid"] = 0;
+  }
+
   // specifies whether or not to use the new, experimental PathFinder object.
   PathFinder.use(true);
 
