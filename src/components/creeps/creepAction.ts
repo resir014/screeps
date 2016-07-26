@@ -31,7 +31,7 @@ export class CreepAction {
   /**
    * Creates an instance of CreepAction.
    *
-   * @param {Creep} creep
+   * @param {Creep} creep The current creep.
    */
   constructor(creep: Creep) {
     this.creep = creep;
