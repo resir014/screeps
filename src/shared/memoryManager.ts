@@ -51,9 +51,7 @@ export function cleanupCreepMemory(room: Room): void {
 
     if (creep.room === room.name) {
       if (!Game.creeps[name]) {
-        if (Config.VERBOSE) {
-          console.log("[MemoryManager] Clearing non-existing creep memory:", name);
-        }
+        console.log("[MemoryManager] Clearing non-existing creep memory:", name);
 
         if (memory.creeps[name]["role"] === "sourceMiner") {
           memory["rooms"][room.name]["unoccupied_mining_positions"]
@@ -63,9 +61,7 @@ export function cleanupCreepMemory(room: Room): void {
         delete memory.creeps[name];
       }
     } else if (_.keys(memory.creeps[name]).length === 0) {
-      if (Config.VERBOSE) {
-        console.log("[MemoryManager] Clearing non-existing creep memory:", name);
-      }
+      console.log("[MemoryManager] Clearing non-existing creep memory:", name);
       delete memory.creeps[name];
     }
   }
