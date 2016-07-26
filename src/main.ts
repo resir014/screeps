@@ -6,8 +6,8 @@
 
 import * as Config from "./config/config";
 import * as MemoryManager from "./shared/memoryManager";
+import * as JobManager from "./shared/jobManager";
 import * as RoomManager from "./components/rooms/roomManager";
-import * as JobManager from "./components/jobs/jobManager";
 import * as SpawnManager from "./components/spawns/spawnManager";
 import * as ControllerManager from "./components/controllers/controllerManager";
 import * as SourceManager from "./components/sources/sourceManager";

@@ -1,41 +1,59 @@
 import * as MemoryManager from "./../../../shared/memoryManager";
-
-export let availablePositions: RoomPosition[];
-export let assignedPosition: RoomPosition;
-export let targetSource: Source;
+import { CreepAction } from "../creepAction";
 
 /**
- * Run all SourceMiner actions.
+ * Harvests all available sources and drops it wherever they stand.
  *
  * @export
- * @param {Creep} creep The current creep.
- * @param {Room} room The current room.
+ * @class SourceMiner
+ * @extends {CreepAction}
  */
-export function run(creep: Creep, room: Room): void {
+export class SourceMiner extends CreepAction {
+  private room: Room;
 
-  availablePositions = MemoryManager.memory["rooms"][room.name]["unoccupied_mining_positions"];
-
-  if (availablePositions.length > 0 && !creep.memory["occupied_mining_position"]) {
-    creep.memory["occupied_mining_position"] = availablePositions.pop();
-    assignedPosition = new RoomPosition(
-      creep.memory["occupied_mining_position"].x,
-      creep.memory["occupied_mining_position"].y,
-      creep.memory["occupied_mining_position"].roomName
-    );
-    MemoryManager.memory["rooms"][room.name]["unoccupied_mining_positions"] = availablePositions;
-  } else {
-    assignedPosition = new RoomPosition(
-      creep.memory["occupied_mining_position"].x,
-      creep.memory["occupied_mining_position"].y,
-      creep.memory["occupied_mining_position"].roomName
-    );
+  /**
+   * Creates an instance of SourceMiner.
+   *
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
+  constructor(creep: Creep, room: Room) {
+    super(creep);
+    this.room = room;
   }
 
-  if (creep.pos.isEqualTo(assignedPosition)) {
-    targetSource = creep.pos.findClosestByPath<Source>(FIND_SOURCES);
-    creep.harvest(targetSource);
-  } else {
-    creep.moveTo(assignedPosition);
+  /**
+   * Run all SourceMiner actions.
+   */
+  public run(): void {
+
+    let availablePositions: RoomPosition[] = MemoryManager
+      .memory["rooms"][this.room.name]["unoccupied_mining_positions"];
+    let assignedPosition: RoomPosition;
+
+    if (availablePositions.length > 0 && !this.creep.memory["occupied_mining_position"]) {
+      this.creep.memory["occupied_mining_position"] = availablePositions.pop();
+      assignedPosition = new RoomPosition(
+        this.creep.memory["occupied_mining_position"].x,
+        this.creep.memory["occupied_mining_position"].y,
+        this.creep.memory["occupied_mining_position"].roomName
+      );
+      MemoryManager.memory["rooms"][this.room.name]["unoccupied_mining_positions"] = availablePositions;
+    } else {
+      assignedPosition = new RoomPosition(
+        this.creep.memory["occupied_mining_position"].x,
+        this.creep.memory["occupied_mining_position"].y,
+        this.creep.memory["occupied_mining_position"].roomName
+      );
+    }
+
+    if (this.creep.pos.isEqualTo(assignedPosition)) {
+      let targetSource = this.creep.pos.findClosestByPath<Source>(FIND_SOURCES);
+      this.creep.harvest(targetSource);
+    } else {
+      this.moveTo(assignedPosition);
+    }
+
   }
 
 }

@@ -22,21 +22,12 @@ export function loadMemory(): void {
  */
 export function refreshMiningPositions(room: Room) {
   if (!memory["rooms"]) {
-    if (Config.VERBOSE) {
-      console.log("[MemoryManager] Refreshing mining positions...");
-    }
     memory["rooms"] = {};
   }
   if (!memory["rooms"][room.name]) {
-    if (Config.VERBOSE) {
-      console.log("[MemoryManager] Refreshing mining positions...");
-    }
     memory["rooms"][room.name] = {};
   }
   if (!memory["rooms"][room.name]["unoccupied_mining_positions"]) {
-    if (Config.VERBOSE) {
-      console.log("[MemoryManager] Refreshing mining positions...");
-    }
     memory["rooms"][room.name]["unoccupied_mining_positions"] = [];
   }
 }
@@ -50,6 +41,10 @@ export function refreshMiningPositions(room: Room) {
  */
 export function cleanupCreepMemory(room: Room): void {
   // refactor: brought in from gameManager
+  // out of bounds check for creep memory entries
+  if (!memory.creeps) {
+    memory.creeps = {};
+  }
   // clean up memory for deleted creeps
   for (let name in memory.creeps) {
     let creep: any = memory.creeps[name];

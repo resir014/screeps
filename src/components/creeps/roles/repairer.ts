@@ -1,55 +1,95 @@
 import * as StructureManager from "./../../structures/structureManager";
-
-export let structuresToRepair: Structure[];
-
-export let targetSource: Resource;
-export let targetContainer: Container;
+import { CreepAction } from "../creepAction";
 
 /**
- * Run all Repairer actions.
+ * Collects energy and uses it to repair any structures that needs repair.
  *
  * @export
- * @param {Creep} creep The current creep.
- * @param {Room} room The current room.
+ * @class Repairer
+ * @extends {CreepAction}
  */
-export function run(creep: Creep, room: Room): void {
+export class Repairer extends CreepAction {
 
-  if (_.sum(creep.carry) > 0) {
-    structuresToRepair = StructureManager.getStructuresToRepair();
+  private room: Room;
+  private structures: Structure[];
 
-    if (structuresToRepair) {
-      if (creep.pos.isNearTo(structuresToRepair[0])) {
-        creep.repair(structuresToRepair[0]);
-      } else {
-        creep.moveTo(structuresToRepair[0]);
-      }
-    }
-  } else {
-    targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+  private targetSource: Resource;
+  private targetContainer: Container;
 
-    if (targetSource) {
-      if (creep.pos.isNearTo(targetSource)) {
-        creep.pickup(targetSource);
-      } else {
-        creep.moveTo(targetSource);
+  /**
+   * Creates an instance of Repairer.
+   *
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
+  constructor(creep: Creep, room: Room) {
+    super(creep);
+    this.room = room;
+    this.structures = StructureManager.structures;
+  }
+
+  /**
+   * Run all Repairer actions.
+   */
+  public run(): void {
+
+    if (_.sum(this.creep.carry) > 0) {
+      let structuresToRepair = this.getStructuresToRepair(this.structures);
+
+      if (structuresToRepair) {
+        if (this.creep.pos.isNearTo(structuresToRepair[0])) {
+          this.creep.repair(structuresToRepair[0]);
+        } else {
+          this.moveTo(structuresToRepair[0]);
+        }
       }
     } else {
-      targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
-        filter: ((structure: Structure) => {
-          if (structure.structureType === STRUCTURE_CONTAINER) {
-            let container = <Container> structure;
-            if (_.sum(container.store) > (500)) {
-              return container;
-            }
-          }
-        })
-      });
-
-      if (creep.pos.isNearTo(targetContainer)) {
-        creep.withdraw(targetContainer, RESOURCE_ENERGY);
-      } else {
-        creep.moveTo(targetContainer);
-      }
+      this.tryRetrieveEnergy();
     }
   }
+
+  /**
+   * Get an array of structures that needs repair.
+   *
+   * This does *not* initially include defensive structures (walls, roads,
+   * ramparts). If there are no such structures to be repaired, this expands to
+   * include roads, then ramparts.
+   *
+   * Returns `undefined` if there are no structures to be repaired. This function
+   * will never return a wall.
+   *
+   * @export
+   * @param {Structure[]} structures The list of structures.
+   * @returns {Structure[]} an array of structures to repair.
+   */
+  private getStructuresToRepair(structures: Structure[]): Structure[] {
+
+    let targets: Structure[];
+
+    // Initial search scope.
+    targets = structures.filter((structure: Structure) => {
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+        && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD
+          && structure.structureType !== STRUCTURE_RAMPART)));
+    });
+
+    // If nothing is found, expand search to include roads.
+    if (targets.length === 0) {
+      targets = structures.filter((structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+          && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
+      });
+    }
+
+    // If we still find nothing, expand search to ramparts.
+    if (targets.length === 0) {
+      targets = structures.filter((structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+          && (structure.structureType !== STRUCTURE_WALL)));
+      });
+    }
+
+    return targets;
+  }
+
 }

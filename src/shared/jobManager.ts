@@ -1,4 +1,4 @@
-import * as Config from "./../../config/config";
+import * as Config from "./../config/config";
 
 export let sourceMiningJobs: number = 0;
 

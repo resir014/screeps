@@ -1,17 +1,18 @@
 import * as Config from "./../../config/config";
 import * as MemoryManager from "./../../shared/memoryManager";
-import * as JobManager from "./../jobs/jobManager";
+import * as JobManager from "./../../shared/jobManager";
 import * as SourceManager from "./../sources/sourceManager";
 import * as SpawnManager from "./../spawns/spawnManager";
 import * as StructureManager from "./../structures/structureManager";
 import * as ConstructionSiteManager from "./../constructionSites/constructionSiteManager";
 import * as ControllerManager from "./../controllers/controllerManager";
-import * as SourceMiner from "./roles/sourceMiner";
-import * as SourceHauler from "./roles/sourceHauler";
-import * as Upgrader from "./roles/upgrader";
-import * as Builder from "./roles/builder";
-import * as Repairer from "./roles/repairer";
-import * as WallRepairer from "./roles/wallRepairer";
+
+import { SourceMiner } from "./roles/sourceMiner";
+import { SourceHauler } from "./roles/sourceHauler";
+import { Upgrader } from "./roles/upgrader";
+import { Builder } from "./roles/builder";
+import { Repairer } from "./roles/repairer";
+import { WallRepairer } from "./roles/wallRepairer";
 
 export let creeps: Creep[];
 export let creepNames: string[] = [];
@@ -141,27 +142,33 @@ function _creepsGoToWork(room: Room): void {
 
   _.each(creeps, (creep: Creep, creepName: string) => {
     if (creep.memory.role === "sourceMiner") {
-      SourceMiner.run(creep, room);
+      let sourceMiner = new SourceMiner(creep, room);
+      sourceMiner.run();
       sourceMiners.push(creep);
     }
     if (creep.memory.role === "sourceHauler") {
-      SourceHauler.run(creep, room);
+      let sourceHauler = new SourceHauler(creep, room);
+      sourceHauler.run();
       sourceHaulers.push(creep);
     }
     if (creep.memory.role === "upgrader") {
-      Upgrader.run(creep, room);
+      let upgrader = new Upgrader(creep, room);
+      upgrader.run();
       upgraders.push(creep);
     }
     if (creep.memory.role === "builder") {
-      Builder.run(creep, room);
+      let builder = new Builder(creep, room);
+      builder.run();
       builders.push(creep);
     }
     if (creep.memory.role === "repairer") {
-      Repairer.run(creep, room);
+      let repairer = new Repairer(creep, room);
+      repairer.run();
       repairers.push(creep);
     }
     if (creep.memory.role === "wallRepairer") {
-      WallRepairer.run(creep, room);
+      let wallRepairer = new WallRepairer(creep, room);
+      wallRepairer.run();
       wallRepairers.push(creep);
     }
   });

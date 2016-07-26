@@ -17,6 +17,14 @@
       "check-format",
       "allow-pascal-case",
       "allow-leading-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
     ]
   }
 }

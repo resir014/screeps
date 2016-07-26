@@ -1,55 +1,66 @@
 import * as StructureManager from "./../../structures/structureManager";
-
-export let structuresToRepair: Structure[];
-
-export let targetSource: Resource;
-export let targetContainer: Container;
+import { CreepAction } from "../creepAction";
 
 /**
- * Run all WallRepairer actions.
+ * Collects energy and uses it to repair any walls that needs repair.
  *
  * @export
- * @param {Creep} creep The current creep.
- * @param {Room} room The current room.
+ * @class WallRepairer
+ * @extends {CreepAction}
  */
-export function run(creep: Creep, room: Room): void {
+export class WallRepairer extends CreepAction {
 
-  if (_.sum(creep.carry) > 0) {
-    structuresToRepair = StructureManager.getWallsToRepair();
+  private room: Room;
+  private structures: Structure[];
 
-    if (structuresToRepair) {
-      if (creep.pos.isNearTo(structuresToRepair[0])) {
-        creep.repair(structuresToRepair[0]);
-      } else {
-        creep.moveTo(structuresToRepair[0]);
-      }
-    }
-  } else {
-    targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+  /**
+   * Creates an instance of WallRepairer.
+   *
+   * @param {Creep} creep The current creep.
+   * @param {Room} room The current room.
+   */
+  constructor(creep: Creep, room: Room) {
+    super(creep);
+    this.room = room;
+    this.structures = StructureManager.structures;
+  }
 
-    if (targetSource) {
-      if (creep.pos.isNearTo(targetSource)) {
-        creep.pickup(targetSource);
-      } else {
-        creep.moveTo(targetSource);
+  /**
+   * Run all WallRepairer actions.
+   */
+  public run(): void {
+
+    if (_.sum(this.creep.carry) > 0) {
+      let structuresToRepair = this.getWallsToRepair(this.structures);
+
+      if (structuresToRepair) {
+        if (this.creep.pos.isNearTo(structuresToRepair[0])) {
+          this.creep.repair(structuresToRepair[0]);
+        } else {
+          this.moveTo(structuresToRepair[0]);
+        }
       }
     } else {
-      targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
-        filter: ((structure: Structure) => {
-          if (structure.structureType === STRUCTURE_CONTAINER) {
-            let container: Container = <Container> structure;
-            if (_.sum(container.store) > (500)) {
-              return container;
-            }
-          }
-        })
-      });
-
-      if (creep.pos.isNearTo(targetContainer)) {
-        creep.withdraw(targetContainer, RESOURCE_ENERGY);
-      } else {
-        creep.moveTo(targetContainer);
-      }
+      this.tryRetrieveEnergy();
     }
   }
+
+  /**
+   * Get an array of walls that needs repair.
+   *
+   * Returns `undefined` if there are no walls to be repaired.
+   *
+   * @export
+   * @param {Structure[]} structures The list of structures.
+   * @returns {Structure[]} an array of walls to repair.
+   */
+  private getWallsToRepair(structures: Structure[]): Structure[] {
+
+    let targets: Structure[] = structures.filter((structure: Structure) => {
+      return ((structure.structureType === STRUCTURE_WALL) && structure.hits < 700000);
+    });
+
+    return targets;
+  }
+
 }
