@@ -40,8 +40,8 @@
     "src/components/structures/structureManager.ts",
     "src/components/towers/towerManager.ts",
     "src/config/config.ts",
+    "src/main.ts",
     "src/shared/jobManager.ts",
-    "src/shared/memoryManager.ts",
-    "src/main.ts"
+    "src/shared/memoryManager.ts"
   ]
 }
