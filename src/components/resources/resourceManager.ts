@@ -1,4 +1,4 @@
-import * as Config from './../../config/config';
+import * as Config from "./../../config/config";
 
 export let resources: Resource[];
 export let resourceCount: number = 0;
@@ -14,6 +14,6 @@ export function loadResources(room: Room) {
   resourceCount = _.size(resources);
 
   if (Config.VERBOSE) {
-    console.log('[ResourceManager]' + resourceCount + ' dropped resources found.');
+    console.log("[ResourceManager]" + resourceCount + " dropped resources found.");
   }
 }

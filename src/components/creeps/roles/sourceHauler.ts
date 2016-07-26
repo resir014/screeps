@@ -15,15 +15,15 @@ export let targetStorages: Storage[];
  * @param {Room} room The current room.
  */
 export function run(creep: Creep, room: Room): void {
-  if (typeof creep.memory['delivering'] == 'undefined') {
-    creep.memory['delivering'] = false;
+  if (typeof creep.memory["delivering"] === "undefined") {
+    creep.memory["delivering"] = false;
   }
 
-  if (_.sum(creep.carry) == 0) {
-    creep.memory['delivering'] = false;
+  if (_.sum(creep.carry) === 0) {
+    creep.memory["delivering"] = false;
   }
 
-  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory['delivering']) {
+  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory["delivering"]) {
     targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
     if (targetSource) {
@@ -35,8 +35,8 @@ export function run(creep: Creep, room: Room): void {
     } else {
       targetContainers = creep.room.find<Container>(FIND_STRUCTURES, {
         filter: (structure: Structure) => {
-          if (structure.structureType == STRUCTURE_CONTAINER) {
-            let container: Container = <Container>structure;
+          if (structure.structureType === STRUCTURE_CONTAINER) {
+            let container: Container = <Container> structure;
             if (_.sum(container.store) > 200) {
               return container;
             }
@@ -51,22 +51,22 @@ export function run(creep: Creep, room: Room): void {
           } else {
             creep.moveTo(container);
           }
-        })
+        });
       } else {
         targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
           filter: (structure: Container) => {
-            return structure.structureType == STRUCTURE_CONTAINER
+            return structure.structureType === STRUCTURE_CONTAINER;
           }
         });
         creep.moveTo(targetContainer);
       }
     }
   } else {
-    creep.memory['delivering'] = true;
+    creep.memory["delivering"] = true;
     targetTowers = creep.room.find<Tower>(FIND_STRUCTURES, {
       filter: (structure: Structure) => {
-        if (structure.structureType == STRUCTURE_TOWER) {
-          let tower: Tower = <Tower>structure;
+        if (structure.structureType === STRUCTURE_TOWER) {
+          let tower: Tower = <Tower> structure;
           if (tower.energy < tower.energyCapacity) {
             return tower;
           }
@@ -93,8 +93,8 @@ export function run(creep: Creep, room: Room): void {
       } else {
         targetExtensions = creep.room.find<Extension>(FIND_STRUCTURES, {
           filter: (structure: Structure) => {
-            if (structure.structureType == STRUCTURE_EXTENSION) {
-              let extension = <Extension>structure;
+            if (structure.structureType === STRUCTURE_EXTENSION) {
+              let extension = <Extension> structure;
               if (extension.energy < extension.energyCapacity) {
                 return extension;
               }
@@ -113,8 +113,8 @@ export function run(creep: Creep, room: Room): void {
         } else {
           targetStorages = creep.room.find<Storage>(FIND_STRUCTURES, {
             filter: (structure: Structure) => {
-              if (structure.structureType == STRUCTURE_STORAGE) {
-                let storage = <Storage>structure;
+              if (structure.structureType === STRUCTURE_STORAGE) {
+                let storage = <Storage> structure;
                 if (_.sum(storage.store) < storage.storeCapacity) {
                   return storage;
                 }

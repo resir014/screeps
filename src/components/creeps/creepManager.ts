@@ -1,17 +1,17 @@
-import * as Config from './../../config/config';
-import * as MemoryManager from './../../shared/memoryManager';
-import * as JobManager from './../jobs/jobManager';
-import * as SourceManager from './../sources/sourceManager';
-import * as SpawnManager from './../spawns/spawnManager';
-import * as StructureManager from './../structures/structureManager';
-import * as ConstructionSiteManager from './../constructionSites/constructionSiteManager';
-import * as ControllerManager from './../controllers/controllerManager';
-import * as SourceMiner from './roles/sourceMiner';
-import * as SourceHauler from './roles/sourceHauler';
-import * as Upgrader from './roles/upgrader';
-import * as Builder from './roles/builder';
-import * as Repairer from './roles/repairer';
-import * as WallRepairer from './roles/wallRepairer';
+import * as Config from "./../../config/config";
+import * as MemoryManager from "./../../shared/memoryManager";
+import * as JobManager from "./../jobs/jobManager";
+import * as SourceManager from "./../sources/sourceManager";
+import * as SpawnManager from "./../spawns/spawnManager";
+import * as StructureManager from "./../structures/structureManager";
+import * as ConstructionSiteManager from "./../constructionSites/constructionSiteManager";
+import * as ControllerManager from "./../controllers/controllerManager";
+import * as SourceMiner from "./roles/sourceMiner";
+import * as SourceHauler from "./roles/sourceHauler";
+import * as Upgrader from "./roles/upgrader";
+import * as Builder from "./roles/builder";
+import * as Repairer from "./roles/repairer";
+import * as WallRepairer from "./roles/wallRepairer";
 
 export let creeps: Creep[];
 export let creepNames: string[] = [];
@@ -47,7 +47,7 @@ function _loadCreeps(room: Room): void {
   _loadCreepRoles();
 
   if (Config.VERBOSE) {
-    console.log('[CreepManager] ' + creepCount + ' creeps found in the playground.');
+    console.log("[CreepManager] " + creepCount + " creeps found in the playground.");
   }
 }
 
@@ -83,38 +83,44 @@ function _buildMissingCreeps(room: Room): void {
     }
 
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'sourceMiner');
+      SpawnManager.spawnCreep(spawn, bodyParts, "sourceMiner");
     });
   } else if (sourceHaulers.length < JobManager.haulerJobs) {
     bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'sourceHauler');
+      SpawnManager.spawnCreep(spawn, bodyParts, "sourceHauler");
     });
   } else if (upgraders.length < JobManager.upgraderJobs) {
     // In case we ran out of creeps.
-    if (upgraders.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+    if (upgraders.length < 1) {
+      bodyParts = [WORK, WORK, CARRY, MOVE];
+    }
 
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'upgrader');
+      SpawnManager.spawnCreep(spawn, bodyParts, "upgrader");
     });
   } else if (builders.length < JobManager.builderJobs) {
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'builder');
+      SpawnManager.spawnCreep(spawn, bodyParts, "builder");
     });
   } else if (repairers.length < JobManager.repairerJobs) {
     // In case we ran out of creeps.
-    if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+    if (repairers.length < 1) {
+      bodyParts = [WORK, WORK, CARRY, MOVE];
+    }
 
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'repairer');
+      SpawnManager.spawnCreep(spawn, bodyParts, "repairer");
     });
   } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
     // In case we ran out of creeps.
-    if (repairers.length < 1) bodyParts = [WORK, WORK, CARRY, MOVE];
+    if (repairers.length < 1) {
+      bodyParts = [WORK, WORK, CARRY, MOVE];
+    }
 
     _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, 'wallRepairer');
+      SpawnManager.spawnCreep(spawn, bodyParts, "wallRepairer");
     });
   }
 }
@@ -134,39 +140,39 @@ function _creepsGoToWork(room: Room): void {
   let wallRepairers: Creep[] = [];
 
   _.each(creeps, (creep: Creep, creepName: string) => {
-    if (creep.memory.role == 'sourceMiner') {
+    if (creep.memory.role === "sourceMiner") {
       SourceMiner.run(creep, room);
       sourceMiners.push(creep);
     }
-    if (creep.memory.role == 'sourceHauler') {
+    if (creep.memory.role === "sourceHauler") {
       SourceHauler.run(creep, room);
       sourceHaulers.push(creep);
     }
-    if (creep.memory.role == 'upgrader') {
+    if (creep.memory.role === "upgrader") {
       Upgrader.run(creep, room);
       upgraders.push(creep);
     }
-    if (creep.memory.role == 'builder') {
+    if (creep.memory.role === "builder") {
       Builder.run(creep, room);
       builders.push(creep);
     }
-    if (creep.memory.role == 'repairer') {
+    if (creep.memory.role === "repairer") {
       Repairer.run(creep, room);
       repairers.push(creep);
     }
-    if (creep.memory.role == 'wallRepairer') {
+    if (creep.memory.role === "wallRepairer") {
       WallRepairer.run(creep, room);
       wallRepairers.push(creep);
     }
   });
 
   if (Config.VERBOSE) {
-    console.log('[CreepManager] ' + sourceMiners.length + ' miners reported on duty today!');
-    console.log('[CreepManager] ' + sourceHaulers.length + ' haulers reported on duty today!');
-    console.log('[CreepManager] ' + upgraders.length + ' upgraders reported on duty today!');
-    console.log('[CreepManager] ' + builders.length + ' builders reported on duty today!');
-    console.log('[CreepManager] ' + repairers.length + ' repairers reported on duty today!');
-    console.log('[CreepManager] ' + wallRepairers.length + ' wall repairers reported on duty today!');
+    console.log("[CreepManager] " + sourceMiners.length + " miners reported on duty today!");
+    console.log("[CreepManager] " + sourceHaulers.length + " haulers reported on duty today!");
+    console.log("[CreepManager] " + upgraders.length + " upgraders reported on duty today!");
+    console.log("[CreepManager] " + builders.length + " builders reported on duty today!");
+    console.log("[CreepManager] " + repairers.length + " repairers reported on duty today!");
+    console.log("[CreepManager] " + wallRepairers.length + " wall repairers reported on duty today!");
   }
 
 }
@@ -188,10 +194,10 @@ function _loadCreepNames(): void {
  */
 function _loadCreepRoles(): void {
   // TODO: find a way to avoid API calls.
-  sourceMiners = _.filter(creeps, (creep) => creep.memory.role == 'sourceMiner');
-  sourceHaulers = _.filter(creeps, (creep) => creep.memory.role == 'sourceHauler');
-  upgraders = _.filter(creeps, (creep) => creep.memory.role == 'upgrader');
-  builders = _.filter(creeps, (creep) => creep.memory.role == 'builder');
-  repairers = _.filter(creeps, (creep) => creep.memory.role == 'repairer');
-  wallRepairers = _.filter(creeps, (creep) => creep.memory.role == 'wallRepairer');
+  sourceMiners = _.filter(creeps, (creep) => creep.memory.role === "sourceMiner");
+  sourceHaulers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  upgraders = _.filter(creeps, (creep) => creep.memory.role === "upgrader");
+  builders = _.filter(creeps, (creep) => creep.memory.role === "builder");
+  repairers = _.filter(creeps, (creep) => creep.memory.role === "repairer");
+  wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "wallRepairer");
 }

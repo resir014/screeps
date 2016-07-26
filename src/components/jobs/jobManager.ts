@@ -1,4 +1,4 @@
-import * as Config from './../../config/config';
+import * as Config from "./../../config/config";
 
 export let sourceMiningJobs: number = 0;
 
@@ -17,6 +17,6 @@ export function load() {
   sourceMiningJobs = 2;
 
   if (Config.VERBOSE) {
-    console.log("[JobManager] Successfully loaded")
+    console.log("[JobManager] Successfully loaded");
   }
 }

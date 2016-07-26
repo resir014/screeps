@@ -1,8 +1,8 @@
-import * as MemoryManager from './../../../shared/memoryManager';
+import * as MemoryManager from "./../../../shared/memoryManager";
 
 export let availablePositions: RoomPosition[];
 export let assignedPosition: RoomPosition;
-export let targetSource: Source
+export let targetSource: Source;
 
 /**
  * Run all SourceMiner actions.
@@ -13,21 +13,21 @@ export let targetSource: Source
  */
 export function run(creep: Creep, room: Room): void {
 
-  availablePositions = MemoryManager.memory['rooms'][room.name]['unoccupied_mining_positions'];
+  availablePositions = MemoryManager.memory["rooms"][room.name]["unoccupied_mining_positions"];
 
-  if (availablePositions.length > 0 && !creep.memory['occupied_mining_position']) {
-    creep.memory['occupied_mining_position'] = availablePositions.pop();
+  if (availablePositions.length > 0 && !creep.memory["occupied_mining_position"]) {
+    creep.memory["occupied_mining_position"] = availablePositions.pop();
     assignedPosition = new RoomPosition(
-      creep.memory['occupied_mining_position'].x,
-      creep.memory['occupied_mining_position'].y,
-      creep.memory['occupied_mining_position'].roomName
+      creep.memory["occupied_mining_position"].x,
+      creep.memory["occupied_mining_position"].y,
+      creep.memory["occupied_mining_position"].roomName
     );
-    MemoryManager.memory['rooms'][room.name]['unoccupied_mining_positions'] = availablePositions;
+    MemoryManager.memory["rooms"][room.name]["unoccupied_mining_positions"] = availablePositions;
   } else {
     assignedPosition = new RoomPosition(
-      creep.memory['occupied_mining_position'].x,
-      creep.memory['occupied_mining_position'].y,
-      creep.memory['occupied_mining_position'].roomName
+      creep.memory["occupied_mining_position"].x,
+      creep.memory["occupied_mining_position"].y,
+      creep.memory["occupied_mining_position"].roomName
     );
   }
 

@@ -1,5 +1,5 @@
-import * as Config from './../../config/config';
-import * as RoomManager from './../rooms/roomManager';
+import * as Config from "./../../config/config";
+import * as RoomManager from "./../rooms/roomManager";
 
 export let constructionSites: ConstructionSite[];
 export let constructionSiteCount: number = 0;
@@ -25,7 +25,7 @@ export function load(room: Room) {
   _loadStructureCounts();
 
   if (Config.VERBOSE) {
-    console.log('[ConstructionSiteManager] ' + constructionSiteCount + ' construction sites in room.');
+    console.log("[ConstructionSiteManager] " + constructionSiteCount + " construction sites in room.");
   }
 }
 
