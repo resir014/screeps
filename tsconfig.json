@@ -14,12 +14,10 @@
     "libs"
   ],
   "filesGlob": [
-    "typings/**/*.d.ts",
+    "typings/index.d.ts",
     "src/**/*.ts"
   ],
   "files": [
-    "typings/globals/lodash/index.d.ts",
-    "typings/globals/screeps/index.d.ts",
     "typings/index.d.ts",
     "src/components/constructionSites/constructionSiteManager.ts",
     "src/components/controllers/controllerManager.ts",
