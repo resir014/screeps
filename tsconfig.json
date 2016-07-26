@@ -32,7 +32,6 @@
     "src/components/creeps/roles/upgrader.ts",
     "src/components/creeps/roles/wallRepairer.ts",
     "src/components/flags/flagManager.ts",
-    "src/components/jobs/jobManager.ts",
     "src/components/minerals/mineralManager.ts",
     "src/components/resources/resourceManager.ts",
     "src/components/rooms/roomManager.ts",
@@ -41,7 +40,8 @@
     "src/components/structures/structureManager.ts",
     "src/components/towers/towerManager.ts",
     "src/config/config.ts",
-    "src/main.ts",
-    "src/shared/memoryManager.ts"
+    "src/shared/jobManager.ts",
+    "src/shared/memoryManager.ts",
+    "src/main.ts"
   ]
 }

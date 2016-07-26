@@ -1,6 +1,6 @@
 import * as Config from "./../../config/config";
 import * as RoomManager from "./../rooms/roomManager";
-import * as JobManager from "./../jobs/jobManager";
+import * as JobManager from "./../../shared/jobManager";
 import * as MemoryManager from "./../../shared/memoryManager";
 
 export let sources: Source[];

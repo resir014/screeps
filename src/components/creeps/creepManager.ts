@@ -1,6 +1,6 @@
 import * as Config from "./../../config/config";
 import * as MemoryManager from "./../../shared/memoryManager";
-import * as JobManager from "./../jobs/jobManager";
+import * as JobManager from "./../../shared/jobManager";
 import * as SourceManager from "./../sources/sourceManager";
 import * as SpawnManager from "./../spawns/spawnManager";
 import * as StructureManager from "./../structures/structureManager";
