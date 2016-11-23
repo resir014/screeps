@@ -3,13 +3,22 @@
   "version": "0.0.0",
   "description": "Personal AI code for the game Screeps. Written in TypeScript.",
   "main": "./dist/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/resir014/screeps.git"
+  },
   "scripts": {
     "gulp": "gulp",
     "postinstall": "typings install",
     "deploy": "gulp build",
+    "deploy-prod": "gulp build --target prod",
+    "deploy-local": "gulp build --target local",
     "start": "gulp watch",
-    "test": "gulp lint",
-    "typings": "typings"
+    "prod": "gulp watch --target prod",
+    "test": "gulp test",
+    "tslint": "tslint \"src/**/*.ts\"",
+    "typings": "typings",
+    "jshint-gulp": "jshint gulpfile.js libs/gulp-dot-flatten.js libs/gulp-screeps-upload.js"
   },
   "author": "Resi Respati <resir014@gmail.com>",
   "license": "MIT",
