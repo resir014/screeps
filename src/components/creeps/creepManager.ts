@@ -74,7 +74,7 @@ function _buildMissingCreeps(room: Room) {
 
   if (Config.ENABLE_DEBUG_MODE) {
     if (spawns[0]) {
-      log.info("Spawn: " + spawns[0].name);
+      log.debug("Spawn: " + spawns[0].name);
     }
   }
 
@@ -158,7 +158,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string) {
 
     log.info("Started creating new creep: " + creepName);
     if (Config.ENABLE_DEBUG_MODE) {
-      log.info("Body: " + bodyParts);
+      log.debug("Body: " + bodyParts);
     }
 
     status = spawn.createCreep(bodyParts, creepName, properties);
@@ -166,7 +166,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string) {
     return _.isString(status) ? OK : status;
   } else {
     if (Config.ENABLE_DEBUG_MODE) {
-      log.info("Failed creating new creep: " + status);
+      log.error("Failed creating new creep: " + status);
     }
 
     return status;
