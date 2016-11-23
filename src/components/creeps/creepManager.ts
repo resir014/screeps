@@ -72,12 +72,6 @@ function _buildMissingCreeps(room: Room) {
     },
   });
 
-  if (Config.ENABLE_DEBUG_MODE) {
-    if (spawns[0]) {
-      log.debug("Spawn: " + spawns[0].name);
-    }
-  }
-
   if (room.energyCapacityAvailable <= 800) {
     bodyParts = [WORK, WORK, CARRY, MOVE];
   } else if (room.energyCapacityAvailable > 800 && room.energyCapacityAvailable <= 1200) {
@@ -85,6 +79,10 @@ function _buildMissingCreeps(room: Room) {
   }
 
   for (let spawn of spawns) {
+    if (Config.ENABLE_DEBUG_MODE) {
+      log.debug("Spawning from:", spawn.name);
+    }
+
     if (spawn.canCreateCreep) {
       if (sourceMiners.length >= 1) {
         if (sourceHaulers.length < Memory.rooms[room.name].jobs.haulerJobs) {
@@ -159,6 +157,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string) {
     log.info("Started creating new creep: " + creepName);
     if (Config.ENABLE_DEBUG_MODE) {
       log.debug("Body: " + bodyParts);
+      log.debug("UUID: " + uuid);
     }
 
     status = spawn.createCreep(bodyParts, creepName, properties);
