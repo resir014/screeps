@@ -1,12 +1,7 @@
-import * as Config from "./../../config/config";
-import * as MemoryManager from "./../../shared/memoryManager";
 import * as JobManager from "./../../shared/jobManager";
-import * as SourceManager from "./../sources/sourceManager";
 import * as SpawnManager from "./../spawns/spawnManager";
-import * as StructureManager from "./../structures/structureManager";
-import * as ConstructionSiteManager from "./../constructionSites/constructionSiteManager";
-import * as ControllerManager from "./../controllers/controllerManager";
 
+import { log } from "../../utils/log";
 import { SourceMiner } from "./roles/sourceMiner";
 import { SourceHauler } from "./roles/sourceHauler";
 import { Upgrader } from "./roles/upgrader";
@@ -47,9 +42,7 @@ function _loadCreeps(room: Room): void {
   _loadCreepNames();
   _loadCreepRoles();
 
-  if (Config.VERBOSE) {
-    console.log("[CreepManager] " + creepCount + " creeps found in the playground.");
-  }
+  log.info("[CreepManager] " + creepCount + " creeps found in the playground.");
 }
 
 /**
@@ -61,13 +54,13 @@ function _loadCreeps(room: Room): void {
  */
 function _buildMissingCreeps(room: Room): void {
   // status code
-  let status: number | string;
+  // let status: number | string;
 
   // base bodyparts for a creep
   let bodyParts: string[];
 
   // default name (can be null)
-  let name: string = null;
+  // let name: string = null;
 
   if (room.energyCapacityAvailable <= 800) {
     bodyParts = [WORK, WORK, CARRY, MOVE];
@@ -133,14 +126,7 @@ function _buildMissingCreeps(room: Room): void {
  */
 function _creepsGoToWork(room: Room): void {
 
-  let sourceMiners: Creep[] = [];
-  let sourceHaulers: Creep[] = [];
-  let upgraders: Creep[] = [];
-  let builders: Creep[] = [];
-  let repairers: Creep[] = [];
-  let wallRepairers: Creep[] = [];
-
-  _.each(creeps, (creep: Creep, creepName: string) => {
+  _.each(creeps, (creep: Creep) => {
     if (creep.memory.role === "sourceMiner") {
       let sourceMiner = new SourceMiner(creep, room);
       sourceMiner.run();
@@ -173,15 +159,12 @@ function _creepsGoToWork(room: Room): void {
     }
   });
 
-  if (Config.VERBOSE) {
-    console.log("[CreepManager] " + sourceMiners.length + " miners reported on duty today!");
-    console.log("[CreepManager] " + sourceHaulers.length + " haulers reported on duty today!");
-    console.log("[CreepManager] " + upgraders.length + " upgraders reported on duty today!");
-    console.log("[CreepManager] " + builders.length + " builders reported on duty today!");
-    console.log("[CreepManager] " + repairers.length + " repairers reported on duty today!");
-    console.log("[CreepManager] " + wallRepairers.length + " wall repairers reported on duty today!");
-  }
-
+  log.info("[CreepManager]", sourceMiners.length + " miners reported on duty today!");
+  log.info("[CreepManager]", sourceHaulers.length + " haulers reported on duty today!");
+  log.info("[CreepManager]", upgraders.length + " upgraders reported on duty today!");
+  log.info("[CreepManager]", builders.length + " builders reported on duty today!");
+  log.info("[CreepManager]", repairers.length + " repairers reported on duty today!");
+  log.info("[CreepManager]", wallRepairers.length + " wall repairers reported on duty today!");
 }
 
 /**

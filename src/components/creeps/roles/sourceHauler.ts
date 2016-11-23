@@ -26,15 +26,15 @@ export class SourceHauler extends CreepAction {
    * Run all SourceHauler actions.
    */
   public run(): void {
-    if (typeof this.creep.memory["delivering"] === "undefined") {
-      this.creep.memory["delivering"] = false;
+    if (typeof this.creep.memory.delivering === "undefined") {
+      this.creep.memory.delivering = false;
     }
 
     if (_.sum(this.creep.carry) === 0) {
-      this.creep.memory["delivering"] = false;
+      this.creep.memory.delivering = false;
     }
 
-    if (_.sum(this.creep.carry) < this.creep.carryCapacity && !this.creep.memory["delivering"]) {
+    if (_.sum(this.creep.carry) < this.creep.carryCapacity && !this.creep.memory.delivering) {
       let targetSource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
       if (targetSource) {
@@ -47,7 +47,7 @@ export class SourceHauler extends CreepAction {
         let targetContainers = this.creep.room.find<Container>(FIND_STRUCTURES, {
           filter: (structure: Structure) => {
             if (structure.structureType === STRUCTURE_CONTAINER) {
-              let container: Container = <Container>structure;
+              let container: Container = <Container> structure;
               if (_.sum(container.store) > 200) {
                 return container;
               }
@@ -73,11 +73,11 @@ export class SourceHauler extends CreepAction {
         }
       }
     } else {
-      this.creep.memory["delivering"] = true;
+      this.creep.memory.delivering = true;
       let targetTowers = this.creep.room.find<Tower>(FIND_STRUCTURES, {
         filter: (structure: Structure) => {
           if (structure.structureType === STRUCTURE_TOWER) {
-            let tower: Tower = <Tower>structure;
+            let tower: Tower = <Tower> structure;
             if (tower.energy < tower.energyCapacity) {
               return tower;
             }
@@ -105,7 +105,7 @@ export class SourceHauler extends CreepAction {
           let targetExtensions = this.creep.room.find<Extension>(FIND_STRUCTURES, {
             filter: (structure: Structure) => {
               if (structure.structureType === STRUCTURE_EXTENSION) {
-                let extension = <Extension>structure;
+                let extension = <Extension> structure;
                 if (extension.energy < extension.energyCapacity) {
                   return extension;
                 }
@@ -125,7 +125,7 @@ export class SourceHauler extends CreepAction {
             let targetStorages = this.creep.room.find<Storage>(FIND_STRUCTURES, {
               filter: (structure: Structure) => {
                 if (structure.structureType === STRUCTURE_STORAGE) {
-                  let storage = <Storage>structure;
+                  let storage = <Storage> structure;
                   if (_.sum(storage.store) < storage.storeCapacity) {
                     return storage;
                   }

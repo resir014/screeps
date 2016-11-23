@@ -1,5 +1,4 @@
-import * as Config from "./../../config/config";
-import * as RoomManager from "./../rooms/roomManager";
+import { log } from "../../utils/log";
 
 export let flags: { [flagName: string]: Flag };
 export let flagNames: string[] = [];
@@ -16,9 +15,7 @@ export function load() {
 
   _loadFlagNames();
 
-  if (Config.VERBOSE) {
-    console.log("[FlagManager] " + flagCount + " flags found.");
-  }
+  log.info("[FlagManager] " + flagCount + " flags found.");
 }
 
 /**

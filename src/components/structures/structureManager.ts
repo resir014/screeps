@@ -1,5 +1,4 @@
-import * as Config from "./../../config/config";
-import * as RoomManager from "./../rooms/roomManager";
+import { log } from "./../../utils/log";
 
 export let structures: Structure[];
 export let structureCount: number = 0;
@@ -14,9 +13,7 @@ export function load(room: Room) {
   structures = room.find<Structure>(FIND_STRUCTURES);
   structureCount = _.size(structures);
 
-  if (Config.VERBOSE) {
-    console.log("[StructureManager] " + structureCount + " structures in room.");
-  }
+  log.info("[StructureManager] " + structureCount + " structures in room.");
 }
 
 /**

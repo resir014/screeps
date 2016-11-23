@@ -1,4 +1,4 @@
-import * as Config from "./../config/config";
+import { log } from "../utils/log";
 
 export let sourceMiningJobs: number = 0;
 
@@ -16,7 +16,5 @@ export const wallRepairerJobs: number = 2;
 export function load() {
   sourceMiningJobs = 2;
 
-  if (Config.VERBOSE) {
-    console.log("[JobManager] Successfully loaded");
-  }
+  log.info("[JobManager] Successfully loaded");
 }

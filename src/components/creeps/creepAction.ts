@@ -3,9 +3,9 @@ import * as Config from "./../../config/config";
 /**
  * Interface for the CreepAction class.
  *
- * @interface ICreepAction
+ * @interface CreepActions
  */
-interface ICreepAction {
+/*interface CreepActions {
   creep: Creep;
   minLifeBeforeNeedsRenew: number;
   working: boolean;
@@ -15,7 +15,7 @@ interface ICreepAction {
   tryRenew(spawn: Spawn): number;
   moveToRenew(spawn: Spawn): void;
   tryRetrieveEnergy(): void;
-}
+}*/
 
 /**
  * Shared actions for all Creeps.
@@ -101,7 +101,7 @@ export class CreepAction {
       let targetContainer = this.creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
         filter: ((structure: Structure) => {
           if (structure.structureType === STRUCTURE_CONTAINER) {
-            let container = <Container>structure;
+            let container = <Container> structure;
             if (_.sum(container.store) > (500)) {
               return container;
             }

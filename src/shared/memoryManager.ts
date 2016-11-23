@@ -1,13 +1,3 @@
-import * as Config from "./../config/config";
-import * as CreepManager from "./../components/creeps/creepManager";
-import * as SpawnManager from "./../components/spawns/spawnManager";
-import * as SourceManager from "./../components/sources/sourceManager";
-import * as StructureManager from "./../components/structures/structureManager";
-import * as ControllerManager from "./../components/controllers/controllerManager";
-import * as ConstructionSiteManager from "./../components/constructionSites/constructionSiteManager";
-
-// TODO this module is as DRY as the ocean
-
 export let memory: Memory;
 
 export function loadMemory(): void {
@@ -21,14 +11,14 @@ export function loadMemory(): void {
  * @param {Room} room The current room.
  */
 export function refreshMiningPositions(room: Room) {
-  if (!memory["rooms"]) {
-    memory["rooms"] = {};
+  if (!memory.rooms) {
+    memory.rooms = {};
   }
-  if (!memory["rooms"][room.name]) {
-    memory["rooms"][room.name] = {};
+  if (!memory.rooms[room.name]) {
+    memory.rooms[room.name] = {};
   }
-  if (!memory["rooms"][room.name]["unoccupied_mining_positions"]) {
-    memory["rooms"][room.name]["unoccupied_mining_positions"] = [];
+  if (!memory.rooms[room.name].unoccupied_mining_positions) {
+    memory.rooms[room.name].unoccupied_mining_positions = [];
   }
 }
 
@@ -53,9 +43,9 @@ export function cleanupCreepMemory(room: Room): void {
       if (!Game.creeps[name]) {
         console.log("[MemoryManager] Clearing non-existing creep memory:", name);
 
-        if (memory.creeps[name]["role"] === "sourceMiner") {
-          memory["rooms"][room.name]["unoccupied_mining_positions"]
-            .push(memory.creeps[name]["occupied_mining_position"]);
+        if (memory.creeps[name].role === "sourceMiner") {
+          memory.rooms[room.name].unoccupied_mining_positions
+            .push(memory.creeps[name].occupied_mining_position);
         }
 
         delete memory.creeps[name];

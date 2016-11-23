@@ -25,21 +25,23 @@ export class Upgrader extends CreepAction {
    * Run all Upgrader actions.
    */
   public run(): void {
-    if (typeof this.creep.memory["upgrading"] === "undefined") {
-      this.creep.memory["upgrading"] = false;
+    let roomController: StructureController | undefined = this.creep.room.controller;
+
+    if (typeof this.creep.memory.upgrading === "undefined") {
+      this.creep.memory.upgrading = false;
     }
 
-    if (this.creep.memory["upgrading"] && this.creep.carry.energy === 0) {
-      this.creep.memory["upgrading"] = false;
+    if (this.creep.memory.upgrading && this.creep.carry.energy === 0) {
+      this.creep.memory.upgrading = false;
     }
 
-    if (!this.creep.memory["upgrading"] && this.creep.carry.energy === this.creep.carryCapacity) {
-      this.creep.memory["upgrading"] = true;
+    if (!this.creep.memory.upgrading && this.creep.carry.energy === this.creep.carryCapacity) {
+      this.creep.memory.upgrading = true;
     }
 
-    if (this.creep.memory["upgrading"]) {
-      if (this.creep.upgradeController(this.creep.room.controller) === ERR_NOT_IN_RANGE) {
-        this.moveTo(this.creep.room.controller);
+    if (this.creep.memory.upgrading) {
+      if (roomController && this.creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
+        this.moveTo(roomController);
       }
     } else {
       let targetSource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
