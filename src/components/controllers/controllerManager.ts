@@ -1,11 +1,11 @@
-export let controller: Controller | undefined;
-
 /**
- * Initialization script for ControllerManager module.
+ * Gets the controller for this room.
  *
  * @export
  * @param {Room} room
+ * @returns {(StructureController | undefined)} the room controller if
+ *   available, otherwise undefined.
  */
-export function load(room: Room): void {
-  controller = room.controller;
+export function getController(room: Room): StructureController | undefined {
+  return room.controller;
 }

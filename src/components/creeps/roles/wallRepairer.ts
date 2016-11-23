@@ -1,66 +1,43 @@
 import * as StructureManager from "./../../structures/structureManager";
-import { CreepAction } from "../creepAction";
+import * as creepActions from "../creepActions";
 
 /**
- * Collects energy and uses it to repair any walls that needs repair.
+ * Runs all creep actions.
  *
  * @export
- * @class WallRepairer
- * @extends {CreepAction}
+ * @param {Creep} creep The current creep.
  */
-export class WallRepairer extends CreepAction {
+export function run(creep: Creep) {
+  let structures = StructureManager.loadStructures(creep.room);
 
-  private room: Room;
-  private structures: Structure[];
+  if (_.sum(this.creep.carry) > 0) {
+    let structuresToRepair = _getWallsToRepair(structures);
 
-  /**
-   * Creates an instance of WallRepairer.
-   *
-   * @param {Creep} creep The current creep.
-   * @param {Room} room The current room.
-   */
-  constructor(creep: Creep, room: Room) {
-    super(creep);
-    this.room = room;
-    this.structures = StructureManager.structures;
-  }
-
-  /**
-   * Run all WallRepairer actions.
-   */
-  public run(): void {
-
-    if (_.sum(this.creep.carry) > 0) {
-      let structuresToRepair = this.getWallsToRepair(this.structures);
-
-      if (structuresToRepair) {
-        if (this.creep.pos.isNearTo(structuresToRepair[0])) {
-          this.creep.repair(structuresToRepair[0]);
-        } else {
-          this.moveTo(structuresToRepair[0]);
-        }
+    if (structuresToRepair) {
+      if (this.creep.pos.isNearTo(structuresToRepair[0])) {
+        this.creep.repair(structuresToRepair[0]);
+      } else {
+        this.moveTo(structuresToRepair[0]);
       }
-    } else {
-      this.tryRetrieveEnergy();
     }
+  } else {
+    creepActions.tryRetrieveEnergy(creep);
   }
+}
 
-  /**
-   * Get an array of walls that needs repair.
-   *
-   * Returns `undefined` if there are no walls to be repaired.
-   *
-   * @export
-   * @param {Structure[]} structures The list of structures.
-   * @returns {Structure[]} an array of walls to repair.
-   */
-  private getWallsToRepair(structures: Structure[]): Structure[] {
+/**
+ * Get an array of walls that needs repair.
+ *
+ * Returns `undefined` if there are no walls to be repaired.
+ *
+ * @param {Structure[]} structures The list of structures.
+ * @returns {(Structure[] | undefined)} an array of walls to repair.
+ */
+function _getWallsToRepair(structures: Structure[]): Structure[] | undefined {
 
-    let targets: Structure[] = structures.filter((structure: Structure) => {
-      return ((structure.structureType === STRUCTURE_WALL) && structure.hits < 700000);
-    });
+  let targets: Structure[] = structures.filter((structure: Structure) => {
+    return ((structure.structureType === STRUCTURE_WALL) && structure.hits < 700000);
+  });
 
-    return targets;
-  }
-
+  return targets;
 }

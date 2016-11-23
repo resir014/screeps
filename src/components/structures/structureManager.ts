@@ -1,29 +1,32 @@
-import { log } from "./../../utils/log";
-
-export let structures: Structure[];
-export let structureCount: number = 0;
+import * as Config from "../../config/config";
+import { log } from "../../utils/log";
 
 /**
- * Initialization scripts for the StructureManager module.
+ * Loads all the available structures within a room.
  *
  * @export
- * @param {Room} room
+ * @param {Room} room The current room.
+ * @returns {Structure[]} an array of structures inside the room
  */
-export function load(room: Room) {
-  structures = room.find<Structure>(FIND_STRUCTURES);
-  structureCount = _.size(structures);
-
-  log.info("[StructureManager] " + structureCount + " structures in room.");
+export function loadStructures(room: Room): Structure[] {
+  return room.find<Structure>(FIND_STRUCTURES);
 }
 
 /**
- * Returns the first available structure.
+ * Gets the number of structures available in the room.
  *
  * @export
- * @returns {Structure}
+ * @param {Room} room
+ * @returns {number} the number of structures available in the room
  */
-export function getFirstStructure(): Structure {
-  return structures[0];
+export function getStructureCount(room: Room): number {
+  let structureCount: number = _.size(room.find<Structure>(FIND_STRUCTURES));
+
+  if (Config.ENABLE_DEBUG_MODE) {
+    log.info("[StructureManager]", structureCount + " structures in room.");
+  }
+
+  return structureCount;
 }
 
 /**
@@ -31,9 +34,10 @@ export function getFirstStructure(): Structure {
  * but will fall back to an extension, or to the spawn if need be.
  *
  * @export
- * @returns {Structure}
+ * @param {Structure[]} structures The list of structures to filter.
+ * @returns {Structure} the desired structure.
  */
-export function getStorageObject(): Structure {
+export function getStorageObject(structures: Structure[]): Structure {
   let targets: Structure[] = structures.filter((structure: StructureContainer) => {
     return ((structure.structureType === STRUCTURE_CONTAINER)
       && _.sum(structure.store) < structure.storeCapacity);
@@ -55,9 +59,10 @@ export function getStorageObject(): Structure {
  * falling back on extensions, then towers, and finally containers.
  *
  * @export
- * @returns {Structure}
+ * @param {Structure[]} structures The list of structures to filter.
+ * @returns {Structure} the desired structure.
  */
-export function getDropOffPoint(): Structure {
+export function getDropOffPoint(structures: Structure[]): Structure {
   let targets: Structure[] = structures.filter((structure) => {
     if (structure instanceof Spawn) {
       return ((structure.structureType === STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity);

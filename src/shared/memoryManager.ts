@@ -1,7 +1,25 @@
-export let memory: Memory;
+/**
+ * Check memory for null or out of bounds custom objects
+ *
+ * @export
+ */
+export function checkOutOfBounds() {
+  if (!Memory.uuid || Memory.uuid > 100) {
+    Memory.uuid = 0;
+  }
 
-export function loadMemory(): void {
-  memory = Memory;
+  if (!Memory.creeps) {
+    Memory.creeps = {};
+  }
+  if (!Memory.flags) {
+    Memory.flags = {};
+  }
+  if (!Memory.rooms) {
+    Memory.rooms = {};
+  }
+  if (!Memory.spawns) {
+    Memory.spawns = {};
+  }
 }
 
 /**
@@ -11,14 +29,11 @@ export function loadMemory(): void {
  * @param {Room} room The current room.
  */
 export function refreshMiningPositions(room: Room) {
-  if (!memory.rooms) {
-    memory.rooms = {};
+  if (!Memory.rooms[room.name]) {
+    Memory.rooms[room.name] = {};
   }
-  if (!memory.rooms[room.name]) {
-    memory.rooms[room.name] = {};
-  }
-  if (!memory.rooms[room.name].unoccupied_mining_positions) {
-    memory.rooms[room.name].unoccupied_mining_positions = [];
+  if (!Memory.rooms[room.name].unoccupied_mining_positions) {
+    Memory.rooms[room.name].unoccupied_mining_positions = [];
   }
 }
 
@@ -31,28 +46,24 @@ export function refreshMiningPositions(room: Room) {
  */
 export function cleanupCreepMemory(room: Room): void {
   // refactor: brought in from gameManager
-  // out of bounds check for creep memory entries
-  if (!memory.creeps) {
-    memory.creeps = {};
-  }
   // clean up memory for deleted creeps
-  for (let name in memory.creeps) {
-    let creep: any = memory.creeps[name];
+  for (let name in Memory.creeps) {
+    let creep: any = Memory.creeps[name];
 
     if (creep.room === room.name) {
       if (!Game.creeps[name]) {
         console.log("[MemoryManager] Clearing non-existing creep memory:", name);
 
-        if (memory.creeps[name].role === "sourceMiner") {
-          memory.rooms[room.name].unoccupied_mining_positions
-            .push(memory.creeps[name].occupied_mining_position);
+        if (Memory.creeps[name].role === "sourceMiner") {
+          Memory.rooms[room.name].unoccupied_mining_positions
+            .push(Memory.creeps[name].occupied_mining_position);
         }
 
-        delete memory.creeps[name];
+        delete Memory.creeps[name];
       }
-    } else if (_.keys(memory.creeps[name]).length === 0) {
+    } else if (_.keys(Memory.creeps[name]).length === 0) {
       console.log("[MemoryManager] Clearing non-existing creep memory:", name);
-      delete memory.creeps[name];
+      delete Memory.creeps[name];
     }
   }
 }
