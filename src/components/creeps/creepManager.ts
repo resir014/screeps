@@ -48,10 +48,10 @@ function _loadCreeps(room: Room) {
   // Iterate through each creep and push them into the role array.
   sourceMiners = _.filter(creeps, (creep) => creep.memory.role === "sourceMiner");
   sourceHaulers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
-  upgraders = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
-  builders = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
-  repairers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
-  wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  upgraders = _.filter(creeps, (creep) => creep.memory.role === "upgrader");
+  builders = _.filter(creeps, (creep) => creep.memory.role === "builder");
+  repairers = _.filter(creeps, (creep) => creep.memory.role === "repairer");
+  wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "wallRepairer");
 
   if (Config.ENABLE_DEBUG_MODE) {
     log.info(creepCount + " creeps found in the playground.");

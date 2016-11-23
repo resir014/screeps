@@ -5,6 +5,12 @@
  * @param {Room} room The current room.
  */
 export function refreshJobs(room: Room) {
+  // Check if the `jobs` memort object is null
+  if (!Memory.rooms[room.name].jobs) {
+    Memory.rooms[room.name].jobs = {};
+  }
+
+  // Initialise all job entries
   if (!Memory.rooms[room.name].jobs.haulerJobs) {
     Memory.rooms[room.name].jobs.haulerJobs = 0;
   }
