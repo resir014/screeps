@@ -9,7 +9,7 @@ export let constructionSiteCount: number = 0;
  * @export
  * @param {Room} room
  */
-export function load(room: Room) {
+export function loadConstructionSites(room: Room) {
   constructionSites = room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
   constructionSiteCount = _.size(constructionSites);
 

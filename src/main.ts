@@ -1,5 +1,6 @@
 import * as CreepManager from "./components/creeps/creepManager";
 import * as SourceManager from "./components/sources/sourceManager";
+import * as TowerManager from "./components/towers/towerManager";
 import * as Config from "./config/config";
 import * as JobManager from "./shared/jobManager";
 import * as MemoryManager from "./shared/memoryManager";
@@ -41,7 +42,8 @@ export function loop() {
     // Component initialisation tasks
     SourceManager.refreshAvailableSources(room);
 
-    // For each tick, run creep managers.
+    // For each tick, run managed creeps/structures.
     CreepManager.run(room);
+    TowerManager.run(room);
   }
 }

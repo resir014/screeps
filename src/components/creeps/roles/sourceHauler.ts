@@ -1,5 +1,4 @@
 import * as creepActions from "../creepActions";
-// import * as StructureManager from "../../structures/structureManager";
 
 /**
  * Runs all creep actions.
@@ -8,8 +7,6 @@ import * as creepActions from "../creepActions";
  * @param {Creep} creep The current creep.
  */
 export function run(creep: Creep): void {
-  // let structures: Structure[] = StructureManager.loadStructures(creep.room);
-
   if (!creep.memory.delivering) {
     creep.memory.delivering = false;
   }
