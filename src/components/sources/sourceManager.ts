@@ -1,22 +1,21 @@
-import { log } from "./../../utils/log";
-// import * as JobManager from "./../../shared/jobManager";
-import * as MemoryManager from "./../../shared/memoryManager";
+import * as Config from "../../config/config";
+import { log } from "../../utils/log";
 
 export let sources: Source[];
 export let sourceCount: number;
 export let lookResults: LookAtResultMatrix | LookAtResultWithPos[];
 
 /**
- * Initialization scripts for the SourceManager module.
+ * Refresh the available sources & mining positions.
  *
  * @export
  * @param {Room} room
  */
-export function load(room: Room) {
+export function refreshAvailableSources(room: Room) {
   sources = room.find<Source>(FIND_SOURCES_ACTIVE);
   sourceCount = _.size(sources);
 
-  if (MemoryManager.memory.rooms[room.name].unoccupied_mining_positions.length === 0) {
+  if (Memory.rooms[room.name].unoccupied_mining_positions.length === 0) {
     sources.forEach((source: Source) => {
       // get an array of all adjacent terrain features near the spawn
       lookResults = source.room.lookForAtArea(
@@ -30,26 +29,18 @@ export function load(room: Room) {
 
       for (let result of <LookAtResultWithPos[]> lookResults) {
         if (result.terrain === "plain" || result.terrain === "swamp") {
-          MemoryManager.memory.rooms[room.name].unoccupied_mining_positions
+          Memory.rooms[room.name].unoccupied_mining_positions
             .push(new RoomPosition(result.x, result.y, source.room.name));
         }
       }
     });
 
-    // JobManager.sourceMiningJobs = MemoryManager.memory.rooms[room.name].unoccupied_mining_positions.length;
+    Memory.rooms[room.name].jobs.sourceMiningJobs = Memory.rooms[room.name].unoccupied_mining_positions.length;
   } else {
-    // JobManager.sourceMiningJobs = MemoryManager.memory.rooms[room.name].unoccupied_mining_positions.length;
+    Memory.rooms[room.name].jobs.sourceMiningJobs = Memory.rooms[room.name].unoccupied_mining_positions.length;
   }
 
-  log.info("[SourceManager] " + sourceCount + " sources in room.");
-}
-
-/**
- * Returns the first source from the list.
- *
- * @export
- * @returns {Source}
- */
-export function getFirstSource(): Source {
-  return sources[0];
+  if (Config.ENABLE_DEBUG_MODE) {
+    log.info("[SourceManager] " + sourceCount + " source mining jobs available in room.");
+  }
 }

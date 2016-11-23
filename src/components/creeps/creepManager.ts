@@ -1,13 +1,9 @@
-import * as JobManager from "./../../shared/jobManager";
-import * as SpawnManager from "./../spawns/spawnManager";
+import * as Config from "../../config/config";
+
+import * as sourceMiner from "./roles/sourceMiner";
+import * as sourceHauler from "./roles/sourceHauler";
 
 import { log } from "../../utils/log";
-import { SourceMiner } from "./roles/sourceMiner";
-import { SourceHauler } from "./roles/sourceHauler";
-import { Upgrader } from "./roles/upgrader";
-import { Builder } from "./roles/builder";
-import { Repairer } from "./roles/repairer";
-import { WallRepairer } from "./roles/wallRepairer";
 
 export let creeps: Creep[];
 export let creepNames: string[] = [];
@@ -29,38 +25,58 @@ export let wallRepairers: Creep[] = [];
 export function run(room: Room): void {
   _loadCreeps(room);
   _buildMissingCreeps(room);
-  _creepsGoToWork(room);
+
+  _.each(creeps, (creep: Creep) => {
+    if (creep.memory.role === "sourceMiner") {
+      sourceMiner.run(creep);
+    }
+    if (creep.memory.role === "sourceHauler") {
+      sourceHauler.run(creep);
+    }
+  });
 }
 
 /**
  * Loads and counts all available creeps.
+ *
+ * @param {Room} room
  */
-function _loadCreeps(room: Room): void {
+function _loadCreeps(room: Room) {
   creeps = room.find<Creep>(FIND_MY_CREEPS);
   creepCount = _.size(creeps);
 
-  _loadCreepNames();
-  _loadCreepRoles();
+  // Iterate through each creep and push them into the role array.
+  sourceMiners = _.filter(creeps, (creep) => creep.memory.role === "sourceMiner");
+  sourceHaulers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  upgraders = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  builders = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  repairers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
+  wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
 
-  log.info("[CreepManager] " + creepCount + " creeps found in the playground.");
+  if (Config.ENABLE_DEBUG_MODE) {
+    log.info(creepCount + " creeps found in the playground.");
+  }
 }
 
 /**
  * Creates a new creep if we still have enough space.
- * TODO: add some load balancing, have the limit gradually increase as
- * resources increase.
  *
  * @param {Room} room
  */
-function _buildMissingCreeps(room: Room): void {
-  // status code
-  // let status: number | string;
+function _buildMissingCreeps(room: Room) {
+  let bodyParts: string[] = [];
 
-  // base bodyparts for a creep
-  let bodyParts: string[];
+  let spawns: Spawn[] = room.find<Spawn>(FIND_MY_SPAWNS, {
+    filter: (spawn: Spawn) => {
+      return spawn.spawning === null;
+    },
+  });
 
-  // default name (can be null)
-  // let name: string = null;
+  if (Config.ENABLE_DEBUG_MODE) {
+    if (spawns[0]) {
+      log.info("Spawn: " + spawns[0].name);
+    }
+  }
 
   if (room.energyCapacityAvailable <= 800) {
     bodyParts = [WORK, WORK, CARRY, MOVE];
@@ -68,126 +84,91 @@ function _buildMissingCreeps(room: Room): void {
     bodyParts = [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
   }
 
-  // TODO: make this more non-repeating to maintain DRY-ness
-  if (sourceMiners.length < JobManager.sourceMiningJobs) {
-    if (sourceMiners.length < 1 || room.energyCapacityAvailable <= 800) {
-      bodyParts = [WORK, WORK, MOVE];
-    } else if (room.energyCapacityAvailable > 800) {
-      bodyParts = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE];
+  for (let spawn of spawns) {
+    if (spawn.canCreateCreep) {
+      if (sourceMiners.length >= 1) {
+        if (sourceHaulers.length < Memory.rooms[room.name].jobs.haulerJobs) {
+          bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
+          _spawnCreep(spawn, bodyParts, "sourceHauler");
+          break;
+        } else if (sourceMiners.length < Memory.rooms[room.name].jobs.sourceMiningJobs) {
+          if (sourceMiners.length < 1 || room.energyCapacityAvailable <= 800) {
+            bodyParts = [WORK, WORK, MOVE];
+          } else if (room.energyCapacityAvailable > 800) {
+            bodyParts = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE];
+          }
+          _spawnCreep(spawn, bodyParts, "sourceMiner");
+        } else if (upgraders.length < Memory.rooms[room.name].jobs.upgraderJobs) {
+          // In case we ran out of creeps.
+          if (upgraders.length < 1) {
+            bodyParts = [WORK, WORK, CARRY, MOVE];
+          }
+          _spawnCreep(spawn, bodyParts, "upgrader");
+        } else if (builders.length < Memory.rooms[room.name].jobs.builderJobs) {
+          // In case we ran out of creeps.
+          if (builders.length < 1) {
+            bodyParts = [WORK, WORK, CARRY, MOVE];
+          }
+          _spawnCreep(spawn, bodyParts, "builder");
+        } else if (repairers.length < Memory.rooms[room.name].jobs.repairJobs) {
+          // In case we ran out of creeps.
+          if (repairers.length < 1) {
+            bodyParts = [WORK, WORK, CARRY, MOVE];
+          }
+          _spawnCreep(spawn, bodyParts, "repairer");
+        } else if (wallRepairers.length < Memory.rooms[room.name].jobs.wallRepairJobs) {
+          // In case we ran out of creeps.
+          if (repairers.length < 1) {
+            bodyParts = [WORK, WORK, CARRY, MOVE];
+          }
+          _spawnCreep(spawn, bodyParts, "wallRepairer");
+        }
+      } else {
+        if (sourceMiners.length < Memory.rooms[room.name].jobs.sourceMiningJobs) {
+          bodyParts = [WORK, WORK, MOVE];
+          _spawnCreep(spawn, bodyParts, "sourceMiner");
+          break;
+        }
+      }
     }
-
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "sourceMiner");
-    });
-  } else if (sourceHaulers.length < JobManager.haulerJobs) {
-    bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
-
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "sourceHauler");
-    });
-  } else if (upgraders.length < JobManager.upgraderJobs) {
-    // In case we ran out of creeps.
-    if (upgraders.length < 1) {
-      bodyParts = [WORK, WORK, CARRY, MOVE];
-    }
-
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "upgrader");
-    });
-  } else if (builders.length < JobManager.builderJobs) {
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "builder");
-    });
-  } else if (repairers.length < JobManager.repairerJobs) {
-    // In case we ran out of creeps.
-    if (repairers.length < 1) {
-      bodyParts = [WORK, WORK, CARRY, MOVE];
-    }
-
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "repairer");
-    });
-  } else if (wallRepairers.length < JobManager.wallRepairerJobs) {
-    // In case we ran out of creeps.
-    if (repairers.length < 1) {
-      bodyParts = [WORK, WORK, CARRY, MOVE];
-    }
-
-    _.each(SpawnManager.spawns, (spawn: Spawn) => {
-      SpawnManager.spawnCreep(spawn, bodyParts, "wallRepairer");
-    });
   }
 }
 
 /**
- * Runs all Creep tasks.
+ * Spawns a new creep.
  *
- * @param {Room} room
+ * @param {Spawn} spawn
+ * @param {string[]} bodyParts
+ * @param {string} role
+ * @returns
  */
-function _creepsGoToWork(room: Room): void {
+function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string) {
+  let uuid: number = Memory.uuid;
+  let status: number | string = spawn.canCreateCreep(bodyParts, undefined);
 
-  _.each(creeps, (creep: Creep) => {
-    if (creep.memory.role === "sourceMiner") {
-      let sourceMiner = new SourceMiner(creep, room);
-      sourceMiner.run();
-      sourceMiners.push(creep);
-    }
-    if (creep.memory.role === "sourceHauler") {
-      let sourceHauler = new SourceHauler(creep, room);
-      sourceHauler.run();
-      sourceHaulers.push(creep);
-    }
-    if (creep.memory.role === "upgrader") {
-      let upgrader = new Upgrader(creep, room);
-      upgrader.run();
-      upgraders.push(creep);
-    }
-    if (creep.memory.role === "builder") {
-      let builder = new Builder(creep, room);
-      builder.run();
-      builders.push(creep);
-    }
-    if (creep.memory.role === "repairer") {
-      let repairer = new Repairer(creep, room);
-      repairer.run();
-      repairers.push(creep);
-    }
-    if (creep.memory.role === "wallRepairer") {
-      let wallRepairer = new WallRepairer(creep, room);
-      wallRepairer.run();
-      wallRepairers.push(creep);
-    }
-  });
+  let properties: { [key: string]: any } = {
+    role,
+    room: spawn.room.name,
+  };
 
-  log.info("[CreepManager]", sourceMiners.length + " miners reported on duty today!");
-  log.info("[CreepManager]", sourceHaulers.length + " haulers reported on duty today!");
-  log.info("[CreepManager]", upgraders.length + " upgraders reported on duty today!");
-  log.info("[CreepManager]", builders.length + " builders reported on duty today!");
-  log.info("[CreepManager]", repairers.length + " repairers reported on duty today!");
-  log.info("[CreepManager]", wallRepairers.length + " wall repairers reported on duty today!");
-}
+  status = _.isString(status) ? OK : status;
+  if (status === OK) {
+    Memory.uuid = uuid + 1;
+    let creepName: string = spawn.room.name + " - " + role + uuid;
 
-/**
- * Loads all Creep names and pushes them into an array.
- */
-function _loadCreepNames(): void {
-  for (let creepName in creeps) {
-    if (creeps.hasOwnProperty(creepName)) {
-      creepNames.push(creepName);
+    log.info("Started creating new creep: " + creepName);
+    if (Config.ENABLE_DEBUG_MODE) {
+      log.info("Body: " + bodyParts);
     }
+
+    status = spawn.createCreep(bodyParts, creepName, properties);
+
+    return _.isString(status) ? OK : status;
+  } else {
+    if (Config.ENABLE_DEBUG_MODE) {
+      log.info("Failed creating new creep: " + status);
+    }
+
+    return status;
   }
-}
-
-/**
- * Iterates through each creep and pushes them into an array with the
- * corresponding roles.
- */
-function _loadCreepRoles(): void {
-  // TODO: find a way to avoid API calls.
-  sourceMiners = _.filter(creeps, (creep) => creep.memory.role === "sourceMiner");
-  sourceHaulers = _.filter(creeps, (creep) => creep.memory.role === "sourceHauler");
-  upgraders = _.filter(creeps, (creep) => creep.memory.role === "upgrader");
-  builders = _.filter(creeps, (creep) => creep.memory.role === "builder");
-  repairers = _.filter(creeps, (creep) => creep.memory.role === "repairer");
-  wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "wallRepairer");
 }

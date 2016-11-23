@@ -1,60 +1,39 @@
-import { CreepAction } from "../creepAction";
+import * as creepActions from "../creepActions";
 
 /**
- * Collects energy and uses it to upgrade the room's controller.
+ * Runs all creep actions.
  *
  * @export
- * @class Upgrader
- * @extends {CreepAction}
+ * @param {Creep} creep The current creep.
  */
-export class Upgrader extends CreepAction {
-  private room: Room;
+export function run(creep: Creep) {
+  let roomController: StructureController | undefined = creep.room.controller;
 
-  /**
-   * Creates an instance of Upgrader.
-   *
-   * @param {Creep} creep The current creep.
-   * @param {Room} room The current room.
-   */
-  constructor(creep: Creep, room: Room) {
-    super(creep);
-    this.room = room;
+  if (!creep.memory.upgrading) {
+    creep.memory.upgrading = false;
+  }
+  if (creep.memory.upgrading && creep.carry.energy === 0) {
+    creep.memory.upgrading = false;
+  }
+  if (!creep.memory.upgrading && creep.carry.energy === creep.carryCapacity) {
+    creep.memory.upgrading = true;
   }
 
-  /**
-   * Run all Upgrader actions.
-   */
-  public run(): void {
-    let roomController: StructureController | undefined = this.creep.room.controller;
-
-    if (typeof this.creep.memory.upgrading === "undefined") {
-      this.creep.memory.upgrading = false;
+  if (creep.memory.upgrading) {
+    if (roomController && creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
+      creepActions.moveTo(creep, roomController);
     }
+  } else {
+    let targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
-    if (this.creep.memory.upgrading && this.creep.carry.energy === 0) {
-      this.creep.memory.upgrading = false;
-    }
-
-    if (!this.creep.memory.upgrading && this.creep.carry.energy === this.creep.carryCapacity) {
-      this.creep.memory.upgrading = true;
-    }
-
-    if (this.creep.memory.upgrading) {
-      if (roomController && this.creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
-        this.moveTo(roomController);
+    if (targetSource) {
+      if (creep.pos.isNearTo(targetSource)) {
+        creep.pickup(targetSource);
+      } else {
+        creepActions.moveToResource(creep, targetSource);
       }
     } else {
-      let targetSource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
-
-      if (targetSource) {
-        if (this.creep.pos.isNearTo(targetSource)) {
-          this.creep.pickup(targetSource);
-        } else {
-          this.moveTo(targetSource);
-        }
-      } else {
-        this.tryRetrieveEnergy();
-      }
+      creepActions.tryRetrieveEnergy(creep);
     }
   }
 }
