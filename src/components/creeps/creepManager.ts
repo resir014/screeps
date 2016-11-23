@@ -2,6 +2,10 @@ import * as Config from "../../config/config";
 
 import * as sourceMiner from "./roles/sourceMiner";
 import * as sourceHauler from "./roles/sourceHauler";
+import * as upgrader from "./roles/upgrader";
+import * as builder from "./roles/builder";
+import * as repairer from "./roles/repairer";
+import * as wallRepairer from "./roles/wallRepairer";
 
 import { log } from "../../utils/log";
 
@@ -32,6 +36,18 @@ export function run(room: Room): void {
     }
     if (creep.memory.role === "sourceHauler") {
       sourceHauler.run(creep);
+    }
+    if (creep.memory.role === "upgrader") {
+      upgrader.run(creep);
+    }
+    if (creep.memory.role === "builder") {
+      builder.run(creep);
+    }
+    if (creep.memory.role === "repairer") {
+      repairer.run(creep);
+    }
+    if (creep.memory.role === "wallRepairer") {
+      wallRepairer.run(creep);
     }
   });
 }
