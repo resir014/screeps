@@ -1,7 +1,4 @@
-import * as Config from "./../../config/config";
-import * as RoomManager from "./../rooms/roomManager";
-
-export let controller: Controller;
+export let controller: Controller | undefined;
 
 /**
  * Initialization script for ControllerManager module.

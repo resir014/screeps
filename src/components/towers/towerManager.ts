@@ -1,5 +1,3 @@
-import * as Config from "./../../config/config";
-
 export let hostiles: Creep[] = [];
 export let towers: Tower[] = [];
 
@@ -18,7 +16,7 @@ export function run(room: Room): void {
   });
 
   if (hostiles.length > 0) {
-    let username: string = hostiles[0]["owner"]["username"];
+    // let username: string = hostiles[0].owner.username;
     // Game.notify(`User ${username} spotted in room ${room}`);
 
     towers.forEach((tower: Tower) => {

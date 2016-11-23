@@ -13,9 +13,6 @@ export class Repairer extends CreepAction {
   private room: Room;
   private structures: Structure[];
 
-  private targetSource: Resource;
-  private targetContainer: Container;
-
   /**
    * Creates an instance of Repairer.
    *

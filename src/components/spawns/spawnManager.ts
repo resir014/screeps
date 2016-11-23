@@ -1,4 +1,4 @@
-import * as Config from "./../../config/config";
+import { log } from "./../../utils/log";
 import * as MemoryManager from "./../../shared/memoryManager";
 
 export let spawns: Spawn[];
@@ -17,9 +17,7 @@ export function load(room: Room) {
 
   _loadSpawnNames();
 
-  if (Config.VERBOSE) {
-    console.log("[SpawnManager] " + spawnCount + " spawns in room.");
-  }
+  log.info("[SpawnManager] " + spawnCount + " spawns in room.");
 }
 
 /**
@@ -42,8 +40,8 @@ export function getFirstSpawn(): Spawn {
  * @returns {(number | string)}
  */
 export function spawnCreep(spawn: Spawn, body: string[], role: string): number | string {
-  let uuid: number = MemoryManager.memory["uuid"];
-  let status: number | string = spawn.canCreateCreep(body, null);
+  let uuid: number = MemoryManager.memory.uuid;
+  let status: number | string = spawn.canCreateCreep(body);
 
   let properties: { [key: string]: any } = {
     role: role,
@@ -52,21 +50,17 @@ export function spawnCreep(spawn: Spawn, body: string[], role: string): number |
 
   status = _.isString(status) ? OK : status;
   if (status === OK) {
-    MemoryManager.memory["uuid"] = uuid + 1;
+    MemoryManager.memory.uuid = uuid + 1;
     let creepName: string = spawn.room.name + " - " + role + uuid;
 
-    console.log("[SpawnManager] Started creating new creep: " + creepName);
-    if (Config.VERBOSE) {
-      console.log("[SpawnManager] Body: " + body);
-    }
+    log.info("[SpawnManager] Started creating new creep: " + creepName);
+    log.info("[SpawnManager] Body: " + body);
 
     status = spawn.createCreep(body, creepName, properties);
 
     return _.isString(status) ? OK : status;
   } else {
-    if (Config.VERBOSE) {
-      console.log("[SpawnManager] Failed creating new creep: " + status);
-    }
+    log.info("[SpawnManager] Failed creating new creep: " + status);
 
     return status;
   }

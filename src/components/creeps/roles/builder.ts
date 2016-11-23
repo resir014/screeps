@@ -28,16 +28,15 @@ export class Builder extends CreepAction {
    * Run all Builder actions.
    */
   public run(): void {
-    if (this.creep.memory["building"] && this.creep.carry.energy === 0) {
-      this.creep.memory["building"] = false;
+    if (this.creep.memory.building && this.creep.carry.energy === 0) {
+      this.creep.memory.building = false;
     }
 
     if (!this.creep.memory.building && this.creep.carry.energy === this.creep.carryCapacity) {
-      this.creep.memory["building"] = true;
+      this.creep.memory.building = true;
     }
 
-    if (this.creep.memory["building"]) {
-
+    if (this.creep.memory.building) {
       let targetConstructionSite = this.getConstructionSite(this.constructionSites);
 
       if (targetConstructionSite) {
@@ -61,7 +60,7 @@ export class Builder extends CreepAction {
    * @returns {ConstructionSite}
    */
   private getConstructionSite(constructionSites: ConstructionSite[]): ConstructionSite {
-    let target: ConstructionSite = null;
+    let target: ConstructionSite | null = null;
 
     let roads: ConstructionSite[] = [];
     let extensions: ConstructionSite[] = [];
