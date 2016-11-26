@@ -41,6 +41,6 @@ export function refreshAvailableSources(room: Room) {
   }
 
   if (Config.ENABLE_DEBUG_MODE) {
-    log.info("[SourceManager] " + sourceCount + " source mining jobs available in room.");
+    log.debug("[SourceManager] " + sourceCount + " source mining jobs available in room.");
   }
 }

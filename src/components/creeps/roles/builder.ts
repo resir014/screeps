@@ -44,7 +44,7 @@ function _loadConstructionSites(creep: Creep) {
   constructionSiteCount = _.size(constructionSites);
 
   if (Config.ENABLE_DEBUG_MODE) {
-    log.info("[ConstructionSiteManager]", constructionSiteCount + " construction sites in room.");
+    log.debug("[ConstructionSiteManager]", constructionSiteCount + " construction sites in room.");
   }
 }
 

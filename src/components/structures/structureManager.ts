@@ -23,7 +23,7 @@ export function getStructureCount(room: Room): number {
   let structureCount: number = _.size(room.find<Structure>(FIND_STRUCTURES));
 
   if (Config.ENABLE_DEBUG_MODE) {
-    log.info("[StructureManager]", structureCount + " structures in room.");
+    log.debug("[StructureManager]", structureCount + " structures in room.");
   }
 
   return structureCount;

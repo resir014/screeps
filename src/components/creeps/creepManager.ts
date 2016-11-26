@@ -70,7 +70,7 @@ function _loadCreeps(room: Room) {
   wallRepairers = _.filter(creeps, (creep) => creep.memory.role === "wallRepairer");
 
   if (Config.ENABLE_DEBUG_MODE) {
-    log.info(creepCount + " creeps found in the playground.");
+    log.debug(creepCount + " creeps found in the playground.");
   }
 }
 
