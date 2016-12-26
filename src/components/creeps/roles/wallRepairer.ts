@@ -10,14 +10,14 @@ import * as creepActions from "../creepActions";
 export function run(creep: Creep) {
   let structures = StructureManager.loadStructures(creep.room);
 
-  if (_.sum(this.creep.carry) > 0) {
+  if (_.sum(creep.carry) > 0) {
     let structuresToRepair = _getWallsToRepair(structures);
 
     if (structuresToRepair) {
-      if (this.creep.pos.isNearTo(structuresToRepair[0])) {
-        this.creep.repair(structuresToRepair[0]);
+      if (creep.pos.isNearTo(structuresToRepair[0])) {
+        creep.repair(structuresToRepair[0]);
       } else {
-        this.moveTo(structuresToRepair[0]);
+        creepActions.moveTo(creep, structuresToRepair[0]);
       }
     }
   } else {
