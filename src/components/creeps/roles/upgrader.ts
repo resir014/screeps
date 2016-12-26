@@ -12,18 +12,11 @@ export function run(creep: Creep) {
   if (!creep.memory.upgrading) {
     creep.memory.upgrading = false;
   }
-  if (creep.memory.upgrading && creep.carry.energy === 0) {
+  if (_.sum(creep.carry) === 0) {
     creep.memory.upgrading = false;
   }
-  if (!creep.memory.upgrading && creep.carry.energy === creep.carryCapacity) {
-    creep.memory.upgrading = true;
-  }
 
-  if (creep.memory.upgrading) {
-    if (roomController && creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
-      creepActions.moveTo(creep, roomController);
-    }
-  } else {
+  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory.upgrading) {
     let targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
 
     if (targetSource) {
@@ -34,6 +27,12 @@ export function run(creep: Creep) {
       }
     } else {
       creepActions.tryRetrieveEnergy(creep);
+    }
+  } else {
+    creep.memory.upgrading = true;
+
+    if (roomController && creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
+      creepActions.moveTo(creep, roomController);
     }
   }
 }

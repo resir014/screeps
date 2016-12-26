@@ -15,15 +15,17 @@ export let constructionSiteCount: number = 0;
 export function run(creep: Creep) {
   _loadConstructionSites(creep);
 
-  if (creep.memory.building && creep.carry.energy === 0) {
+  if (!creep.memory.building) {
+    creep.memory.building = false;
+  }
+  if (_.sum(creep.carry) === 0) {
     creep.memory.building = false;
   }
 
-  if (!creep.memory.building && creep.carry.energy === creep.carryCapacity) {
+  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory.building) {
+    creepActions.tryRetrieveEnergy(creep);
+  } else {
     creep.memory.building = true;
-  }
-
-  if (creep.memory.building) {
     let targetConstructionSite = _getConstructionSite(constructionSites);
 
     if (targetConstructionSite) {
@@ -33,9 +35,6 @@ export function run(creep: Creep) {
         creepActions.moveTo(creep, targetConstructionSite);
       }
     }
-
-  } else {
-    creepActions.tryRetrieveEnergy(creep);
   }
 }
 
