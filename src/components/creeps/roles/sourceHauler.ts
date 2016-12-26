@@ -7,7 +7,7 @@ import * as creepActions from "../creepActions";
  * @param {Creep} creep The current creep.
  */
 export function run(creep: Creep): void {
-  if (!creep.memory.delivering) {
+  if (typeof creep.memory.delivering === "undefined") {
     creep.memory.delivering = false;
   }
 

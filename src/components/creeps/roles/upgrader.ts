@@ -9,9 +9,10 @@ import * as creepActions from "../creepActions";
 export function run(creep: Creep) {
   let roomController: StructureController | undefined = creep.room.controller;
 
-  if (!creep.memory.upgrading) {
+  if (typeof creep.memory.upgrading === "undefined") {
     creep.memory.upgrading = false;
   }
+
   if (_.sum(creep.carry) === 0) {
     creep.memory.upgrading = false;
   }

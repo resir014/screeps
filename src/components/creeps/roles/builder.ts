@@ -15,9 +15,10 @@ export let constructionSiteCount: number = 0;
 export function run(creep: Creep) {
   _loadConstructionSites(creep);
 
-  if (!creep.memory.building) {
+  if (typeof creep.memory.building === "undefined") {
     creep.memory.building = false;
   }
+
   if (_.sum(creep.carry) === 0) {
     creep.memory.building = false;
   }
