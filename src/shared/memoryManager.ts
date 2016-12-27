@@ -1,3 +1,5 @@
+import { log } from "../utils/log";
+
 /**
  * Check memory for null or out of bounds custom objects
  *
@@ -52,7 +54,7 @@ export function cleanupCreepMemory(room: Room): void {
 
     if (creep.room === room.name) {
       if (!Game.creeps[name]) {
-        console.log("[MemoryManager] Clearing non-existing creep memory:", name);
+        log.info("[MemoryManager] Clearing non-existing creep memory:", name);
 
         if (Memory.creeps[name].role === "sourceMiner") {
           Memory.rooms[room.name].unoccupied_mining_positions
