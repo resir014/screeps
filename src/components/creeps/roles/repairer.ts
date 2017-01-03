@@ -37,15 +37,15 @@ export function run(creep: Creep) {
  *
  * @export
  * @param {Structure[]} structures The list of structures.
- * @returns {Structure[]} an array of structures to repair.
+ * @returns {(Structure[] | undefined)} an array of structures to repair.
  */
-function _getStructuresToRepair(structures: Structure[]): Structure[] {
+function _getStructuresToRepair(structures: Structure[]): Structure[] | undefined {
 
   let targets: Structure[];
 
   // Initial search scope.
   targets = structures.filter((structure: Structure) => {
-    return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+    return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
       && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD
         && structure.structureType !== STRUCTURE_RAMPART)));
   });
@@ -53,7 +53,7 @@ function _getStructuresToRepair(structures: Structure[]): Structure[] {
   // If nothing is found, expand search to include roads.
   if (targets.length === 0) {
     targets = structures.filter((structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
         && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)));
     });
   }
@@ -61,7 +61,7 @@ function _getStructuresToRepair(structures: Structure[]): Structure[] {
   // If we still find nothing, expand search to ramparts.
   if (targets.length === 0) {
     targets = structures.filter((structure: Structure) => {
-      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.4))
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
         && (structure.structureType !== STRUCTURE_WALL)));
     });
   }
