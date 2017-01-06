@@ -88,10 +88,10 @@ function _buildMissingCreeps(room: Room) {
     },
   });
 
-  if (room.energyCapacityAvailable <= 800) {
-    bodyParts = [WORK, WORK, CARRY, MOVE];
-  } else if (room.energyCapacityAvailable > 800 && room.energyCapacityAvailable <= 1200) {
-    bodyParts = [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+  if (room.energyCapacityAvailable < 550 && room.energyAvailable < 550) {
+    bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
+  } else if (room.energyCapacityAvailable >= 550 && room.energyAvailable >= 550) {
+    bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
   }
 
   for (let spawn of spawns) {
@@ -102,14 +102,18 @@ function _buildMissingCreeps(room: Room) {
     if (spawn.canCreateCreep) {
       if (sourceMiners.length >= 1) {
         if (sourceHaulers.length < Memory.rooms[room.name].jobs.haulerJobs) {
-          bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
+          if (room.energyCapacityAvailable < 550 && room.energyAvailable < 550) {
+            bodyParts = [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+          } else if (room.energyCapacityAvailable >= 550 && room.energyAvailable >= 550) {
+            bodyParts = [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE];
+          }
           _spawnCreep(spawn, bodyParts, "sourceHauler");
           break;
         } else if (sourceMiners.length < Memory.rooms[room.name].jobs.sourceMiningJobs) {
-          if (sourceMiners.length < 1 || room.energyCapacityAvailable <= 800) {
-            bodyParts = [WORK, WORK, MOVE];
-          } else if (room.energyCapacityAvailable > 800) {
-            bodyParts = [WORK, WORK, WORK, WORK, MOVE, MOVE];
+          if (room.energyCapacityAvailable < 550 && room.energyAvailable < 550) {
+            bodyParts = [WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE];
+          } else if (room.energyCapacityAvailable >= 550 && room.energyAvailable >= 550) {
+            bodyParts = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE];
           }
           _spawnCreep(spawn, bodyParts, "sourceMiner");
         } else if (upgraders.length < Memory.rooms[room.name].jobs.upgraderJobs) {
@@ -139,7 +143,7 @@ function _buildMissingCreeps(room: Room) {
         }
       } else {
         if (sourceMiners.length < Memory.rooms[room.name].jobs.sourceMiningJobs) {
-          bodyParts = [WORK, WORK, MOVE];
+          bodyParts = [WORK, WORK, MOVE, MOVE];
           _spawnCreep(spawn, bodyParts, "sourceMiner");
           break;
         }
@@ -152,13 +156,12 @@ function _buildMissingCreeps(room: Room) {
  * Spawns a new creep.
  *
  * @param {Spawn} spawn
- * @param {string[]} bodyParts
  * @param {string} role
  * @returns
  */
 function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string) {
   let uuid: number = Memory.uuid;
-  let status: number | string = spawn.canCreateCreep(bodyParts, undefined);
+  let status: number | string = spawn.canCreateCreep(bodyParts);
 
   let properties: { [key: string]: any } = {
     role,
