@@ -80,7 +80,7 @@ function _loadCreeps(room: Room) {
  * @param {Room} room
  */
 function _buildMissingCreeps(room: Room) {
-  let bodyParts: string[];
+  let bodyParts: string[] = [];
 
   let spawns: Spawn[] = room.find<Spawn>(FIND_MY_SPAWNS, {
     filter: (spawn: Spawn) => {
@@ -92,9 +92,6 @@ function _buildMissingCreeps(room: Room) {
     bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
   } else if (room.energyCapacityAvailable >= 550 && room.energyAvailable >= 550) {
     bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
-  } else {
-    // In case we ran out of creeps.
-    bodyParts = [WORK, WORK, CARRY, MOVE];
   }
 
   for (let spawn of spawns) {
@@ -109,6 +106,8 @@ function _buildMissingCreeps(room: Room) {
             bodyParts = [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
           } else if (room.energyCapacityAvailable >= 550 && room.energyAvailable >= 550) {
             bodyParts = [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE];
+          } else if (sourceHaulers.length < 1) {
+            bodyParts = [CARRY, CARRY, CARRY, MOVE];
           }
           _spawnCreep(spawn, bodyParts, "sourceHauler");
           break;
