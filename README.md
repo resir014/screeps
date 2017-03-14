@@ -2,6 +2,8 @@
 
 > Personal AI code for the game [Screeps](https://screeps.com/). Written in [TypeScript](http://www.typescriptlang.org/).
 
+**DEPRECATED:** This code is decommissioned and will no longer be updated.
+
 This starter kit is a modified version of the original [Screeps/TypeScript sample project](https://github.com/MarkoSulamagi/Screeps-typescript-sample-project) by [Marko Sulamägi](https://github.com/MarkoSulamagi).
 
 ## Getting Started
