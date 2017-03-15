@@ -1,6 +1,6 @@
 # Ignore basic folders
-node_modules
 /dist
+/node_modules
 /typings
 
 # Screeps config file

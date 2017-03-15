@@ -71,10 +71,10 @@ const buildConfig = config.targets[buildTarget];
 /* TASKS */
 /*********/
 
-gulp.task('lint', function (done) {
+gulp.task('lint', function(done) {
   if (buildConfig.lint) {
     gutil.log('linting ...');
-    return gulp.src('src/**/*.ts')
+    return gulp.src(['src/**/*.ts', '!src/lib/**/*.ts'])
       .pipe(tslint({ formatter: 'prose' }))
       .pipe(tslint.report({
         summarizeFailureOutput: true,
@@ -92,19 +92,19 @@ gulp.task('clean', function () {
 });
 
 var revisionInfo = { valid: false };
-gulp.task('gitRevisions', function (cb) {
+gulp.task('gitRevisions', function(cb) {
   return git().listRemote(['--get-url'], (err, data) => {
     if (!err) {
       revisionInfo.repo = _.trim(data).replace(/\.git$/, "");
     }
     else {
-      cb();
+     cb();
     }
   }).revparse(["HEAD"], (err, data) => {
     if (!err) {
       revisionInfo.revision = _.trim(data);
     }
-    if (revisionInfo.repo && revisionInfo.revision) {
+    if(revisionInfo.repo && revisionInfo.revision) {
       revisionInfo.valid = true;
     }
     cb();
@@ -117,27 +117,27 @@ gulp.task('compile-bundled', gulp.series(gulp.parallel('gitRevisions', 'lint', '
   return gulp.src('src/main.ts')
     .pipe(webpackStream(webpackConfig, webpack))
     .pipe(through.obj(function (file, enc, cb) {
-      // Source maps are JSON files with a single object.
-      // Screeps server takes only *.js files, require() expects .js files to be modules and export something, so turning it into module with one export: "d".
-      // If we could name it *.json, this wouldn't be needed.
-      if (/main\.js\.map\.js$/.test(file.path)) {
-        file._contents = Buffer.concat([Buffer.from("module.exports.d=", 'utf-8'), file._contents]);
-      }
-
-      // Updating repo/revision for source links.
-      if (/main\.js$/.test(file.path)) {
-        if (revisionInfo.valid) {
-          let contents = file._contents.toString('utf-8');
-          contents = contents
-            .replace(/repo: "@@_repo_@@"/, `repo: "${revisionInfo.repo}"`)
-            .replace(/revision: "@@_revision_@@", valid: false/, `revision: "${revisionInfo.revision}", valid: true`)
-            ;
-          file._contents = Buffer.from(contents, 'utf-8');
+        // Source maps are JSON files with a single object.
+        // Screeps server takes only *.js files, require() expects .js files to be modules and export something, so turning it into module with one export: "d".
+        // If we could name it *.json, this wouldn't be needed.
+        if (/main\.js\.map\.js$/.test(file.path)) {
+          file._contents = Buffer.concat([Buffer.from("module.exports.d=", 'utf-8'), file._contents]);
         }
-      }
 
-      this.push(file);
-      cb();
+        // Updating repo/revision for source links.
+        if (/main\.js$/.test(file.path)) {
+          if(revisionInfo.valid) {
+            let contents = file._contents.toString('utf-8');
+            contents = contents
+              .replace(/repo: "@@_repo_@@"/, `repo: "${revisionInfo.repo}"`)
+              .replace(/revision: "@@_revision_@@", valid: false/, `revision: "${revisionInfo.revision}", valid: true`)
+            ;
+            file._contents = Buffer.from(contents, 'utf-8');
+          }
+        }
+
+        this.push(file);
+        cb();
     }))
     .pipe(gulp.dest('dist/' + buildTarget));
 }));
@@ -162,7 +162,7 @@ gulp.task('compile-flattened', gulp.series(
   },
   function flatten() {
     return gulp.src('dist/tmp/**/*.js')
-      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(sourcemaps.init( { loadMaps: true } ))
       .pipe(gulpDotFlatten(0))
       .pipe(sourcemaps.write(".", {
         includeContent: false,
@@ -175,7 +175,7 @@ gulp.task('compile-flattened', gulp.series(
 gulp.task('compile', gulp.series(buildConfig.bundle ? 'compile-bundled' : 'compile-flattened'));
 
 gulp.task('upload', gulp.series('compile', function uploading() {
-  if (buildConfig.branch) {
+  if(buildConfig.branch) {
     return gulp.src('dist/' + buildTarget + '/*.js')
       .pipe(gulpRename((path) => path.extname = ''))
       .pipe(gulpScreepsUpload(config.user.email, config.user.password, buildConfig.branch, 0));
@@ -187,7 +187,7 @@ gulp.task('upload', gulp.series('compile', function uploading() {
 
 gulp.task('watch', function () {
   gulp.watch('src/**/*.ts', gulp.series('build'))
-    .on('all', function (event, path, stats) {
+    .on('all', function(event, path, stats) {
       console.log('');
       gutil.log(gutil.colors.green('File ' + path + ' was ' + event + 'ed, running tasks...'));
     })

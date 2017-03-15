@@ -27,8 +27,8 @@ module.exports = {
 
   externals: [
     {
-      // webpack will not try to rewrite require("main.js.map")
-      'main.js.map': './main.js.map',
+        // webpack will not try to rewrite require("main.js.map")
+        'main.js.map': './main.js.map',
     },
   ],
 

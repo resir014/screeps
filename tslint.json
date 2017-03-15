@@ -6,9 +6,6 @@
     "forin": false,
     "interface-name": [false],
     "no-console": [false],
-    "trailing-comma": [
-      false
-    ],
     "variable-name": [
       true,
       "ban-keywords",

@@ -1,28 +1,27 @@
 {
-  "name": "resir014-screeps",
+  "name": "@resir014/screeps",
   "version": "0.0.0",
-  "description": "Personal AI code for the game Screeps. Written in TypeScript.",
+  "description": "",
   "main": "./dist/main.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/resir014/screeps.git"
-  },
+  "repository": "screepers/screeps-typescript-starter",
   "scripts": {
-    "gulp": "gulp",
-    "postinstall": "typings install",
+    "commit": "git-cz",
     "deploy": "gulp build",
     "deploy-prod": "gulp build --target prod",
     "deploy-local": "gulp build --target local",
-    "start": "gulp watch",
+    "gulp": "gulp",
+    "jshint-gulp": "jshint gulpfile.js libs/gulp-screeps-upload.js",
+    "postinstall": "typings install",
     "prod": "gulp watch --target prod",
+    "start": "gulp watch",
     "test": "gulp test",
     "tslint": "tslint \"src/**/*.ts\"",
-    "typings": "typings",
-    "jshint-gulp": "jshint gulpfile.js libs/gulp-dot-flatten.js libs/gulp-screeps-upload.js"
+    "typings": "typings"
   },
-  "author": "Resi Respati <resir014@gmail.com>",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
+    "cz-conventional-changelog": "^2.0.0",
     "deep-equal": "^1.0.1",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-clean": "^0.3.2",
@@ -46,5 +45,10 @@
     "typings": "^1.3.0",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
