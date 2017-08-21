@@ -1,8 +1,10 @@
-# resir014-screeps
+# Stonehenge
 
 > Smart colony management for the game [Screeps](https://screeps.com/). Written in [TypeScript](http://www.typescriptlang.org/).
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Stonehenge is a next-generation AI system for the game [Screeps](https://screeps.com/). It is developed in [TypeScript](https://www.typescriptlang.org/), and designed with modularity in mind.
 
 ## Table of Contents
 
