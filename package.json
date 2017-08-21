@@ -1,54 +1,49 @@
 {
   "name": "@resir014/screeps",
-  "version": "0.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Smart colony management for the game Screeps. Written in TypeScript.",
   "main": "./dist/main.js",
-  "repository": "screepers/screeps-typescript-starter",
   "scripts": {
-    "commit": "git-cz",
-    "deploy": "gulp build",
-    "deploy-prod": "gulp build --target prod",
-    "deploy-local": "gulp build --target local",
-    "gulp": "gulp",
-    "jshint-gulp": "jshint gulpfile.js libs/gulp-screeps-upload.js",
+    "build": "webpack --colors --env.ENV=dev",
+    "deploy": "webpack --colors --env.ENV=prod",
+    "lint": "tslint \"src/**/*.ts\" -e \"**/src/lib/**/*.ts\"",
+    "local": "webpack --colors --env.ENV=local",
     "postinstall": "typings install",
-    "prod": "gulp watch --target prod",
-    "start": "gulp watch",
-    "test": "gulp test",
-    "tslint": "tslint \"src/**/*.ts\"",
-    "typings": "typings"
+    "start": "npm run watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typings": "typings",
+    "watch": "webpack --colors --watch",
+    "watch-local": "webpack --colors --watch --env.ENV=local"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/resir014/Stonehenge.git"
+  },
+  "author": "Resi Respati <resir014@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "cz-conventional-changelog": "^2.0.0",
-    "deep-equal": "^1.0.1",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-clean": "^0.3.2",
-    "gulp-collect": "^0.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.2.0",
-    "gulp-tslint": "^6.0.1",
-    "gulp-typescript": "^3.0.0",
-    "gulp-util": "^3.0.7",
-    "jshint": "^2.9.2",
-    "lodash": "^4.14.0",
-    "q": "^1.4.1",
-    "recast": "^0.11.10",
-    "simple-git": "^1.61.0",
-    "source-map": "^0.5.6",
-    "source-map-loader": "^0.1.6",
-    "through2": "^2.0.1",
-    "ts-loader": "^2.0.0",
-    "tslint": "^3.13.0",
-    "typescript": "^2.0.3",
-    "typings": "^1.3.0",
-    "webpack": "^2.2.1",
-    "webpack-stream": "^3.2.0"
+  "bugs": {
+    "url": "https://github.com/resir014/Stonehenge/issues"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "homepage": "https://github.com/resir014/Stonehenge#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.3",
+    "clean-webpack-plugin": "^0.1.16",
+    "git-rev-sync": "^1.9.1",
+    "screeps-webpack-plugin": "git://github.com/langri-sha/screeps-webpack-plugin.git",
+    "source-map-loader": "^0.2.1",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.2.0",
+    "tslint-eslint-rules": "^4.0.0",
+    "tslint-loader": "^3.5.3",
+    "typescript": "^2.3.2",
+    "typings": "^2.1.1",
+    "webpack": "^2.5.1",
+    "webpack-chain": "^3.2.0"
+  },
+  "dependencies": {
+    "@types/screeps-profiler": "^1.2.0",
+    "@types/source-map": "^0.5.1",
+    "screeps-profiler": "^1.3.0",
+    "source-map": "^0.5.6"
   }
 }

@@ -1,4 +1,4 @@
-import * as Config from "../../config/config";
+import * as Config from '../../config/config'
 
 /**
  * Shorthand method for `Creep.moveTo()`.
@@ -8,30 +8,8 @@ import * as Config from "../../config/config";
  * @param {(Structure | RoomPosition)} target
  * @returns {number}
  */
-export function moveTo(creep: Creep, target: Structure | ConstructionSite | RoomPosition): number {
-  let result: number = 0;
-
-  // Execute moves by cached paths at first
-  result = creep.moveTo(target);
-
-  return result;
-}
-
-/**
- * Shorthand method for `Creep.moveTo()`, adjusted for Resource.
- *
- * @export
- * @param {Creep} creep
- * @param {(Structure | RoomPosition)} target
- * @returns {number}
- */
-export function moveToResource(creep: Creep, target: Resource | RoomPosition): number {
-  let result: number = 0;
-
-  // Execute moves by cached paths at first
-  result = creep.moveTo(target);
-
-  return result;
+export function moveTo(creep: Creep, target: Structure | RoomPosition): number {
+  return creep.moveTo(target)
 }
 
 /**
@@ -43,7 +21,7 @@ export function moveToResource(creep: Creep, target: Resource | RoomPosition): n
  * @returns {boolean}
  */
 export function needsRenew(creep: Creep): boolean {
-  return (creep.ticksToLive < Config.DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL);
+  return (creep.ticksToLive < Config.DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL)
 }
 
 /**
@@ -55,7 +33,7 @@ export function needsRenew(creep: Creep): boolean {
  * @returns {number}
  */
 export function tryRenew(creep: Creep, spawn: Spawn): number {
-  return spawn.renewCreep(creep);
+  return spawn.renewCreep(creep)
 }
 
 /**
@@ -67,38 +45,7 @@ export function tryRenew(creep: Creep, spawn: Spawn): number {
  */
 export function moveToRenew(creep: Creep, spawn: Spawn): void {
   if (tryRenew(creep, spawn) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(spawn);
-  }
-}
-
-export function tryRetrieveEnergy(creep: Creep): void {
-  let targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
-
-  if (targetSource) {
-    if (creep.pos.isNearTo(targetSource)) {
-      creep.pickup(targetSource);
-    } else {
-      moveToResource(creep, targetSource);
-    }
-  } else {
-    let targetContainer = creep.pos.findClosestByPath<Container>(FIND_STRUCTURES, {
-      filter: ((structure: Structure) => {
-        if (structure.structureType === STRUCTURE_CONTAINER) {
-          let container = <Container> structure;
-          if (_.sum(container.store) > (500)) {
-            return container;
-          }
-        }
-      })
-    });
-
-    if (targetContainer) {
-      if (creep.pos.isNearTo(targetContainer)) {
-        creep.withdraw(targetContainer, RESOURCE_ENERGY);
-      } else {
-        moveTo(creep, targetContainer);
-      }
-    }
+    creep.moveTo(spawn)
   }
 }
 
@@ -110,13 +57,13 @@ export function tryRetrieveEnergy(creep: Creep): void {
  * @param {RoomObject} roomObject
  */
 export function getEnergy(creep: Creep, roomObject: RoomObject): void {
-  let energy: Resource = <Resource> roomObject;
+  const energy: Resource = roomObject as Resource
 
   if (energy) {
     if (creep.pos.isNearTo(energy)) {
-      creep.pickup(energy);
+      creep.pickup(energy)
     } else {
-      moveTo(creep, energy.pos);
+      moveTo(creep, energy.pos)
     }
   }
 }
@@ -130,15 +77,15 @@ export function getEnergy(creep: Creep, roomObject: RoomObject): void {
  * @returns {boolean}
  */
 export function canWork(creep: Creep): boolean {
-  let working = creep.memory.working;
+  const working = creep.memory.working
 
   if (working && _.sum(creep.carry) === 0) {
-    creep.memory.working = false;
-    return false;
+    creep.memory.working = false
+    return false
   } else if (!working && _.sum(creep.carry) === creep.carryCapacity) {
-    creep.memory.working = true;
-    return true;
+    creep.memory.working = true
+    return true
   } else {
-    return creep.memory.working;
+    return creep.memory.working
   }
 }

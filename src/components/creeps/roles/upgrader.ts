@@ -1,39 +1,55 @@
-import * as creepActions from "../creepActions";
+import { Profile } from '../../../lib/profiler/profile'
+import { Role } from '../role'
 
 /**
- * Runs all creep actions.
+ * An Upgrader upgrades the controller in their room.
  *
- * @export
- * @param {Creep} creep The current creep.
+ * @todo Refactor this.
  */
-export function run(creep: Creep) {
-  let roomController: StructureController | undefined = creep.room.controller;
-
-  if (typeof creep.memory.upgrading === "undefined") {
-    creep.memory.upgrading = false;
+export class Upgrader extends Role {
+  /**
+   * Creates an instance of Upgrader.
+   * @param {Creep} creep The current creep.
+   *
+   * @memberOf Upgrader
+   */
+  constructor(creep: Creep) {
+    super(creep)
   }
 
-  if (_.sum(creep.carry) === 0) {
-    creep.memory.upgrading = false;
-  }
+  /**
+   * Run the module.
+   */
+  @Profile()
+  public run(): void {
+    const roomController: StructureController | undefined = this.creep.room.controller
 
-  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory.upgrading) {
-    let targetSource = creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES);
+    if (!this.memory.state) {
+      this.memory.state = 'idle'
+    }
 
-    if (targetSource) {
-      if (creep.pos.isNearTo(targetSource)) {
-        creep.pickup(targetSource);
+    if (_.sum(this.creep.carry) === 0) {
+      this.memory.state = 'idle'
+    }
+
+    if (_.sum(this.creep.carry) < this.creep.carryCapacity && this.memory.state !== 'upgrading') {
+      const targetSource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES)
+
+      if (targetSource) {
+        if (this.creep.pos.isNearTo(targetSource)) {
+          this.creep.pickup(targetSource)
+        } else {
+          this.moveTo(targetSource, 1)
+        }
       } else {
-        creepActions.moveToResource(creep, targetSource);
+        this.tryRetrieveEnergy()
       }
     } else {
-      creepActions.tryRetrieveEnergy(creep);
-    }
-  } else {
-    creep.memory.upgrading = true;
+      this.memory.state = 'upgrading'
 
-    if (roomController && creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
-      creepActions.moveTo(creep, roomController);
+      if (roomController && this.creep.upgradeController(roomController) === ERR_NOT_IN_RANGE) {
+        this.moveTo(roomController)
+      }
     }
   }
 }

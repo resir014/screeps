@@ -1,116 +1,131 @@
-import * as Config from "../../../config/config";
-import * as creepActions from "../creepActions";
-
-import { log } from "../../../utils/log";
-
-export let constructionSites: ConstructionSite[];
-export let constructionSiteCount: number = 0;
+import * as Config from '../../../config/config'
+import { log } from '../../../lib/logger'
+import { Profile } from '../../../lib/profiler/profile'
+import { Role } from '../role'
 
 /**
- * Runs all creep actions.
+ * A Builder builds construction sites.
  *
- * @export
- * @param {Creep} creep The current creep.
+ * When given a list of structures to build, it will always builds by its order
+ * in the array, so it might be wise to pass a pre-sorted array of construction
+ * sites to build.
  */
-export function run(creep: Creep) {
-  _loadConstructionSites(creep);
+export class Builder extends Role {
+  private constructionSites: ConstructionSite[]
+  private constructionSiteCount: number
 
-  if (typeof creep.memory.building === "undefined") {
-    creep.memory.building = false;
+  private roads: ConstructionSite[] = []
+  private extensions: ConstructionSite[] = []
+  private containers: ConstructionSite[] = []
+  private walls: ConstructionSite[] = []
+  private ramparts: ConstructionSite[] = []
+  private towers: ConstructionSite[] = []
+  private storages: ConstructionSite[] = []
+
+  /**
+   * Creates an instance of Builder.
+   * @param {Creep} creep The current creep.
+   *
+   * @memberOf Builder
+   */
+  constructor(creep: Creep) {
+    super(creep)
+    this.constructionSites = creep.room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES)
+    this.constructionSiteCount = _.size(this.constructionSites)
+    this.getConstructionSites()
+
+    if (Config.ENABLE_DEBUG_MODE) {
+      log.debug('[Builder]', this.constructionSiteCount + ' construction sites in room' +
+        creep.room.name + '.')
+    }
   }
 
-  if (_.sum(creep.carry) === 0) {
-    creep.memory.building = false;
-  }
+  /**
+   * Run the module.
+   */
+  @Profile()
+  public run(): void {
+    if (!this.memory.state) {
+      this.memory.state = 'idle'
+    }
 
-  if (_.sum(creep.carry) < creep.carryCapacity && !creep.memory.building) {
-    creepActions.tryRetrieveEnergy(creep);
-  } else {
-    creep.memory.building = true;
-    let targetConstructionSite = _getConstructionSite(constructionSites);
+    if (_.sum(this.creep.carry) === 0) {
+      this.memory.state = 'idle'
+    }
 
-    if (targetConstructionSite) {
-      if (creep.pos.isNearTo(targetConstructionSite)) {
-        creep.build(targetConstructionSite);
-      } else {
-        creepActions.moveTo(creep, targetConstructionSite);
+    if (_.sum(this.creep.carry) < this.creep.carryCapacity && this.memory.state !== 'building') {
+      this.tryRetrieveEnergy()
+    } else {
+      this.memory.state = 'building'
+      const targetConstructionSite = this.getConstructionSite(this.constructionSites)
+
+      if (targetConstructionSite) {
+        if (this.creep.pos.isNearTo(targetConstructionSite)) {
+          this.creep.build(targetConstructionSite)
+        } else {
+          this.moveTo(targetConstructionSite)
+        }
       }
     }
   }
-}
 
-function _loadConstructionSites(creep: Creep) {
-  constructionSites = creep.room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
-  constructionSiteCount = _.size(constructionSites);
+  private getConstructionSites(): void {
+    this.roads = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_ROAD
+    })
 
-  if (Config.ENABLE_DEBUG_MODE) {
-    log.debug("[ConstructionSiteManager]", constructionSiteCount + " construction sites in room.");
-  }
-}
+    this.extensions = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_EXTENSION
+    })
 
-/**
- * Returns a prioritised list of available construction sites.
- *
- * @private
- * @param {ConstructionSite[]} targets
- * @returns {ConstructionSite}
- */
-function _getConstructionSite(targets: ConstructionSite[]): ConstructionSite {
-  let target: ConstructionSite | null = null;
+    this.containers = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_CONTAINER
+    })
 
-  let roads: ConstructionSite[] = [];
-  let extensions: ConstructionSite[] = [];
-  let containers: ConstructionSite[] = [];
-  let walls: ConstructionSite[] = [];
-  let ramparts: ConstructionSite[] = [];
-  let towers: ConstructionSite[] = [];
-  let storages: ConstructionSite[] = [];
+    this.walls = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_WALL
+    })
 
-  roads = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_ROAD;
-  });
+    this.ramparts = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_RAMPART
+    })
 
-  extensions = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_EXTENSION;
-  });
+    this.towers = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_TOWER
+    })
 
-  containers = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_CONTAINER;
-  });
-
-  walls = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_WALL;
-  });
-
-  ramparts = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_RAMPART;
-  });
-
-  towers = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_TOWER;
-  });
-
-  storages = targets.filter((structure) => {
-    return structure.structureType === STRUCTURE_STORAGE;
-  });
-
-  if (roads.length > 0) {
-    target = roads[0];
-  } else if (extensions.length > 0) {
-    target = extensions[0];
-  } else if (containers.length > 0) {
-    target = containers[0];
-  } else if (walls.length > 0) {
-    target = walls[0];
-  } else if (ramparts.length > 0) {
-    target = ramparts[0];
-  } else if (towers.length > 0) {
-    target = towers[0];
-  } else if (storages.length > 0) {
-    target = storages[0];
-  } else {
-    target = constructionSites[0];
+    this.storages = this.constructionSites.filter((structure: ConstructionSite) => {
+      return structure.structureType === STRUCTURE_STORAGE
+    })
   }
 
-  return target;
+  /**
+   * Gets a prioritised list of construction sites to maintain.
+   * @todo This really needs to be refactored to Orchestrator.
+   *
+   * @param constructionSites The list of construction sites to sort
+   */
+  private getConstructionSite(constructionSites: ConstructionSite[]): ConstructionSite {
+    let target: ConstructionSite
+
+    if (this.roads.length > 0) {
+      target = this.roads[0]
+    } else if (this.extensions.length > 0) {
+      target = this.extensions[0]
+    } else if (this.containers.length > 0) {
+      target = this.containers[0]
+    } else if (this.walls.length > 0) {
+      target = this.walls[0]
+    } else if (this.ramparts.length > 0) {
+      target = this.ramparts[0]
+    } else if (this.towers.length > 0) {
+      target = this.towers[0]
+    } else if (this.storages.length > 0) {
+      target = this.storages[0]
+    } else {
+      target = constructionSites[0]
+    }
+
+    return target
+  }
 }

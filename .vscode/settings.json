@@ -3,6 +3,7 @@
   "editor.insertSpaces": true,
   "editor.renderWhitespace": "boundary",
   "files.encoding": "utf8",
+  "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "search.exclude": {
@@ -10,6 +11,13 @@
     "node_modules/**": true,
     "typings/**": true
   },
+  "tslint.exclude": [
+    "**/webpack.config.ts",
+    "**/config/**/*.ts",
+    "**/libs/**/*.ts",
+    "**/src/lib/**/*.ts",
+    "**/src/snippets/**/*.ts"
+  ],
   "typescript.tsdk": "./node_modules/typescript/lib",
   "standard.enable": false
 }

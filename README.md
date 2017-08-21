@@ -1,58 +1,79 @@
 # resir014-screeps
 
-> Personal AI code for the game [Screeps](https://screeps.com/). Written in [TypeScript](http://www.typescriptlang.org/).
+> Smart colony management for the game [Screeps](https://screeps.com/). Written in [TypeScript](http://www.typescriptlang.org/).
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-This starter kit is a modified version of the original [Screeps/TypeScript sample project](https://github.com/MarkoSulamagi/Screeps-typescript-sample-project) by [Marko Sulamägi](https://github.com/MarkoSulamagi).
+## Table of Contents
 
-## Getting Started
+* [Design Principles](#design-principles)
+* [Quick Start](#quick-start)
+* [Configuration](#configuration)
+* [Testing](#testing)
+* [Notes](#notes)
+* [To-Do](#to-do)
 
-After you create a spawn, this bot will create 4 creeps which will start to harvest the closest source. The bots harvest, then transfer energy back to Spawn. If a creep's lifespan has depleted enough, it will refill in Spawn.
+## Design Principles
+
+### Maintainability
+
+The codebase has to be simple and easily readable in order for the code to be easily built upon. In this case, the code quality is kept to a high standard and every part of the Stonehenge codebase is painstakingly documented to improve the readability and maintainability.
+
+### Modularity
+
+The code is structured by modules, which means expanding on the codebase could be done with minimal overhead.
+
+### Configuration over Convention
+
+Anyone who wants to build their Screeps colony with with Stonehenge must not be forced to follow conventions beyond the initial setup. The configurations available in the `config/` folder will allow you to fine-tune the codebase according to your workflow and needs.
+
+## Quick Start
 
 ### Requirements
 
-* [Node.js](https://nodejs.org/en/) (v4.0.0+)
-* Gulp 4.0+ - `npm install -g gulpjs/gulp.git#4.0`
-* TypeScript - `npm install -g typescript`
-* Typings - `npm install -g typings`
+* [Node.js](https://nodejs.org/en/) (latest LTS is recommended)
+* [Typings](https://github.com/typings/typings)
+* [Yarn](https://yarnpkg.com/en/) - Optional. You can use `npm` if you don't want to, but this is for your own sanity.
 
-### Quick setup
+### Install all required modules!
 
-First, you will have to set up your config files. Create a copy of `config.example.json` and rename it to `config.json`. Then navigate into the `src/config` directory, reate a copy of `config.example.ts` and rename it to `config.ts`.
+Run the following the command to install the required packages and TypeScript declaration files if you are using yarn:
 
 ```bash
-# config.json
-$ cp config.example.json config.json
-
-# config.ts
-$ cd src/config
-$ cp config.example.ts config.ts
+$ yarn
 ```
 
-Then, on the `config.json` file, change the `username` and `password` properties with your Screeps credentials.
-
-The `config.json` file is where you set up your development environment. If you want to push your code to another branch, for example, if you have some sort of a staging branch where you test around in Simulation mode, we have left a `branch` option for you to easily change the target branch of the upload process. The `default` branch is set as the default.
-
-The `src/config/config.ts` file is where you store your code-specific config variables. For example, if you want to easily turn on `PathFinder` when needed, you can set your own variable here. Once you've set up your configs, import the `config.ts` file on the file you want to call these configs at:
-
-```js
-import * as Config from "../path/to/config";
-```
-
-Then simply call the config variables with `Config.CONFIG_VARIABLE`.
-
-**WARNING: DO NOT** commit these files into your repository!
-
-### Installing npm modules
-
-Then run the following the command to install the required npm packages and TypeScript type definitions.
+or, for npm:
 
 ```bash
 $ npm install
 ```
+### Configure Screeps credentials
 
-### Preinstall steps
+Create a copy of `config/credentials.example.json` and rename it to `config/credentials.json`.
+
+**WARNING:** _**DO NOT** commit this file into your repository!_
+
+```bash
+# config/credentials.json
+$ cp config/credentials.example.json config/credentials.json
+```
+
+In the newly created `credentials.json` file, change the `email` and `password` properties with your Screeps credentials.  The `serverPassword`, `token`, and `gzip` options are only for private servers that support them.  If you are uploading to the public Screeps server, you should delete these fields from your credentials file.
+
+See [Configuration](#configuration) for more in-depth info on configuration options.
+
+### Run the compiler
+
+```bash
+# To compile and upload your TypeScript files on the fly in "watch mode":
+$ npm start
+
+# To compile and deploy once:
+$ npm run deploy
+```
+
+### Pre-deploy steps
 
 If you just installed this code for the first time, it is **very important** that you perform the following tasks first!
 
@@ -60,87 +81,140 @@ If you just installed this code for the first time, it is **very important** tha
 * Delete ALL currently active memory entries. (This will remove any memory conflicts.)
 * Kill ALL of your creeps.
 
-You can also do these tasks to clean up your memory should things go wrong.
+You can also perform the above tasks to clean up your memory should things go wrong.
 
-### Running the compiler
+### Post-deploy steps
 
-```bash
-# To compile your TypeScript files on the fly
-$ npm start
+After deploying, you should manually set the build priorities for your rooms. Go to your respective room's memory in the memory tree, go to `jobs`, and set the number of creeps you'd like each role.
 
-# To deploy the code to Screeps
-$ npm run deploy
-```
+## Configuration
 
-You can also use `deploy-prod` instead of `deploy` for a bundled version of the project, which has better performance but is harder to debug.
+This project is configured in two places. `config/` is for deployment configuration, and contains your screeps login credentials along with other options.
+`src/config/` contains a file you can use to configure your runtime Screeps code.
 
-`deploy-local` will copy files into a local folder to be picked up by steam client and used with the official or a private server.
+### Runtime config
 
-**Note:** After deploying, head over to the game's Memory tab, and set the build priorities for your room(s).
-
-## Notes
-
-### The `noImplicitAny` compiler flag
-
-TypeScript developers disagree about whether the `noImplicitAny` flag should be `true` or `false`. There is no correct answer and you can change the flag later. But your choice now can make a difference in larger projects so it merits discussion.
-
-When the `noImplicitAny` flag is `false` (the default), the compiler silently defaults the type of a variable to `any` if it cannot infer the type based on how the variable is used.
-
-When the `noImplicitAny` flag is `true` and the TypeScript compiler cannot infer the type, it still generates the JavaScript files. But it also reports an error. Many seasoned developers prefer this stricter setting because type checking catches more unintentional errors at compile time.
-
-In this repository, the `noImplicitAny` is set to `true` for a more stricter environment. If you don't like this, you can change the `noImplicitAny` flag to `false` on the `tsconfig.json` file.
-
-**Source:** https://angular.io/docs/ts/latest/guide/typescript-configuration.html
-
-
-### TSLint
-
-TSLint checks your TypeScript code for readability, maintainability, and functionality errors, and can also enforce coding style standards.
-
-After each successful compiling of the project, TSLint will parse the TypeScript source files and display a warning for any issues it will find.
-
-This project provides TSLint rules through a `tslint.json` file, which extends the recommended set of rules from TSLint github repository: https://github.com/palantir/tslint/blob/next/src/configs/recommended.ts
-
-We made some changes to those rules, which we considered necessary and/or relevant to a proper Screeps project:
-
- - set the [forin](http://palantir.github.io/tslint/rules/forin/) rule to `false`, it was forcing `for ( ... in ...)` loops to check if object members were not coming from the class prototype.
- - set the [interface-name](http://palantir.github.io/tslint/rules/interface-name/) rule to `false`, in order to allow interfaces that are not prefixed with `I`.
- - set the [no-console](http://palantir.github.io/tslint/rules/no-console/) rule to `false`, in order to allow using `console`.
- - in the [variable-name](http://palantir.github.io/tslint/rules/variable-name/) rule, added `allow-leading-underscore`.
-
-If you believe that some rules should not apply to a part of your code, you can use flags to let TSLint know about it: https://palantir.github.io/tslint/usage/rule-flags/
-
-**More info about TSLint:** https://palantir.github.io/tslint/
-
-### Source maps
-
-Works out of the box with "npm run deploy-prod" and default values from src/config/config.example.ts. Links back to source control when possible (currently understands only github and gitlab). Code has to be committed at build time and pushed to remote at run time for this to work correctly.
-
-Doesn't work in sim, because they do lots of evals with scripts in sim.
-
-Currently maps are generated, but "source-maps" module doesn't get uploaded for non-webpack builds.
-
-Log level and output can be controlled from console by setting level, showSource and showTick properties on log object.
+You can use the configuration variables in `src/config` by importing the file:
 
 ```js
-// print errors only, hide ticks and source locations
-log.level = 1;
-log.showSource = false;
-log.showTick = false;
+import * as Config from "../path/to/config";
 ```
 
-![Console output example](/console.png "Console output example")
+... and simply calling the config variables with `Config.CONFIG_VARIABLE` in your code.  This file mostly servers as an example for making configurable code.
+
+_**NOTE**: You may want to consider adding this file to `.gitignore` if you end up storing confidential information there._
+
+### Deployment / Compiling configuration
+
+The files under `config/`, as well as `webpack.config.ts` are where deployment configuration options are set.
+
+It's helpful to remember that the config is just a javascript object, and can be passed around and modifide using [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain).
+
+
+#### Environment:
+
+`webpack.config.ts` is for setting environment variables defaults throughout the rest of the config.
+You can use these variables to pass options to the rest of the config through the command line.
+For example:
+
+```bash
+# (npm requires arguments be seperated by a double dash)
+$ npm run build -- --env.TEST=true
+```
+Will set the member `TEST` to `true` on the options object.
+
+Remember, the config code is just a typescript function that return a config object, so you can hypothetically configure it wherever and however is most convenient.
+
+#### Build toggles / deployment-dependent variables
+
+Inside `config.common.ts` is where the majority of the webpack configuration happens.
+
+Of particular interest is the Plugins section where `DefinePlugin` is configured (look for the line about half-way down statring with `config.plugin("define")`).
+
+Variables set in the object here will be replaced in the actual output JS code.
+When compiling your code, webpack will perform a search and replace, replacing the variable names with the output of the supplied expression or value.
+
+Because these values are evaluated once as a string (for the find-and-replace), and once as an expression, they either need to be wrapped in `JSON.stringify` or double quoted (ex. `VARIABLE: '"value-in-double-quotes"'`).
+
+Webpack can do a lot with these variables and dead code elimination.
+
+*__Caveats__: you need to let typescript know about these variables by declaring them in a type definitions (`.d.ts`) file.
+Also be careful not to use too common of a name, because it will replace it throughout your code without warning.
+A good standard is to make the variables all caps, and surrounded by double underscores, so they stand out (ex: `__REVISION__`).*
+
+#### Additional Options
+
+`config.common.ts` is for config options common to all environments.  Other environments can inherit from this file, and add to, or override options on the config object.
+
+`config.dev.ts` is a specific environment configuration.  You can potentially have as many environments as you make files for.  To specify which environment to use, append `--env.ENV=` and the environment name to any commands.  An example is provided in `package.json`.
+
+`config.local.ts` is an example configuration for local deploys.  If you want to deploy to a local server for testing, just edit the path in the file and run with `npm run local` or `npm run watch-local`.
+
+Common options you may wish to configure:
+
+`output.path`:  This is the output path for the compiled js.  If you are running a local server, you may consider adding an environment that outputs directly to the screeps local folder.  This is equivalent to the `localPath` setting in older versions of the screeps-typescript-starter.
+
+`watchOptions.ignored`:  This option is only to save computer resources, since watch-mode (`npm start`) can be CPU intensive.  You can exclude directories you know don't need to be watched.
+
+`module.rules`:  These are the individual rules webpack uses to process your code.  The defaults are generally all you will need.  The most useful change you may want to make here is to explicity `exclude` files or directories from being compiled or linted (in case of 3rd party code, for example).  These values, like all others can be passed around and modified before webpack acts on them.
+
+#### Change the upload branch
+
+You code is uploaded to the branch configured by the `branch` property on the object sent to `new ScreepsWebpackPlugin` (see `config/config.dev.ts`).  You have three ways to customize this:
+
+1.  Multiple config environment files, each with a seperate branch
+2.  Use the special variables `'$activeWorld'` to upload to whatever brach is active in the Screeps world
+3.  Configure a new environment variable in `webpack.config.ts` and use that in your code.  For example:
+
+```typescript
+// webpack.custom-env.ts
+const ScreepsWebpackPlugin = require("screeps-webpack-plugin");
+const git = require('git-rev-sync'); // make sure you require `git-rev-sync`
+
+const credentials: Credentials = require("./credentials.json");
+credentials.branch = git.branch();
+
+config.plugin("screeps").use(ScreepsWebpackPlugin, [credentials]);
+```
+
+The above example will automatically set your upload branch to be the same as your active git branch.  This is functionally equivalent to the option `"autobranch": true` in older versions.
+
+You still have to create matching branch in screeps client by cloning an existing branch (API limitation). This is useful when setting up deployment pipelines that upload on commit after successful build (so a commit to `major_refactoring` branch doesn't overwrite your default branch in the middle of epic alliance action just because you forgot to update a pipeline configuration).
+
+## To-Do
+
+List of things that need to be finished.
+
+### High-Priority Tasks
+
+* Actual defensive/war code
+* Creep Action/State code
+* Controlled room job assignments:
+  * Defender
+  * Mineral miners
+* Reserved rooms
+  * Colony management logic
+  * Job assignments
+    * Scout
+    * Reserver
+    * Remote builder
+    * Remote harvester
+    * Remote hauler
+    * Remote upgrader
+    * Remote defender
+
+### Future Ideas
+
+These might not be implemented in the near future, but we thought these would be cool things to have in the codebase.
+
+* Improved job system.
+* Migration support (no more cleaning up your entire field before deploying).
+* Write up a proper documentation of code.
 
 ## Contributing
 
-1. [Fork it](https://github.com/resir014/screeps/fork)
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Create a new Pull Request
+Issues and Pull Requests are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) beforehand.
 
----
-
-## Special thanks
+## Special Thanks
 
 [Marko Sulamägi](https://github.com/MarkoSulamagi), for the original [Screeps/TypeScript sample project](https://github.com/MarkoSulamagi/Screeps-typescript-sample-project).

@@ -1,22 +1,39 @@
-import * as CreepManager from "./components/creeps/creepManager";
-import * as SourceManager from "./components/sources/sourceManager";
-import * as TowerManager from "./components/towers/towerManager";
-import * as Config from "./config/config";
-import * as JobManager from "./shared/jobManager";
-import * as MemoryManager from "./shared/memoryManager";
+import * as Profiler from 'screeps-profiler'
+import { USE_PROFILER } from './config/config'
+import { Orchestrator } from './core/orchestrator'
+import { initialiseRooms } from './room/roomManager'
+import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
-import { log } from "./utils/log";
+import { log, initLoggerMemory } from './lib/logger'
+import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
 // Any code written outside the `loop()` method is executed only when the
 // Screeps system reloads your script.
 // Use this bootstrap wisely. You can cache some of your stuff to save CPU.
 // You should extend prototypes before the game loop executes here.
 
-if (Config.USE_PATHFINDER) {
-  PathFinder.use(true);
+// Initialise logger memory.
+initLoggerMemory()
+
+// Start the profiler.
+if (USE_PROFILER) {
+  Profiler.enable()
 }
 
-log.info("Scripts bootstrapped.");
+// Prototype extensions
+loadStructureSpawnPrototypes()
+
+global.Orchestrator = new Orchestrator()
+
+log.info(`loading revision: ${__REVISION__}`)
+
+function mloop(): void {
+  // Check memory for null or out of bounds custom objects
+  checkOutOfBoundsMemory()
+
+  // Initialise all controlled rooms.
+  initialiseRooms()
+}
 
 /**
  * Screeps system expects this "loop" method in main.js to run the
@@ -26,24 +43,4 @@ log.info("Scripts bootstrapped.");
  *
  * @export
  */
-export function loop() {
-  // Check memory for null or out of bounds custom objects
-  MemoryManager.checkOutOfBounds();
-
-  // For each room, load the state and run functionality.
-  for (let i in Game.rooms) {
-    let room: Room = Game.rooms[i];
-
-    // Memory cleanup tasks
-    MemoryManager.refreshMiningPositions(room);
-    MemoryManager.cleanupCreepMemory(room);
-    JobManager.refreshJobs(room);
-
-    // Component initialisation tasks
-    SourceManager.refreshAvailableSources(room);
-
-    // For each tick, run managed creeps/structures.
-    CreepManager.run(room);
-    TowerManager.run(room);
-  }
-}
+export const loop = !USE_PROFILER ? mloop : () => { Profiler.wrap(mloop) }

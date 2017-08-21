@@ -1,46 +1,27 @@
-import * as Config from "../../config/config";
-import { log } from "../../utils/log";
-
-export let sources: Source[];
-export let sourceCount: number;
-export let lookResults: LookAtResultMatrix | LookAtResultWithPos[];
+import { ENABLE_DEBUG_MODE } from '../../config/config'
+import { log } from '../../lib/logger'
 
 /**
- * Refresh the available sources & mining positions.
+ * Create an array of all sources in the room and update job entries where
+ * available. This should ensure that each room has 1 harvester per source.
  *
  * @export
- * @param {Room} room
+ * @param {Room} room The current room.
  */
-export function refreshAvailableSources(room: Room) {
-  sources = room.find<Source>(FIND_SOURCES_ACTIVE);
-  sourceCount = _.size(sources);
+export function refreshAvailableSources(room: Room): void {
+  const sources: Source[] = room.find<Source>(FIND_SOURCES)
 
-  if (Memory.rooms[room.name].unoccupied_mining_positions.length === 0) {
+  if (room.memory.sources.length === 0) {
     sources.forEach((source: Source) => {
-      // get an array of all adjacent terrain features near the spawn
-      lookResults = source.room.lookForAtArea(
-        LOOK_TERRAIN,
-        source.pos.y - 1,
-        source.pos.x - 1,
-        source.pos.y + 1,
-        source.pos.x + 1,
-        true
-      );
-
-      for (let result of <LookAtResultWithPos[]> lookResults) {
-        if (result.terrain === "plain" || result.terrain === "swamp") {
-          Memory.rooms[room.name].unoccupied_mining_positions
-            .push(new RoomPosition(result.x, result.y, source.room.name));
-        }
-      }
-    });
-
-    Memory.rooms[room.name].jobs.sourceMiningJobs = Memory.rooms[room.name].unoccupied_mining_positions.length;
-  } else {
-    Memory.rooms[room.name].jobs.sourceMiningJobs = Memory.rooms[room.name].unoccupied_mining_positions.length;
+      // Create an array of all source IDs in the room
+      room.memory.sources.push(source.id)
+    })
   }
 
-  if (Config.ENABLE_DEBUG_MODE) {
-    log.debug("[SourceManager] " + sourceCount + " source mining jobs available in room.");
+  if (ENABLE_DEBUG_MODE) {
+    log.info(`${room.name}: ${_.size(sources)} source(s) in room.`)
   }
+
+  // Update job assignments.
+  room.memory.jobs.harvester = sources.length
 }

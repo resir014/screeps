@@ -1,10 +1,25 @@
 # Ignore basic folders
 /dist
 /node_modules
-/typings
+
+# We use yarn, so don't commit the npm lockfile.
+/package-lock.json
 
 # Screeps config file
 /config.json
+
+# code coverage directory
+/coverage
+.nyc_output/
+
+# npm debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# yarn lockfile
+# (note: sometimes it's good to actually include this in your repo)
+yarn.lock
 
 # Numerous always-ignore extensions
 *.diff
