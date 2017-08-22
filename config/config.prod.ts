@@ -1,4 +1,4 @@
-/* tslint:disable:no-var-requires */
+/* tslint:disable:no-require-imports */
 import * as Config from "webpack-chain";
 
 import * as CommonConfig from "./config.common";
@@ -16,12 +16,6 @@ function webpackConfig(options: EnvOptions = {}): Config {
 
   config.plugin("screeps")
     .use(ScreepsWebpackPlugin, [credentials]);
-
-  // modify the args of "define" plugin
-  config.plugin("define").tap((args: any[]) => {
-    args[0].PRODUCTION = JSON.stringify(true);
-    return args;
-  });
 
   return config;
 }
