@@ -1,4 +1,4 @@
-import { LogLevels } from '../lib/logger'
+import { LogLevel } from '../lib/logger'
 
 /**
  * Enable this if you want a lot of text to be logged to console.
@@ -20,7 +20,7 @@ export const DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL: number = 700
 /**
  * Debug level for log output
  */
-export const LOG_LEVEL: number = LogLevels.DEBUG
+export const LOG_LEVEL: number = LogLevel.DEBUG
 
 /**
  * Prepend log output with current tick number.
