@@ -39,12 +39,12 @@ export function runCreeps(room: Room): void {
       hauler.run()
     }
     if (creep.memory.role === 'builder') {
-      const upgrader = new Upgrader(creep)
-      upgrader.run()
-    }
-    if (creep.memory.role === 'upgrader') {
       const builder = new Builder(creep)
       builder.run()
+    }
+    if (creep.memory.role === 'upgrader') {
+      const upgrader = new Upgrader(creep)
+      upgrader.run()
     }
     if (creep.memory.role === 'repairer') {
       const repairer = new Repairer(creep)
