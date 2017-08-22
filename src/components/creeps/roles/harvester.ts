@@ -38,7 +38,7 @@ export class Harvester extends Role {
       if (this.creep.pos.isNearTo(assignedSource)) {
         this.tryHarvest(assignedSource)
       } else {
-        this.moveTo<Source>(assignedSource, 1)
+        this.moveTo<Source>(assignedSource)
       }
     }
   }

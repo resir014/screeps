@@ -5,6 +5,7 @@ import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import { log, initLoggerMemory } from './lib/logger'
+import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
 // Any code written outside the `loop()` method is executed only when the
@@ -21,6 +22,7 @@ if (USE_PROFILER) {
 }
 
 // Prototype extensions
+loadCreepPrototypes()
 loadStructureSpawnPrototypes()
 
 global.Orchestrator = new Orchestrator()

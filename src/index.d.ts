@@ -1,5 +1,18 @@
 // BEGIN Extended prototypes
 
+interface Creep {
+  /**
+   * Move around the map utilising utilising @bonzaiferroni's amazing Traveler library.
+   *
+   * @link https://github.com/bonzaiferroni/Traveler/wiki/Traveler-API
+   * @param {(RoomPosition | { pos: RoomPosition })} destination The final creep destination.
+   * @param {TravelToOptions} [options] Options used by the Traveler module.
+   * @returns {number} A status code.
+   * @memberof Creep
+   */
+  travelTo(destination: RoomPosition | { pos: RoomPosition }, options?: TravelToOptions): number
+}
+
 interface StructureSpawn {
   /**
    * Gets the largest buildable body parts from a certain set of available body parts.

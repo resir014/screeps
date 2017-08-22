@@ -1,4 +1,5 @@
 import * as StructureManager from '../structures/structureManager'
+import { Traveler } from '../../lib/Traveler/Traveler'
 
 /**
  * Shared role for all Creeps.
@@ -23,56 +24,34 @@ export class Role {
   }
 
   /**
-   * Extended method of `Creep.moveTo()`.
+   * Extended method of `Creep.moveTo()`, utilising @bonzaiferroni's amazing
+   * Traveler library.
    *
+   * @link https://github.com/bonzaiferroni/Traveler/wiki/Traveler-API
    * @template T A RoomObject type.
    * @param {T} target The target room object.
-   * @param {number} [maxRooms] The maximum allowed rooms to search. The default (and
-   *   maximum) is 16. This is only used when the new `PathFinder` is enabled.
+   * @param {TravelToOptions} [options] Options used by the Traveler module.
    * @returns {number}
    *
    * @memberOf Role
    */
-  public moveTo<T extends RoomObject>(target: T, maxRooms?: number): number {
-    const self = this
-    let result: number = 0
-
-    // Execute moves by cached paths at first
-    result = self.creep.moveTo(target, { noPathFinding: true })
-
-    // Perform pathfinding only if we have enough CPU
-    if (result !== 0) {
-      if (Game.cpu.tickLimit - Game.cpu.getUsed() > 20) {
-        result = self.creep.moveTo(target, { maxRooms: maxRooms || 1 })
-      }
-    }
-    return result
+  public moveTo<T extends RoomObject>(target: T, options?: TravelToOptions): number {
+    return this.creep.travelTo(target, options)
   }
 
   /**
-   * Extended method of `Creep.moveTo()`, adjusted for RoomPosition.
+   * Extended method of `Creep.moveTo()`, utilising @bonzaiferroni's amazing
+   * Traveler library.
    *
+   * @link https://github.com/bonzaiferroni/Traveler/wiki/Traveler-API
    * @param {RoomPosition} target The target room position.
-   * @param {number} [maxRooms] The maximum allowed rooms to search. The default (and
-   *   maximum) is 16. This is only used when the new `PathFinder` is enabled.
+   * @param {TravelToOptions} [options] Options used by the Traveler module.
    * @returns {number} A status code.
    *
    * @memberOf Role
    */
-  public moveToPosition(target: RoomPosition, maxRooms?: number): number {
-    const self = this
-    let result: number = 0
-
-    // Execute moves by cached paths at first
-    result = self.creep.moveTo(target, { noPathFinding: true })
-
-    // Perform pathfinding only if we have enough CPU
-    if (result !== 0) {
-      if (Game.cpu.tickLimit - Game.cpu.getUsed() > 20) {
-        result = self.creep.moveTo(target, { maxRooms: maxRooms || 1 })
-      }
-    }
-    return result
+  public moveToPosition(target: RoomPosition, options?: TravelToOptions): number {
+    return this.creep.travelTo(target, options)
   }
 
   /**
@@ -91,10 +70,12 @@ export class Role {
    * Moves a creep to a designated renew spot (in this case the spawn).
    *
    * @param {Spawn} spawn The current room's spawn.
+   * @param {TravelToOptions} [options] Options used by the Traveler module.
+   *    See {@link https://github.com/bonzaiferroni/Traveler/wiki/Traveler-API}
    */
-  public moveToRenew(spawn: Spawn): void {
+  public moveToRenew(spawn: Spawn, options?: TravelToOptions): void {
     if (this.tryRenew(spawn) === ERR_NOT_IN_RANGE) {
-      this.creep.moveTo(spawn)
+      Traveler.travelTo(this.creep, spawn, options)
     }
   }
 

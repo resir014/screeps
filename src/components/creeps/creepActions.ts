@@ -9,7 +9,7 @@ import * as Config from '../../config/config'
  * @returns {number}
  */
 export function moveTo(creep: Creep, target: Structure | RoomPosition): number {
-  return creep.moveTo(target)
+  return creep.travelTo(target)
 }
 
 /**

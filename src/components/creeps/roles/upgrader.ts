@@ -39,7 +39,7 @@ export class Upgrader extends Role {
         if (this.creep.pos.isNearTo(targetSource)) {
           this.creep.pickup(targetSource)
         } else {
-          this.moveTo(targetSource, 1)
+          this.moveTo(targetSource)
         }
       } else {
         this.tryRetrieveEnergy()

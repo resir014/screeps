@@ -38,7 +38,7 @@ export class Hauler extends Role {
         if (this.creep.pos.isNearTo(targetSource)) {
           this.creep.pickup(targetSource)
         } else {
-          this.moveTo(targetSource, 1)
+          this.moveTo(targetSource)
         }
       } else {
         const targetContainers = this.creep.room.find<Container>(FIND_STRUCTURES, {
@@ -57,7 +57,7 @@ export class Hauler extends Role {
             if (this.creep.pos.isNearTo(container)) {
               container.transfer(this.creep, RESOURCE_ENERGY)
             } else {
-              this.moveTo(container, 1)
+              this.moveTo(container)
             }
           })
         } else {
@@ -66,7 +66,7 @@ export class Hauler extends Role {
               return structure.structureType === STRUCTURE_CONTAINER
             }
           })
-          this.moveTo(targetContainer, 1)
+          this.moveTo(targetContainer)
         }
       }
     } else {
@@ -87,7 +87,7 @@ export class Hauler extends Role {
           if (this.creep.pos.isNearTo(tower)) {
             this.creep.transfer(tower, RESOURCE_ENERGY)
           } else {
-            this.moveTo(tower, 1)
+            this.moveTo(tower)
           }
         })
       } else {
@@ -96,7 +96,7 @@ export class Hauler extends Role {
           if (this.creep.pos.isNearTo(targetSpawn)) {
             this.creep.transfer(targetSpawn, RESOURCE_ENERGY)
           } else {
-            this.moveTo(targetSpawn, 1)
+            this.moveTo(targetSpawn)
           }
         } else {
           const targetExtensions = this.creep.room.find<Extension>(FIND_STRUCTURES, {
@@ -115,7 +115,7 @@ export class Hauler extends Role {
               if (this.creep.pos.isNearTo(extension)) {
                 this.creep.transfer(extension, RESOURCE_ENERGY)
               } else {
-                this.moveTo(extension, 1)
+                this.moveTo(extension)
               }
             })
           } else {
@@ -135,7 +135,7 @@ export class Hauler extends Role {
                 if (this.creep.pos.isNearTo(storage)) {
                   this.creep.transfer(storage, RESOURCE_ENERGY)
                 } else {
-                  this.moveTo(storage, 1)
+                  this.moveTo(storage)
                 }
               })
             }
