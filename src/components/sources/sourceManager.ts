@@ -26,6 +26,8 @@ export function refreshAvailableSources(room: Room): void {
     room.memory.sources = _.filter((room.memory.sources as string[]), (id: string) => {
       return _.includes(blacklistedSources, id) === false
     })
+
+    room.memory.jobs.harvester = room.memory.sources.length
   }
 
   if (ENABLE_DEBUG_MODE) {
