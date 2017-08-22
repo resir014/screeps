@@ -4,7 +4,7 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Stonehenge is a next-generation AI system for the game [Screeps](https://screeps.com/). It is developed in [TypeScript](https://www.typescriptlang.org/), and designed with modularity in mind.
+Stonehenge is a proof-of-concept of a smart, robust, and maintainable [Screeps](https://screeps.com/) codebase. It is developed in [TypeScript](https://www.typescriptlang.org/), and designed with modularity in mind.
 
 ## Table of Contents
 
@@ -37,6 +37,20 @@ Anyone who wants to build their Screeps colony with with Stonehenge must not be 
 * [Typings](https://github.com/typings/typings)
 * [Yarn](https://yarnpkg.com/en/) - Optional. You can use `npm` if you don't want to, but this is for your own sanity.
 
+### Clone the repo
+
+This repository utilizes @bonzaiferroni's [Traveler](https://github.com/bonzaiferroni/Traveler) library. It is included as a submodule, so you will have to run a `git clone` using the `--recursive` option.
+
+```bash
+$ git clone --recursive https://github.com/resir014/screeps.git
+```
+
+In case you forgot to include the submodules during the clone, simply run the following:
+
+```bash
+git submodule update --init --recursive
+```
+
 ### Install all required modules!
 
 Run the following the command to install the required packages and TypeScript declaration files if you are using yarn:
@@ -50,6 +64,7 @@ or, for npm:
 ```bash
 $ npm install
 ```
+
 ### Configure Screeps credentials
 
 Create a copy of `config/credentials.example.json` and rename it to `config/credentials.json`.
