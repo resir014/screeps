@@ -1,4 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
+import { blacklistedSources } from '../../config/jobs'
 import { log } from '../../lib/logger'
 
 /**
@@ -13,15 +14,21 @@ export function refreshAvailableSources(room: Room): void {
 
   if (room.memory.sources.length === 0) {
     sources.forEach((source: Source) => {
-      // Create an array of all source IDs in the room
-      room.memory.sources.push(source.id)
+      // We only push sources that aren't blacklisted.
+      if (_.includes(blacklistedSources, source.id) === false) {
+        room.memory.sources.push(source.id)
+      }
+    })
+
+    room.memory.jobs.harvester = sources.length
+  } else {
+    // If sources array exists in memory, filter out blacklisted sources.
+    room.memory.sources = _.filter((room.memory.sources as string[]), (id: string) => {
+      return _.includes(blacklistedSources, id) === false
     })
   }
 
   if (ENABLE_DEBUG_MODE) {
     log.info(`${room.name}: ${_.size(sources)} source(s) in room.`)
   }
-
-  // Update job assignments.
-  room.memory.jobs.harvester = sources.length
 }
