@@ -8,6 +8,11 @@ export const bodyTemplates = {
 }
 
 /**
+ * List the object ids of the sources you want to blacklist here.
+ */
+export const blacklistedSources: string[] = []
+
+/**
  * Job assignments for controlled room roles.
  */
 export const controlledRoomJobs: string[] = [
