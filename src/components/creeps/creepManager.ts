@@ -101,9 +101,10 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
       Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
     }
 
-    // There needs to be at least two harvesters before we prioritise spawning
-    // anything else. If not, we'll prioritise spawning harvesters.
-    if (assortedCreeps.harvesters.length >= 1 && assortedCreeps.haulers.length > 1) {
+    // There needs to be at least two harvesters OR one haulers
+    // before we prioritise spawning anything else. If not, we'll prioritise
+    // spawning harvesters first.
+    if (assortedCreeps.harvesters.length >= 1 || assortedCreeps.haulers.length > 1) {
       // We already have two harvesters.
       if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
         // Create a new Hauler.
