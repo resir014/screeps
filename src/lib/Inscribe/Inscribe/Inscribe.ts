@@ -12,13 +12,12 @@ interface InscribeOptions {
  * @returns {Inscribe} an instantiated Inscribe object in the global.
  */
 export function init(): Inscribe {
-  const defaults = {
-    level: LogLevel.INFO
-  }
-
-  if (!Memory.inscribe) {
-    Memory.inscribe = defaults
-  }
+  _.defaultsDeep(Memory, {
+    inscribe: {
+      level: Config.LOG_LEVEL,
+      printTick: Config.LOG_PRINT_TICK
+    }
+  })
 
   const cli = {
     write,
@@ -105,7 +104,6 @@ export function tooltip(str: string, tooltip: string): string {
 export function time(time: number): string {
   return color(time.toString(), 'gray');
 }
-
 
 function debug(...args: any[]) {
   if (Config.LOG_LEVEL >= LogLevel.DEBUG) {
