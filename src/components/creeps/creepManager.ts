@@ -1,6 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { IOrchestrator } from '../../core/orchestrator'
-import { log } from '../../lib/logger'
 import { Inscribe, LogLevel } from '../../lib/Inscribe'
 
 import { Harvester } from './roles/harvester'
@@ -176,7 +175,12 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
   }
 
   if (ENABLE_DEBUG_MODE) {
-    log.debug(`Attempting to create new ${properties.role} in room ${properties.room}`)
+    const out = [
+      `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+      `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+      `Attempting to create new ${properties.role} in room ${properties.room}`
+    ]
+    Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
   }
 
   // `canCreateCreep()` returns a string instead of OK, so we handle a string
@@ -186,10 +190,25 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
     Memory.guid = guid + 1
     const creepName: string = `(${guid}) ${spawn.room.name} - ${role}`
 
-    log.info(`Started creating new creep: ${creepName}`)
+    const creepCreateStarted = [
+      `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+      `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+      `Started creating new creep: ${creepName}`
+    ]
+    Inscribe.write(creepCreateStarted.join(' '), { level: LogLevel.INFO })
     if (ENABLE_DEBUG_MODE) {
-      log.debug(`Body: ${bodyParts}`)
-      log.debug(`guid: ${guid}`)
+      const outBody = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+        `Body: ${bodyParts}`
+      ]
+      const outGuid = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+        `guid: ${guid}`
+      ]
+      Inscribe.write(outBody.join(' '), { level: LogLevel.DEBUG })
+      Inscribe.write(outGuid.join(' '), { level: LogLevel.DEBUG })
     }
 
     status = spawn.createCreep(bodyParts, creepName, properties)
@@ -197,7 +216,12 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
     return _.isString(status) ? OK : status
   } else {
     if (ENABLE_DEBUG_MODE) {
-      log.error(`Failed creating new creep: ${status}`)
+      const out = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+        `Failed creating new creep: ${status}`
+      ]
+      Inscribe.write(out.join(' '), { level: LogLevel.ERROR })
     }
 
     return status
