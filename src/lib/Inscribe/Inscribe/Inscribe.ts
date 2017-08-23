@@ -137,15 +137,15 @@ function buildArguments(level: LogLevel) {
       break
     }
     case LogLevel.INFO: {
-      out += color(_.padRight('INFO', 8, ' '), 'green')
+      out += color(_.padRight('INFO', 8, ' '), 'lime')
       break
     }
     case LogLevel.WARNING: {
-      out += color(_.padRight('WARNING', 8, ' '), 'green')
+      out += color(_.padRight('WARNING', 8, ' '), 'yellow')
       break
     }
     case LogLevel.ERROR: {
-      out += color(_.padRight('ERROR', 8, ' '), 'green')
+      out += color(_.padRight('ERROR', 8, ' '), 'red')
       break
     }
     default: {
