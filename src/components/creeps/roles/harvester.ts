@@ -1,4 +1,3 @@
-import { Profile } from '../../../lib/profiler/profile'
 import { Role } from '../role'
 
 /**
@@ -18,7 +17,6 @@ export class Harvester extends Role {
   /**
    * Run the module.
    */
-  @Profile()
   public run(): void {
     const availableSources: Source[] = Memory.rooms[this.creep.room.name].sources
     let assignedSource: Source | null
@@ -52,7 +50,6 @@ export class Harvester extends Role {
    *
    * @memberOf Harvester
    */
-  @Profile()
   private tryHarvest(target: Source): number {
     return this.creep.harvest(target)
   }

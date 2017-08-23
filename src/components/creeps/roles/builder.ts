@@ -1,6 +1,5 @@
 import * as Config from '../../../config/config'
 import { log } from '../../../lib/logger'
-import { Profile } from '../../../lib/profiler/profile'
 import { Role } from '../role'
 
 /**
@@ -43,7 +42,6 @@ export class Builder extends Role {
   /**
    * Run the module.
    */
-  @Profile()
   public run(): void {
     if (!this.memory.state) {
       this.memory.state = 'idle'

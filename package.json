@@ -28,7 +28,6 @@
   "devDependencies": {
     "@types/lodash": "3.10.0",
     "@types/node": "7.0.0",
-    "@types/screeps-profiler": "^1.2.0",
     "@types/source-map": "^0.5.1",
     "@types/webpack": "2.2.0",
     "@types/webpack-chain": "^3.0.4",
@@ -47,7 +46,6 @@
     "webpack-chain": "^3.2.0"
   },
   "dependencies": {
-    "screeps-profiler": "^1.3.0",
     "source-map": "^0.5.6"
   }
 }

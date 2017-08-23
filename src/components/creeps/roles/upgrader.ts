@@ -1,4 +1,3 @@
-import { Profile } from '../../../lib/profiler/profile'
 import { Role } from '../role'
 
 /**
@@ -20,7 +19,6 @@ export class Upgrader extends Role {
   /**
    * Run the module.
    */
-  @Profile()
   public run(): void {
     const roomController: StructureController | undefined = this.creep.room.controller
 

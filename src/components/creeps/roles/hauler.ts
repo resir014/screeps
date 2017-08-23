@@ -1,4 +1,3 @@
-import { Profile } from '../../../lib/profiler/profile'
 import { Role } from '../role'
 
 /**
@@ -21,7 +20,6 @@ export class Hauler extends Role {
   /**
    * Run the module.
    */
-  @Profile()
   public run(): void {
     if (!this.memory.state) {
       this.memory.state = 'idle'

@@ -1,4 +1,3 @@
-import * as Profiler from 'screeps-profiler'
 import { USE_PROFILER } from './config/config'
 import { Orchestrator } from './core/orchestrator'
 import { initialiseRooms } from './room/roomManager'
@@ -18,7 +17,7 @@ initLoggerMemory()
 
 // Start the profiler.
 if (USE_PROFILER) {
-  Profiler.enable()
+  // Profiler.enable()
 }
 
 // Prototype extensions
@@ -45,4 +44,4 @@ function mloop(): void {
  *
  * @export
  */
-export const loop = !USE_PROFILER ? mloop : () => { Profiler.wrap(mloop) }
+export const loop = !USE_PROFILER ? mloop : mloop

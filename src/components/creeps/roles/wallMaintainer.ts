@@ -1,5 +1,4 @@
 import * as StructureManager from '../../structures/structureManager'
-import { Profile } from '../../../lib/profiler/profile'
 import { Role } from '../role'
 
 /**
@@ -21,7 +20,6 @@ export class WallMaintainer extends Role {
   /**
    * Run the module
    */
-  @Profile()
   public run(): void {
     if (_.sum(this.creep.carry) > 0) {
       const structuresToRepair = this.getStructuresToRepair(StructureManager.loadStructures(this.room))
@@ -49,7 +47,6 @@ export class WallMaintainer extends Role {
    *
    * @memberOf WallMaintainer
    */
-  @Profile()
   private getStructuresToRepair(structures: Structure[]): Structure[] | undefined {
     const targets: Structure[] = structures.filter((structure: Structure) => {
       return ((structure.structureType === STRUCTURE_WALL) && structure.hits < 700000)
