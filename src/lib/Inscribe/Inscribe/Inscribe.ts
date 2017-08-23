@@ -19,12 +19,12 @@ export class Inscribe {
    * Outputs a pretty-formatted message into the Screeps console
    *
    * @static
-   * @param {string} message The message to print into the console
+   * @param {((() => string) | string)} message The message to print into the console
    * @param {InscribeOptions} [options={}] Options provided for Inscribe
    * @returns the pretty-formatted message in the console
    * @memberof Inscribe
    */
-  public static write(message: string, options: InscribeOptions = {}) {
+  public static write(message: (() => string) | string, options: InscribeOptions = {}) {
     switch (options.level) {
       case LogLevel.DEBUG: {
         return debug(message)

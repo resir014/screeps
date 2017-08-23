@@ -28,7 +28,7 @@ export function runCreeps(room: Room): void {
       `[${Inscribe.color(room.name, 'hotpink')}]`,
       `${_.size(creeps)} creep(s) found in the playground.`
     ]
-    Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
+    Inscribe.write(() => out.join(' '), { level: LogLevel.DEBUG })
   }
 
   // Builds missing creeps where necessary
@@ -97,7 +97,7 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
         `[${Inscribe.color(room.name, 'hotpink')}]`,
         `Spawning from: ${spawn.name}`
       ]
-      Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
+      Inscribe.write(() => out.join(' '), { level: LogLevel.DEBUG })
     }
 
     // There needs to be at least two harvesters OR one haulers
@@ -180,7 +180,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
       `[${Inscribe.color(spawn.name, 'hotpink')}]`,
       `Attempting to create new ${properties.role} in room ${properties.room}`
     ]
-    Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
+    Inscribe.write(() => out.join(' '), { level: LogLevel.DEBUG })
   }
 
   // `canCreateCreep()` returns a string instead of OK, so we handle a string
@@ -221,7 +221,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
         `[${Inscribe.color(spawn.name, 'hotpink')}]`,
         `Failed creating new creep: ${status}`
       ]
-      Inscribe.write(out.join(' '), { level: LogLevel.ERROR })
+      Inscribe.write(() => out.join(' '), { level: LogLevel.ERROR })
     }
 
     return status
