@@ -18,6 +18,7 @@ export class Inscribe {
   /**
    * Outputs a pretty-formatted message into the Screeps console
    *
+   * @static
    * @param {string} message The message to print into the console
    * @param {InscribeOptions} [options={}] Options provided for Inscribe
    * @returns the pretty-formatted message in the console
@@ -72,10 +73,11 @@ export class Inscribe {
   /**
    * Allows tooltip to be sent to the formatter
    *
-   * @export
+   * @static
    * @param {string} str The string to format
    * @param {string} tooltip The tooltip text to give away
    * @returns {string}
+   * @memberof Inscribe
    */
   public static tooltip(str: string, tooltip: string): string {
     return `<abbr title='${tooltip}'>${str}</abbr>`;
@@ -84,9 +86,10 @@ export class Inscribe {
   /**
    * Outputs a formatted version of `Game.time`
    *
-   * @export
+   * @static
    * @param {number} time
    * @returns {string}
+   * @memberof Inscribe
    */
   public static time(time: number): string {
     return Inscribe.color(time.toString(), 'gray');
