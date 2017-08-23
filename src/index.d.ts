@@ -57,7 +57,7 @@ declare namespace NodeJS {
       showSource: boolean,
       showTick: boolean
     }
-    // Profiler: Profiler
+    Profiler: Profiler
   }
 }
 
@@ -71,7 +71,7 @@ interface Memory {
   spawns: { [key: string]: any }
   guid: number
   log: any
-  // Profiler: Profiler
+  Profiler: Profiler
 }
 
 declare const __REVISION__: string
