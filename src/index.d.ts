@@ -58,7 +58,6 @@ declare namespace NodeJS {
       showSource: boolean,
       showTick: boolean
     }
-    Profiler: Profiler
   }
 }
 
@@ -73,7 +72,6 @@ interface Memory {
   guid: number
   log: any
   inscribe: InscribeMemory
-  Profiler: Profiler
 }
 
 declare const __REVISION__: string

@@ -5,7 +5,6 @@ import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import { initLoggerMemory } from './lib/logger'
 // uncomment the following line if you want to use the profiler
-import * as Profiler from 'lib/Profiler'
 import * as Inscribe from 'lib/Inscribe'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
@@ -17,10 +16,6 @@ import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
 // Initialise logger memory.
 initLoggerMemory()
-
-// uncomment the following line if you want to use the profiler
-// see the documentation https://github.com/screepers/screeps-typescript-profiler
-global.Profiler = Profiler.init()
 
 // Prototype extensions
 loadCreepPrototypes()
