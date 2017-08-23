@@ -4,8 +4,7 @@ import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import { initLoggerMemory } from './lib/logger'
-// uncomment the following line if you want to use the profiler
-import * as Inscribe from 'lib/Inscribe'
+import { Inscribe } from 'lib/Inscribe'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
@@ -23,9 +22,9 @@ loadStructureSpawnPrototypes()
 
 // initialise all CLI objects
 global.Orchestrator = new Orchestrator()
-global.Inscribe = Inscribe.init()
+global.Inscribe = new Inscribe()
 
-Inscribe.write(`[${Inscribe.color('main', 'teal')}] loading revision: ${__REVISION__}`)
+Inscribe.write(`[${Inscribe.color('main', 'skyblue')}] loading revision: ${__REVISION__}`)
 
 function mloop(): void {
   // Check memory for null or out of bounds custom objects

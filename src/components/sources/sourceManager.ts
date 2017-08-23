@@ -1,6 +1,6 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { blacklistedSources } from '../../config/jobs'
-import { log } from '../../lib/logger'
+import { Inscribe, LogLevel } from '../../lib/Inscribe'
 
 /**
  * Create an array of all sources in the room and update job entries where
@@ -29,6 +29,11 @@ export function refreshAvailableSources(room: Room): void {
   }
 
   if (ENABLE_DEBUG_MODE) {
-    log.info(`${room.name}: ${_.size(sources)} source(s) in room.`)
+    const out = [
+      `[${Inscribe.color('SourceManager', 'skyblue')}]`,
+      `[${Inscribe.color(room.name, 'hotpink')}]`,
+      `${_.size(sources)} source(s) in room.`
+    ]
+    Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
   }
 }

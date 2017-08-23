@@ -1,6 +1,7 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { IOrchestrator } from '../../core/orchestrator'
 import { log } from '../../lib/logger'
+import { Inscribe, LogLevel } from '../../lib/Inscribe'
 
 import { Harvester } from './roles/harvester'
 import { Hauler } from './roles/hauler'
@@ -23,7 +24,12 @@ export function runCreeps(room: Room): void {
   const creeps: Creep[] = room.find<Creep>(FIND_MY_CREEPS)
 
   if (ENABLE_DEBUG_MODE) {
-    log.info(`${room.name}: ${_.size(creeps)} creep(s) found in the playground.`)
+    const out = [
+      `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+      `[${Inscribe.color(room.name, 'hotpink')}]`,
+      `${_.size(creeps)} creep(s) found in the playground.`
+    ]
+    Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
   }
 
   // Builds missing creeps where necessary
@@ -87,7 +93,12 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
     let bodyParts: string[] = []
 
     if (ENABLE_DEBUG_MODE) {
-      log.debug(`Spawning from: ${spawn.name}`)
+      const out = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(room.name, 'hotpink')}]`,
+        `Spawning from: ${spawn.name}`
+      ]
+      Inscribe.write(out.join(' '), { level: LogLevel.DEBUG })
     }
 
     // There needs to be at least two harvesters before we prioritise spawning

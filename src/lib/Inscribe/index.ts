@@ -1,1 +1,1 @@
-export * from "./Inscribe/Inscribe"
+export * from './Inscribe'
