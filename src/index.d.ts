@@ -51,6 +51,7 @@ declare namespace NodeJS {
    * Interface for the global objects.
    */
   interface Global {
+    Inscribe: any
     Orchestrator: any
     log: {
       level: number,
@@ -71,6 +72,7 @@ interface Memory {
   spawns: { [key: string]: any }
   guid: number
   log: any
+  inscribe: InscribeMemory
   Profiler: Profiler
 }
 
