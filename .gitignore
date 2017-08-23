@@ -17,10 +17,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# yarn lockfile
-# (note: sometimes it's good to actually include this in your repo)
-yarn.lock
-
 # Numerous always-ignore extensions
 *.diff
 *.err
