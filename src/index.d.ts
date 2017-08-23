@@ -52,14 +52,12 @@ declare namespace NodeJS {
    */
   interface Global {
     Orchestrator: any
-    /**
-     * Tweak your Logger settings using this global.
-     */
     log: {
       level: number,
       showSource: boolean,
       showTick: boolean
     }
+    // Profiler: Profiler
   }
 }
 
@@ -73,7 +71,7 @@ interface Memory {
   spawns: { [key: string]: any }
   guid: number
   log: any
-  profiler: any
+  // Profiler: Profiler
 }
 
 declare const __REVISION__: string
