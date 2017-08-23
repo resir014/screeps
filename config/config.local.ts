@@ -1,8 +1,7 @@
-import * as path from "path";
 import * as Config from "webpack-chain";
 
 import * as CommonConfig from "./config.common";
-import { EnvOptions } from "./types";
+import { Credentials, EnvOptions } from "./types";
 
 function webpackConfig(options: EnvOptions = {}): Config {
   // get the common configuration to start with
@@ -12,8 +11,8 @@ function webpackConfig(options: EnvOptions = {}): Config {
   // it makes for much easier debugging:
   // (make sure you symlink the dir, not the files)
   // `# ln -s /path/to/local/deploy/dir ./dist/local`
-  const localPath = path.join(process.env.LOCALAPPDATA, "Screeps", "scripts", "localhost__21025", "default");
-  config.output.path(localPath);
+  const credentials: Credentials = require("./credentials.json")
+  config.output.path(credentials.outputPath);
 
   // modify the args of "define" plugin
   config.plugin("define").tap((args: any[]) => {
