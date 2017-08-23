@@ -18,6 +18,5 @@
     "**/src/lib/**/*.ts",
     "**/src/snippets/**/*.ts"
   ],
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "standard.enable": false
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }
