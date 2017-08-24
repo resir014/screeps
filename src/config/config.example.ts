@@ -13,3 +13,9 @@ export const USE_PROFILER: boolean = true
  * Prepend log output with current tick number.
  */
 export const LOG_PRINT_TICK: boolean = true
+
+/**
+ * Minimum number of ticksToLive for a Creep before they go to renew.
+ * @type {number}
+ */
+export const DEFAULT_MIN_LIFE_BEFORE_NEEDS_REFILL: number = 700
