@@ -18,25 +18,23 @@ export class Harvester extends Role {
    * Run the module.
    */
   public run(): void {
-    const availableSources: Source[] = Memory.rooms[this.creep.room.name].sources
-    let assignedSource: Source | null
+    const availableSources: Source[] = (Memory.rooms[this.creep.room.name] as RoomMemory).sources
+    const creepMemory: CreepMemory = this.creep.memory
 
-    if (availableSources.length > 0 && !this.creep.memory.assignedSource) {
+    if (availableSources.length > 0 && !creepMemory.assignedSource) {
       // We assign a creep to a source if we don't have any assigned to it.
-      this.creep.memory.assignedSource = availableSources.pop()
+      creepMemory.assignedSource = availableSources.pop()
 
-      assignedSource = Game.getObjectById<Source>(this.creep.memory.assignedSource)
       Memory.rooms[this.creep.room.name].sources = availableSources
     } else {
       // Use the existing assigned source.
-      assignedSource = Game.getObjectById<Source>(this.creep.memory.assignedSource)
     }
 
-    if (assignedSource) {
-      if (this.creep.pos.isNearTo(assignedSource)) {
-        this.tryHarvest(assignedSource)
+    if (creepMemory.assignedSource) {
+      if (this.creep.pos.isNearTo(creepMemory.assignedSource)) {
+        this.tryHarvest(creepMemory.assignedSource)
       } else {
-        this.moveTo<Source>(assignedSource)
+        this.moveTo<Source>(creepMemory.assignedSource)
       }
     }
   }

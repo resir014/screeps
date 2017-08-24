@@ -5,7 +5,7 @@ import { Traveler } from '../../lib/Traveler/Traveler'
  * Shared role for all Creeps.
  */
 export class Role {
-  protected memory: Memory
+  protected memory: CreepMemory
   protected creep: Creep
   protected room: Room
   protected state: string
@@ -20,7 +20,7 @@ export class Role {
     this.creep = creep
     this.room = this.creep.room
     this.memory = creep.memory
-    this.state = this.memory.state
+    this.state = this.memory.state || 'idle'
   }
 
   /**

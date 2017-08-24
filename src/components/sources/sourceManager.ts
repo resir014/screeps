@@ -12,20 +12,17 @@ import * as Inscribe from '../../lib/Inscribe'
  */
 export function refreshAvailableSources(room: Room): void {
   const sources: Source[] = room.find<Source>(FIND_SOURCES)
+  const roomMemory: RoomMemory = room.memory
 
-  if (room.memory.sources.length === 0) {
-    sources.forEach((source: Source) => {
-      // We only push sources that aren't blacklisted.
-      if (_.includes(blacklistedSources, source.id) === false) {
-        room.memory.sources.push(source.id)
-      }
-    })
+  // We only push sources that aren't blacklisted.
+  sources.filter((source: Source) => _.includes(blacklistedSources, source.id) === false)
 
-    room.memory.jobs.harvester = sources.length
-  } else {
+  roomMemory.jobs.harvester = sources.length
+
+  if (roomMemory.sources.length !== 0) {
     // If sources array exists in memory, filter out blacklisted sources.
-    room.memory.sources = _.filter((room.memory.sources as string[]), (id: string) => {
-      return _.includes(blacklistedSources, id) === false
+    roomMemory.sources = roomMemory.sources.filter((source: Source) => {
+      return _.includes(blacklistedSources, source.id) === false
     })
   }
 
