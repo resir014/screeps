@@ -1,5 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { log } from '../../lib/logger'
+import { log } from '../../utils/logger'
 
 /**
  * Loads all the available structures within a room.

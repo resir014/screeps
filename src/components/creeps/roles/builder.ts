@@ -1,5 +1,5 @@
 import * as Config from '../../../config/config'
-import { log } from '../../../lib/logger'
+import { log } from '../../../utils/logger'
 import { Role } from '../role'
 
 /**

@@ -51,8 +51,9 @@ declare namespace NodeJS {
    * Interface for the global objects.
    */
   interface Global {
-    Inscribe: any
-    Orchestrator: any
+    config: any
+    Inscribe: Inscribe
+    Orchestrator: IOrchestrator
     log: {
       level: number,
       showSource: boolean,
@@ -65,13 +66,8 @@ declare namespace NodeJS {
  * Extended memory objects.
  */
 interface Memory {
-  creeps: { [key: string]: any }
-  flags: { [key: string]: any }
-  rooms: { [key: string]: any }
-  spawns: { [key: string]: any }
   guid: number
   log: any
-  inscribe: InscribeMemory
 }
 
 declare const __REVISION__: string

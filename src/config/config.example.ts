@@ -1,4 +1,4 @@
-import { LogLevel } from '../lib/logger'
+import { LogLevel } from '../utils/logger'
 
 /**
  * Enable this if you want a lot of text to be logged to console.
