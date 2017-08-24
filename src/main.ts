@@ -1,5 +1,5 @@
 import * as Config from './config/config'
-import { Orchestrator } from './core/orchestrator'
+import { Orchestrator } from './utils/orchestrator'
 import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
