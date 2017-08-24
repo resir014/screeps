@@ -1,4 +1,4 @@
-// BEGIN Extended prototypes
+// ------- extended prototypes ------- //
 
 interface Creep {
   /**
@@ -43,7 +43,7 @@ interface StructureSpawn {
   findOptimalMoveCountForBody(body: string[], terrain?: 'road' | 'plain' | 'swamp', fullCarry?: boolean): number
 }
 
-// END Extended prototypes
+// ------- global declarations ------- //
 
 // add objects to `global` here
 declare namespace NodeJS {
@@ -52,10 +52,12 @@ declare namespace NodeJS {
    */
   interface Global {
     config: any
-    Inscribe: Inscribe
+    Inscribe: InscribeGlobal
     Orchestrator: IOrchestrator
   }
 }
+
+// ------- memory declarations ------- //
 
 /**
  * Extended memory objects.
@@ -63,5 +65,20 @@ declare namespace NodeJS {
 interface Memory {
   guid: number
 }
+
+interface CreepMemory {
+  role: string
+  room: string
+  assignedSource: string
+  [key: string]: any
+}
+
+interface RoomMemory {
+  jobs: { [key: string]: number }
+  sources: string[]
+  [key: string]: any
+}
+
+// ------- constants ------- //
 
 declare const __REVISION__: string

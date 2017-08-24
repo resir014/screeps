@@ -11,7 +11,7 @@ import { RoadMaintainer } from './roles/roadMaintainer'
 
 // We use globals for these objects, so let's declare it.
 declare const Orchestrator: IOrchestrator
-declare const Inscribe: Inscribe
+declare const Inscribe: InscribeGlobal
 
 /**
  * Initialization scripts for CreepManager module.

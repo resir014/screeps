@@ -1,4 +1,4 @@
-interface Inscribe {
+interface InscribeGlobal {
   /**
    * Decorates a string of text with color.
    *
