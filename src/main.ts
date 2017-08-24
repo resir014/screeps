@@ -1,4 +1,3 @@
-import { USE_PROFILER } from './config/config'
 import { Orchestrator } from './core/orchestrator'
 import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
@@ -26,14 +25,6 @@ global.Inscribe = new Inscribe()
 
 Inscribe.write(`[${Inscribe.color('main', 'skyblue')}] loading revision: ${__REVISION__}`)
 
-function mloop(): void {
-  // Check memory for null or out of bounds custom objects
-  checkOutOfBoundsMemory()
-
-  // Initialise all controlled rooms.
-  initialiseRooms()
-}
-
 /**
  * Screeps system expects this "loop" method in main.js to run the
  * application. If we have this line, we can be sure that the globals are
@@ -42,4 +33,10 @@ function mloop(): void {
  *
  * @export
  */
-export const loop = !USE_PROFILER ? mloop : mloop
+export function loop(): void {
+  // Check memory for null or out of bounds custom objects
+  checkOutOfBoundsMemory()
+
+  // Initialise all controlled rooms.
+  initialiseRooms()
+}
