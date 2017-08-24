@@ -1,5 +1,5 @@
 import * as Config from '../../config/config'
-import { log } from '../../utils/logger'
+import { Logger } from '../../utils/logger'
 import * as Inscribe from '../../lib/Inscribe'
 import { bodyTemplates } from '../../config/jobs'
 
@@ -58,7 +58,7 @@ export class Orchestrator implements IOrchestrator {
         `[${Inscribe.color('getBodyParts', 'skyblue')}]`,
         `Got bodyparts: ${bodyParts.join(', ')}`
       ]
-      log.debug(out.join(' '))
+      Logger.debug(out.join(' '))
     }
 
     return bodyParts

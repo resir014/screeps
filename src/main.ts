@@ -4,7 +4,7 @@ import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import * as Inscribe from './lib/Inscribe'
-import { log } from './utils/logger'
+import { Logger } from './utils/logger'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
@@ -15,7 +15,6 @@ import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
 // initialise all CLI objects
 global.Orchestrator = new Orchestrator()
-global.log = log
 global.config = Config
 Inscribe.init()
 
@@ -23,7 +22,7 @@ Inscribe.init()
 loadCreepPrototypes()
 loadStructureSpawnPrototypes()
 
-log.info(`[${Inscribe.color('main', 'skyblue')}] loading revision: ${__REVISION__}`)
+Logger.info(`[${Inscribe.color('main', 'skyblue')}] loading revision: ${__REVISION__}`)
 
 /**
  * Screeps system expects this "loop" method in main.js to run the

@@ -1,4 +1,4 @@
-import { log } from '../utils/logger'
+import { Logger } from '../utils/logger'
 
 /**
  * Check memory for null or out of bounds custom objects
@@ -65,7 +65,7 @@ export function cleanupCreepMemory(room: Room): void {
 
     if (creep.room === room.name) {
       if (!Game.creeps[name]) {
-        log.info(`Clearing non-existing creep memory: ${name}`)
+        Logger.info(`Clearing non-existing creep memory: ${name}`)
 
         if (Memory.creeps[name].role === 'sourceMiner') {
           // Push the now-dead creep's assigned source back to the sources array.
@@ -75,7 +75,7 @@ export function cleanupCreepMemory(room: Room): void {
         delete Memory.creeps[name]
       }
     } else if (_.keys(Memory.creeps[name]).length === 0) {
-      log.info(`Clearing non-existing creep memory: ${name}`)
+      Logger.info(`Clearing non-existing creep memory: ${name}`)
       delete Memory.creeps[name]
     }
   }

@@ -1,5 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { log } from '../../utils/logger'
+import { Logger } from '../../utils/logger'
 
 /**
  * Loads all the available structures within a room.
@@ -24,7 +24,7 @@ export function getStorageObjects(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
 
   if (ENABLE_DEBUG_MODE) {
-    log.debug(`${room.name}: ${_.size(structures)} structures found.`)
+    Logger.debug(`${room.name}: ${_.size(structures)} structures found.`)
   }
 
   let targets: Structure[] = structures.filter((structure: StructureContainer) => {
@@ -56,7 +56,7 @@ export function getSourceWithdrawalPoints(room: Room): Structure[] | undefined {
   let targets: Structure[] = []
 
   if (ENABLE_DEBUG_MODE) {
-    log.debug(`${room.name}: ${_.size(structures)} structures found.`)
+    Logger.debug(`${room.name}: ${_.size(structures)} structures found.`)
   }
 
   // First pass: prioritise StructureStorage.
@@ -96,7 +96,7 @@ export function getDropOffPoints(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
 
   if (ENABLE_DEBUG_MODE) {
-    log.debug(`${room.name}: ${_.size(structures)} structures found.`)
+    Logger.debug(`${room.name}: ${_.size(structures)} structures found.`)
   }
 
   let targets: Structure[] = structures.filter((structure: Structure) => {

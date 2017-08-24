@@ -1,5 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { log, LogLevel } from '../../utils/logger'
+import { Logger, LogLevel } from '../../utils/logger'
 
 import { Harvester } from './roles/harvester'
 import { Hauler } from './roles/hauler'
@@ -195,7 +195,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
       `[${Inscribe.color(spawn.name, 'hotpink')}]`,
       `Started creating new creep: ${creepName}`
     ]
-    log.debug(creepCreateStarted.join(' '), { level: LogLevel.INFO })
+    Logger.debug(creepCreateStarted.join(' '))
     if (ENABLE_DEBUG_MODE) {
       const outBody = [
         `[${Inscribe.color('CreepManager', 'skyblue')}]`,
@@ -221,7 +221,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
         `[${Inscribe.color(spawn.name, 'hotpink')}]`,
         `Failed creating new creep: ${status}`
       ]
-      console.log(() => out.join(' '), { level: LogLevel.ERROR })
+      Logger.debug(() => out.join(' '))
     }
 
     return status

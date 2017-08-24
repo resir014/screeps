@@ -54,11 +54,6 @@ declare namespace NodeJS {
     config: any
     Inscribe: Inscribe
     Orchestrator: IOrchestrator
-    log: {
-      level: number,
-      showSource: boolean,
-      showTick: boolean
-    }
   }
 }
 
@@ -67,7 +62,6 @@ declare namespace NodeJS {
  */
 interface Memory {
   guid: number
-  log: any
 }
 
 declare const __REVISION__: string

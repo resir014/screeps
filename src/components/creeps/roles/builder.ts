@@ -1,5 +1,5 @@
 import * as Config from '../../../config/config'
-import { log } from '../../../utils/logger'
+import { Logger } from '../../../utils/logger'
 import { Role } from '../role'
 
 /**
@@ -34,8 +34,7 @@ export class Builder extends Role {
     this.getConstructionSites()
 
     if (Config.ENABLE_DEBUG_MODE) {
-      log.debug('[Builder]', this.constructionSiteCount + ' construction sites in room' +
-        creep.room.name + '.')
+      Logger.debug(`[Builder] ${this.constructionSiteCount} construction sites in room ${creep.room.name}.`)
     }
   }
 

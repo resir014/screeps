@@ -1,6 +1,6 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { blacklistedSources } from '../../config/jobs'
-import { log } from '../../utils/logger'
+import { Logger } from '../../utils/logger'
 import * as Inscribe from '../../lib/Inscribe'
 
 /**
@@ -35,6 +35,6 @@ export function refreshAvailableSources(room: Room): void {
       `[${Inscribe.color(room.name, 'hotpink')}]`,
       `${_.size(sources)} source(s) in room.`
     ]
-    log.debug(out.join(' '))
+    Logger.debug(out.join(' '))
   }
 }
