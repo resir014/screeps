@@ -2,7 +2,7 @@ import * as path from "path";
 import { Compiler, Plugin } from "webpack";
 
 // disable tslint rule, because we don't have types for these files
-/* tslint:disable:no-var-requires */
+/* tslint:disable:no-var-requires no-require-imports */
 const ConcatSource = require("webpack-sources").ConcatSource;
 
 // Tiny tiny helper plugin that prepends "module.exports = " to all `.map` assets

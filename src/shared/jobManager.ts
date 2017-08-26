@@ -15,7 +15,9 @@ export function refreshJobAssignments(room: Room): void {
   if (_.keys(room.memory.jobs).length !== _.keys(controlledRoomJobs).length) {
     const jobsToAdd = _.difference(controlledRoomJobs, _.keys(room.memory.jobs))
     for (const i in jobsToAdd) {
-      room.memory.jobs[jobsToAdd[i]] = 0
+      if (jobsToAdd[i]) {
+        room.memory.jobs[jobsToAdd[i]] = 0
+      }
     }
   }
 }

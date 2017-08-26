@@ -1,4 +1,4 @@
-/* tslint:disable:no-require-imports */
+/* tslint:disable:no-var-requires no-require-imports */
 import * as Config from "webpack-chain";
 
 import * as CommonConfig from "./config.common";

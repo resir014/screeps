@@ -1,4 +1,4 @@
-/* tslint:disable:no-var-requires */
+/* tslint:disable:no-var-requires no-require-imports */
 import * as os from "os";
 import * as path from "path";
 import * as Config from "webpack-chain";
