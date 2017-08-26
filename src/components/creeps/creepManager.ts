@@ -188,12 +188,12 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
   status = _.isString(status) ? OK : status
   if (status === OK) {
     Memory.guid = guid + 1
-    const creepName: string = `(${guid}) ${spawn.room.name} - ${role}`
+    const creepName: string = `[${guid}] ${spawn.room.name} - ${role}`
 
     const creepCreateStarted = [
       `[${Inscribe.color('CreepManager', 'skyblue')}]`,
       `[${Inscribe.color(spawn.name, 'hotpink')}]`,
-      `Started creating new creep: ${creepName}`
+      `Started creating new creep: ${Inscribe.color(creepName, 'hotpink')}`
     ]
     Logger.debug(creepCreateStarted.join(' '))
     if (ENABLE_DEBUG_MODE) {

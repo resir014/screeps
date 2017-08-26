@@ -3,10 +3,6 @@ import { controlledRoomJobs } from '../config/jobs'
 /**
  * Refreshes the job assignment available in a room.
  *
- * @todo If `manualJobControl` is set to `false` in the room memory, it's
- * going to invoke a method which will ~automagically~ define job assignments
- * based on some parameters. We don't even have that function yet.
- *
  * @export
  * @param {Room} room The target room.
  */

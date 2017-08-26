@@ -25,6 +25,7 @@ export function refreshAvailableSources(room: Room): void {
     })
   } else {
     // If sources array exists in memory, filter out blacklisted sources.
+    // TODO: This may not re-add sources to memory when we un-blacklist them.
     roomMemory.sources = roomMemory.sources.filter((source: string) => {
       return _.includes(blacklistedSources, source) === false
     })
