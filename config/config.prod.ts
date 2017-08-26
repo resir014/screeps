@@ -12,7 +12,6 @@ function webpackConfig(options: EnvOptions = {}): Config {
 
   // make "prod" specific changes here
   const credentials: Credentials = require("./credentials.json");
-  credentials.branch = "default";
 
   config.plugin("screeps")
     .use(ScreepsWebpackPlugin, [credentials]);
