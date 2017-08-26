@@ -30,13 +30,15 @@ export class Hauler extends Role {
     }
 
     if (_.sum(this.creep.carry) < this.creep.carryCapacity && this.memory.state !== 'delivering') {
-      const targetSource: Resource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES)
+      const droppedResources: Resource[] = this.creep.room.find<Resource>(FIND_DROPPED_RESOURCES)
+
+      const targetSource = droppedResources.filter((resource: Resource) => resource.amount < (this.creep.carryCapacity * 0.2))
 
       if (targetSource) {
-        if (this.creep.pos.isNearTo(targetSource)) {
-          this.creep.pickup(targetSource)
+        if (this.creep.pos.isNearTo(targetSource[0])) {
+          this.creep.pickup(targetSource[0])
         } else {
-          this.moveTo(targetSource)
+          this.moveTo(targetSource[0])
         }
       } else {
         const targetContainers = this.creep.room.find<Container>(FIND_STRUCTURES, {
