@@ -15,9 +15,8 @@ export function refreshAvailableSources(room: Room): void {
   const roomMemory: RoomMemory = room.memory
 
   // We only push sources that aren't blacklisted.
-  sources.filter((source: Source) => _.includes(blacklistedSources, source.id) === false)
-
-  roomMemory.jobs.harvester = sources.length
+  const filteredSources = sources.filter((source: Source) =>
+    _.includes(blacklistedSources, source.id) === false)
 
   if (roomMemory.sources.length === 0) {
     sources.forEach((source: Source) => {
@@ -30,6 +29,8 @@ export function refreshAvailableSources(room: Room): void {
       return _.includes(blacklistedSources, source) === false
     })
   }
+
+  roomMemory.jobs.harvester = filteredSources.length
 
   if (ENABLE_DEBUG_MODE) {
     const out = [
