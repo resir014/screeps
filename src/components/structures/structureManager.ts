@@ -49,9 +49,9 @@ export function getStorageObjects(room: Room): Structure[] {
  *
  * @export
  * @param {Room} room The current room.
- * @returns {(Structure[] | undefined)} an array of source withdrawal points if any, else undefined.
+ * @returns {Structure[]} an array of source withdrawal points if any.
  */
-export function getSourceWithdrawalPoints(room: Room): Structure[] | undefined {
+export function getSourceWithdrawalPoints(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
   let targets: Structure[] = []
 
@@ -81,7 +81,7 @@ export function getSourceWithdrawalPoints(room: Room): Structure[] | undefined {
     })
   }
 
-  return targets || undefined
+  return targets
 }
 
 /**

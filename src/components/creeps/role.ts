@@ -80,13 +80,27 @@ export class Role {
   }
 
   /**
+   * Gets a list of salvageable dropped resources. 'Salvageable' in this case
+   * means any dropped resource stash with the amount greater than or equal to
+   * `this.creep.carryCapacity * 0.2`
+   *
+   * @returns {Resource[]} Filtered array of dropped resources
+   * @memberof Role
+   */
+  public findSalvageableDroppedResources(): Resource[] {
+    const droppedResources: Resource[] = this.room.find<Resource>(FIND_DROPPED_RESOURCES)
+
+    return droppedResources.filter((resource: Resource) => resource.amount >= (this.creep.carryCapacity * 0.2))
+  }
+
+  /**
    * Attempts retrieving any dropped resources and/or resources in a container.
    */
   public tryRetrieveEnergy(): void {
     // Locate a container, for starter.
-    const targets: Structure[] | undefined = StructureManager.getSourceWithdrawalPoints(this.room)
+    const targets: Structure[] = StructureManager.getSourceWithdrawalPoints(this.room)
 
-    if (targets) {
+    if (targets.length !== 0) {
       const thisTarget = targets[0]
 
       if (thisTarget instanceof Structure) {
@@ -98,11 +112,14 @@ export class Role {
       }
     } else {
       // Locate a dropped resource in case we can't find any containers.
-      const targetSource = this.creep.pos.findClosestByPath<Resource>(FIND_DROPPED_RESOURCES)
-      if (this.creep.pos.isNearTo(targetSource)) {
-        this.creep.pickup(targetSource)
-      } else {
-        this.moveTo(targetSource)
+      const targetSource = this.findSalvageableDroppedResources()
+
+      if (targetSource) {
+        if (this.creep.pos.isNearTo(targetSource[0])) {
+          this.creep.pickup(targetSource[0])
+        } else {
+          this.moveTo(targetSource[0])
+        }
       }
     }
   }
