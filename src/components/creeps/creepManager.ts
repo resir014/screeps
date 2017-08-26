@@ -1,5 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { Logger, LogLevel } from '../../utils/logger'
+import { Logger } from '../../utils/logger'
 
 import { Harvester } from './roles/harvester'
 import { Hauler } from './roles/hauler'
@@ -28,7 +28,7 @@ export function runCreeps(room: Room): void {
       `[${Inscribe.color(room.name, 'hotpink')}]`,
       `${_.size(creeps)} creep(s) found in the playground.`
     ]
-    console.log(() => out.join(' '), { level: LogLevel.DEBUG })
+    Logger.debug(out.join(' '))
   }
 
   // Builds missing creeps where necessary
@@ -97,7 +97,7 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
         `[${Inscribe.color(room.name, 'hotpink')}]`,
         `Spawning from: ${spawn.name}`
       ]
-      console.log(() => out.join(' '), { level: LogLevel.DEBUG })
+      Logger.debug(out.join(' '))
     }
 
     // There needs to be at least two harvesters OR one haulers
@@ -180,7 +180,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
       `[${Inscribe.color(spawn.name, 'hotpink')}]`,
       `Attempting to create new ${properties.role} in room ${properties.room}`
     ]
-    console.log(() => out.join(' '), { level: LogLevel.DEBUG })
+    Logger.debug(out.join(' '))
   }
 
   // `canCreateCreep()` returns a string instead of OK, so we handle a string
@@ -195,7 +195,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
       `[${Inscribe.color(spawn.name, 'hotpink')}]`,
       `Started creating new creep: ${Inscribe.color(creepName, 'hotpink')}`
     ]
-    Logger.debug(creepCreateStarted.join(' '))
+    Logger.info(creepCreateStarted.join(' '))
     if (ENABLE_DEBUG_MODE) {
       const outBody = [
         `[${Inscribe.color('CreepManager', 'skyblue')}]`,
@@ -207,8 +207,8 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
         `[${Inscribe.color(spawn.name, 'hotpink')}]`,
         `guid: ${guid}`
       ]
-      console.log(outBody.join(' '), { level: LogLevel.DEBUG })
-      console.log(outGuid.join(' '), { level: LogLevel.DEBUG })
+      Logger.debug(outBody.join(' '))
+      Logger.debug(outGuid.join(' '))
     }
 
     status = spawn.createCreep(bodyParts, creepName, properties)
@@ -221,7 +221,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
         `[${Inscribe.color(spawn.name, 'hotpink')}]`,
         `Failed creating new creep: ${status}`
       ]
-      Logger.debug(() => out.join(' '))
+      Logger.error(out.join(' '))
     }
 
     return status
