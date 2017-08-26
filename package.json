@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "build": "webpack --colors --env.ENV=dev",
-    "deploy": "webpack --colors --env.ENV=prod",
+    "deploy": "webpack --colors",
     "lint": "tslint \"src/**/*.ts\" -e \"**/src/lib/**/*.ts\"",
     "lint-webpack": "tslint \"config/**/*.ts\" \"libs/**/*.ts\" \"webpack.config.ts\"",
     "local": "webpack --colors --env.ENV=local",
