@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# Typings definition files
+/typings
+
 # We use yarn, so don't commit the npm lockfile.
 /package-lock.json
 
