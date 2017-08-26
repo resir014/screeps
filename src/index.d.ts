@@ -26,6 +26,7 @@ interface CreepMemory {
   room: string
   assignedSource?: Source
   state?: string
+  action?: CreepAction
   [key: string]: any
 }
 
@@ -37,4 +38,4 @@ interface RoomMemory {
 
 // ------- constants ------- //
 
-declare const __REVISION__: string
+declare const __REVISION__: string | undefined
