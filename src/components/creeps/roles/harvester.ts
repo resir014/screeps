@@ -18,7 +18,7 @@ export class Harvester extends Role {
    * Run the module.
    */
   public run(): void {
-    const availableSources: Source[] = (Memory.rooms[this.creep.room.name] as RoomMemory).sources
+    const availableSources: string[] = (Memory.rooms[this.creep.room.name] as RoomMemory).sources
     const creepMemory: CreepMemory = this.creep.memory
 
     if (availableSources.length > 0 && !creepMemory.assignedSource) {
@@ -31,10 +31,14 @@ export class Harvester extends Role {
     }
 
     if (creepMemory.assignedSource) {
-      if (this.creep.pos.isNearTo(creepMemory.assignedSource)) {
-        this.tryHarvest(creepMemory.assignedSource)
-      } else {
-        this.moveTo<Source>(creepMemory.assignedSource)
+      const targetSource = Game.getObjectById<Source>(creepMemory.assignedSource)
+
+      if (targetSource) {
+        if (this.creep.pos.isNearTo(targetSource)) {
+          this.tryHarvest(targetSource)
+        } else {
+          this.moveTo<Source>(targetSource)
+        }
       }
     }
   }

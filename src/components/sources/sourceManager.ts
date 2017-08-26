@@ -20,11 +20,13 @@ export function refreshAvailableSources(room: Room): void {
   roomMemory.jobs.harvester = sources.length
 
   if (roomMemory.sources.length === 0) {
-    roomMemory.sources = sources
+    sources.forEach((source: Source) => {
+      roomMemory.sources.push(source.id)
+    })
   } else {
     // If sources array exists in memory, filter out blacklisted sources.
-    roomMemory.sources = roomMemory.sources.filter((source: Source) => {
-      return _.includes(blacklistedSources, source.id) === false
+    roomMemory.sources = roomMemory.sources.filter((source: string) => {
+      return _.includes(blacklistedSources, source) === false
     })
   }
 

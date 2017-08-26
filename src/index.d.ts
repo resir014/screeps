@@ -24,7 +24,7 @@ interface Memory {
 interface CreepMemory {
   role: string
   room: string
-  assignedSource?: Source
+  assignedSource?: string
   state?: string
   action?: CreepAction
   [key: string]: any
@@ -32,7 +32,7 @@ interface CreepMemory {
 
 interface RoomMemory {
   jobs: { [key: string]: number }
-  sources: Source[]
+  sources: string[]
   [key: string]: any
 }
 
