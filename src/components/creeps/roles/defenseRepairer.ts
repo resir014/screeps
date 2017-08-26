@@ -2,17 +2,12 @@ import * as StructureManager from '../../structures/structureManager'
 import { Role } from '../role'
 
 /**
- * A RampartMaintainer repairs ramparts in their room.
+ * A DefenseRepairer repairs defensive structures in their room.
  *
  * @todo Refactor this.
  */
-export class RampartMaintainer extends Role {
-  /**
-   * Creates an instance of RampartMaintainer.
-   * @param {Creep} creep The current creep.
-   *
-   * @memberOf RampartMaintainer
-   */
+export class DefenseRepairer extends Role {
+
   constructor(creep: Creep) {
     super(creep)
   }
@@ -45,7 +40,7 @@ export class RampartMaintainer extends Role {
    * @param {Structure[]} structures The list of structures.
    * @returns {(Structure[] | undefined)} an array of roads to repair.
    *
-   * @memberOf RampartMaintainer
+   * @memberOf DefenseRepairer
    */
   private getStructuresToRepair(structures: Structure[]): Structure[] | undefined {
     const targets: Structure[] = structures.filter((structure: Structure) => {
