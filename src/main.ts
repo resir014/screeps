@@ -1,7 +1,7 @@
 import * as Config from './config/config'
 import { Orchestrator } from './utils/orchestrator'
-import { initialiseRooms } from './room/roomManager'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
+import { initialiseRooms } from './shared/roomManager'
 
 import * as Inscribe from './lib/Inscribe'
 import { Logger } from './utils/logger'
