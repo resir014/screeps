@@ -22,7 +22,10 @@ Inscribe.init()
 loadCreepPrototypes()
 loadStructureSpawnPrototypes()
 
-Logger.info(`[${Inscribe.color('main', 'skyblue')}] loading revision: ${__REVISION__}`)
+Logger.info(`[${Inscribe.color('main', 'skyblue')}] Scripts bootstrapped`);
+if (__REVISION__) {
+  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Revision ID: ${__REVISION__}`);
+}
 
 /**
  * Screeps system expects this "loop" method in main.js to run the
