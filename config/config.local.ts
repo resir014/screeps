@@ -1,8 +1,10 @@
-/* tslint:disable:no-require-imports */
+/* tslint:disable:no-var-requires */
+import * as os from "os";
+import * as path from "path";
 import * as Config from "webpack-chain";
 
 import * as CommonConfig from "./config.common";
-import { Credentials, EnvOptions } from "./types";
+import { EnvOptions } from "./types";
 
 function webpackConfig(options: EnvOptions = {}): Config {
   // get the common configuration to start with
@@ -12,8 +14,9 @@ function webpackConfig(options: EnvOptions = {}): Config {
   // it makes for much easier debugging:
   // (make sure you symlink the dir, not the files)
   // `# ln -s /path/to/local/deploy/dir ./dist/local`
-  const credentials: Credentials = require("./credentials.json")
-  config.output.path(credentials.outputPath);
+  const screepsHomePath = process.env.LOCALAPPDATA || os.homedir() + '/.config'
+  const localPath = path.join(screepsHomePath, "/Screeps/scripts/127_0_0_1___21025/default/");
+  config.output.path(localPath);
 
   // modify the args of "define" plugin
   config.plugin("define").tap((args: any[]) => {

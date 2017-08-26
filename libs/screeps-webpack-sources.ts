@@ -1,8 +1,8 @@
 import * as path from "path";
-import { Plugin } from "webpack";
+import { Compiler, Plugin } from "webpack";
 
 // disable tslint rule, because we don't have types for these files
-/* tslint:disable:no-require-imports */
+/* tslint:disable:no-var-requires */
 const ConcatSource = require("webpack-sources").ConcatSource;
 
 // Tiny tiny helper plugin that prepends "module.exports = " to all `.map` assets
@@ -11,8 +11,8 @@ export class ScreepsSourceMapToJson implements Plugin {
   //   // we don't use options
   // }
 
-  public apply(compiler: any) {
-    compiler.plugin("emit", (compilation: any, cb: any) => {
+  public apply(compiler: Compiler) {
+    compiler.plugin("emit", (compilation, cb) => {
       for (const filename in compilation.assets) {
         // matches any files ending in ".map" or ".map.js"
         if (path.basename(filename, ".js").match(/\.map/)) {

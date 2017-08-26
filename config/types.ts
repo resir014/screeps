@@ -11,6 +11,6 @@ export interface Credentials {
   token?: string;
   serverUrl: string;
   serverPassword?: string;
-  outputPath: string;
+  outputPath?: string;
   gzip?: boolean;
 }
