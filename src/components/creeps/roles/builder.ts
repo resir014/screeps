@@ -1,4 +1,5 @@
 import * as Config from '../../../config/config'
+import * as Inscribe from '../../../lib/Inscribe'
 import { Logger } from '../../../utils/logger'
 import { Role } from '../role'
 
@@ -34,7 +35,12 @@ export class Builder extends Role {
     this.getConstructionSites()
 
     if (Config.ENABLE_DEBUG_MODE) {
-      Logger.debug(`[Builder] ${this.constructionSiteCount} construction sites in room ${creep.room.name}.`)
+      const out = [
+        `[${Inscribe.color('Builder', 'skyblue')}]`,
+        `[${Inscribe.color(this.room.name, 'hotpink')}]`,
+        `${this.constructionSiteCount} construction sites in room.`
+      ]
+      Logger.debug(out.join(' '))
     }
   }
 

@@ -1,4 +1,5 @@
 import { ENABLE_DEBUG_MODE } from '../../config/config'
+import * as Inscribe from '../../lib/Inscribe'
 import { Logger } from '../../utils/logger'
 
 /**
@@ -22,10 +23,6 @@ export function loadStructures(room: Room): Structure[] {
  */
 export function getStorageObjects(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
-
-  if (ENABLE_DEBUG_MODE) {
-    Logger.debug(`${room.name}: ${_.size(structures)} structures found.`)
-  }
 
   let targets: Structure[] = structures.filter((structure: StructureContainer) => {
     return ((structure.structureType === STRUCTURE_CONTAINER)
@@ -56,7 +53,12 @@ export function getSourceWithdrawalPoints(room: Room): Structure[] {
   let targets: Structure[] = []
 
   if (ENABLE_DEBUG_MODE) {
-    Logger.debug(`${room.name}: ${_.size(structures)} structures found.`)
+    const out = [
+      `[${Inscribe.color('StructureManager', 'skyblue')}]`,
+      `[${Inscribe.color(room.name, 'hotpink')}]`,
+      `${_.size(structures)} structures found.`
+    ]
+    Logger.debug(out.join(' '))
   }
 
   // First pass: prioritise StructureStorage.
