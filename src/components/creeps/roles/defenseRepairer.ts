@@ -43,9 +43,19 @@ export class DefenseRepairer extends Role {
    * @memberOf DefenseRepairer
    */
   private getStructuresToRepair(structures: Structure[]): Structure[] | undefined {
-    const targets: Structure[] = structures.filter((structure: Structure) => {
-      return ((structure.structureType === STRUCTURE_RAMPART) && structure.hits < (structure.hits * 0.3))
+    let targets: Structure[]
+
+    targets = structures.filter((structure: Structure) => {
+      return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+        && (structure.structureType === STRUCTURE_RAMPART)))
     })
+
+    if (targets.length === 0) {
+      targets = structures.filter((structure: Structure) => {
+        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.3))
+        && (structure.structureType === STRUCTURE_WALL)))
+      })
+    }
 
     return targets
   }

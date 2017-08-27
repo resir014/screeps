@@ -37,14 +37,10 @@ export class Repairer extends Role {
   }
 
   /**
-   * Get an array of structures that needs repair.
-   *
-   * Note that this does *not* initially defensive structures (walls, roads,
-   * ramparts). If there are no such structures to be repaired, this expands to
-   * include roads, then ramparts.
+   * Get an array of non-defensive structures that needs repair.
    *
    * Returns `undefined` if there are no structures to be repaired. This function
-   * will never return a wall.
+   * will never return walls, roads, or ramparts.
    *
    * @private
    * @param {Structure[]} structures The list of structures.
@@ -53,32 +49,10 @@ export class Repairer extends Role {
    * @memberOf Repairer
    */
   private getStructuresToRepair(structures: Structure[]): Structure[] | undefined {
-
-    let targets: Structure[]
-
-    // Initial search scope.
-    targets = structures.filter((structure: Structure) => {
+    return structures.filter((structure: Structure) => {
       return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
         && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_ROAD
           && structure.structureType !== STRUCTURE_RAMPART)))
     })
-
-    // If nothing is found, expand search to include roads.
-    if (targets.length === 0) {
-      targets = structures.filter((structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-          && (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART)))
-      })
-    }
-
-    // If we still find nothing, expand search to ramparts.
-    if (targets.length === 0) {
-      targets = structures.filter((structure: Structure) => {
-        return ((structure.hits < (structure.hitsMax - (structure.hitsMax * 0.1))
-          && (structure.structureType !== STRUCTURE_WALL)))
-      })
-    }
-
-    return targets
   }
 }

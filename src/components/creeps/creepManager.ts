@@ -7,7 +7,7 @@ import { Upgrader } from './roles/upgrader'
 import { Builder } from './roles/builder'
 import { Repairer } from './roles/repairer'
 import { WallMaintainer } from './roles/wallMaintainer'
-import { RoadMaintainer } from './roles/roadMaintainer'
+import { DefenseRepairer } from './roles/defenseRepairer'
 
 // We use globals for these objects, so let's declare it.
 declare const Orchestrator: IOrchestrator
@@ -59,9 +59,9 @@ export function runCreeps(room: Room): void {
       const wallMaintainer = new WallMaintainer(creep)
       wallMaintainer.run()
     }
-    if (creep.memory.role === 'roadMaintainer') {
-      const roadMaintainer = new RoadMaintainer(creep)
-      roadMaintainer.run()
+    if (creep.memory.role === 'defenseRepairer') {
+      const defenseRepairer = new DefenseRepairer(creep)
+      defenseRepairer.run()
     }
   })
 }
@@ -81,8 +81,8 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
     upgraders: creeps.filter((creep: Creep) => creep.memory.role === 'upgrader'),
     repairers: creeps.filter((creep: Creep) => creep.memory.role === 'repairer'),
     wallMaintainers: creeps.filter((creep: Creep) => creep.memory.role === 'wallMaintainer'),
-    rampartMaintainers: creeps.filter((creep: Creep) => creep.memory.role === 'rampartMaintainer'),
     roadMaintainers: creeps.filter((creep: Creep) => creep.memory.role === 'roadMaintainer'),
+    defenseRepairers: creeps.filter((creep: Creep) => creep.memory.role === 'defenseRepairer'),
     defenders: creeps.filter((creep: Creep) => creep.memory.role === 'defender'),
     mineralMiners: creeps.filter((creep: Creep) => creep.memory.role === 'mineralMiner')
   }
@@ -130,9 +130,9 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
         role = 'repairer'
         bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.wallMaintainers.length < Memory.rooms[room.name].jobs.wallMaintainer) {
+      } else if (assortedCreeps.defenseRepairers.length < Memory.rooms[room.name].jobs.defenseRepairer) {
         // Create a new Builder.
-        role = 'wallMaintainer'
+        role = 'defenseRepairer'
         bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.roadMaintainers.length < Memory.rooms[room.name].jobs.roadMaintainer) {
@@ -148,7 +148,6 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
         bodyParts = [WORK, WORK, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
-        // Create a new Hauler.
         role = 'hauler'
         bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
