@@ -88,9 +88,6 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
   }
 
   for (const spawn of spawns) {
-    let role: string
-    let bodyParts: string[] = []
-
     if (ENABLE_DEBUG_MODE) {
       const out = [
         `[${Inscribe.color('CreepManager', 'skyblue')}]`,
@@ -107,49 +104,49 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
       // We already have two harvesters.
       if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
         // Create a new Hauler.
-        role = 'hauler'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
+        const role = 'hauler'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
+        _spawnCreep(spawn, bodyParts, 'hauler')
       } else if (assortedCreeps.harvesters.length < Memory.rooms[room.name].jobs.harvester) {
         // Create a new Harvester.
-        role = 'harvester'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'harvester'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.upgraders.length < Memory.rooms[room.name].jobs.upgrader) {
         // Create a new Upgrader.
-        role = 'upgrader'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'upgrader'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.builders.length < Memory.rooms[room.name].jobs.builder) {
         // Create a new Builder.
-        role = 'builder'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'builder'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.repairers.length < Memory.rooms[room.name].jobs.repairer) {
         // Create a new Builder.
-        role = 'repairer'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'repairer'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.defenseRepairers.length < Memory.rooms[room.name].jobs.defenseRepairer) {
         // Create a new Builder.
-        role = 'defenseRepairer'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'defenseRepairer'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.roadMaintainers.length < Memory.rooms[room.name].jobs.roadMaintainer) {
         // Create a new Builder.
-        role = 'roadMaintainer'
-        bodyParts = Orchestrator.getBodyParts(role, spawn)
+        const role = 'roadMaintainer'
+        const bodyParts = Orchestrator.getBodyParts(role, spawn)
         _spawnCreep(spawn, bodyParts, role)
       }
     } else {
       // We don't have two harvesters yet.
       if (assortedCreeps.harvesters.length < Memory.rooms[room.name].jobs.harvester) {
-        role = 'harvester'
-        bodyParts = [WORK, WORK, MOVE, MOVE]
+        const role = 'harvester'
+        const bodyParts = [WORK, WORK, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
       } else if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
-        role = 'hauler'
-        bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE]
+        const role = 'hauler'
+        const bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
       }
     }
@@ -159,14 +156,14 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
 /**
  * Spawns a new creep.
  *
- * @param {Spawn} spawn
- * @param {string[]} bodyParts
- * @param {string} role
- * @returns
+ * @param {Spawn} spawn Target spawn of the creep spawning process
+ * @param {string[]} bodyParts The body parts for the creep.
+ * @param {string} role The creep's role.
+ * @returns A status code.
  */
 function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
   const guid: number = Orchestrator.getGuid()
-  let status: number | string = spawn.canCreateCreep(bodyParts)
+  const canCreateCreep = spawn.canCreateCreep(bodyParts)
 
   const properties: { [key: string]: any } = {
     role,
@@ -182,10 +179,7 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
     Logger.debug(out.join(' '))
   }
 
-  // `canCreateCreep()` returns a string instead of OK, so we handle a string
-  // the same as if OK.
-  status = _.isString(status) ? OK : status
-  if (status === OK) {
+  if (canCreateCreep === OK) {
     Memory.guid = guid + 1
     const creepName: string = `[${guid}] ${spawn.room.name} - ${role}`
 
@@ -210,19 +204,19 @@ function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
       Logger.debug(outGuid.join(' '))
     }
 
-    status = spawn.createCreep(bodyParts, creepName, properties)
-
+    // `createCreep()` returns a string instead of OK, so we handle a string the same as if OK.
+    const status = spawn.createCreep(bodyParts, creepName, properties)
     return _.isString(status) ? OK : status
   } else {
     if (ENABLE_DEBUG_MODE) {
       const out = [
         `[${Inscribe.color('CreepManager', 'skyblue')}]`,
         `[${Inscribe.color(spawn.name, 'hotpink')}]`,
-        `Failed creating new creep: ${status}`
+        `Failed creating new creep: ${canCreateCreep}`
       ]
       Logger.error(out.join(' '))
     }
 
-    return status
+    return canCreateCreep
   }
 }
