@@ -13,6 +13,10 @@ import { DefenseRepairer } from './roles/defenseRepairer'
 declare const Orchestrator: IOrchestrator
 declare const Inscribe: InscribeGlobal
 
+interface SortedCreepObject {
+  [key: string]: Creep[]
+}
+
 /**
  * Initialization scripts for CreepManager module.
  *
@@ -66,6 +70,27 @@ export function runCreeps(room: Room): void {
   })
 }
 
+/**
+ * Determines if we need more creeps of a certain role.
+ *
+ * @param {SortedCreepObject} creeps Creep objects assorted into roles
+ * @param {string} roomName Current room name
+ */
+const isShortCreepRoleGen = (creeps: SortedCreepObject, roomName: string) =>
+  (role: string) => creeps[role + 's'].length < Memory.rooms[roomName].jobs[role]
+
+/**
+ * Spawns a creep with pre-generated body parts for the set role.
+ *
+ * @param {Spawn} spawn The spawn we're about to spawn a creep from
+ * @param {(spawn: Spawn, bodyParts: string[], role: string) => number} spawnCreepFunc Callback function to spawn creep
+ */
+const spawnCreepWithRoleGen = (spawn: Spawn, spawnCreepFunc: (spawn: Spawn, bodyParts: string[], role: string) => number) =>
+  (role: string) => {
+    const bodyParts = Orchestrator.getBodyParts(role, spawn)
+    spawnCreepFunc(spawn, bodyParts, role)
+  }
+
 function _manageCreeps(room: Room, creeps: Creep[]): void {
   const spawns: Spawn[] = room.find<Spawn>(FIND_MY_SPAWNS, {
     filter: (spawn: Spawn) => {
@@ -74,7 +99,7 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
   })
 
   // Iterate through each creep roles and push them into the assorted role object.
-  const assortedCreeps: { [key: string]: Creep[] } = {
+  const assortedCreeps: SortedCreepObject = {
     harvesters: creeps.filter((creep: Creep) => creep.memory.role === 'harvester'),
     haulers: creeps.filter((creep: Creep) => creep.memory.role === 'hauler'),
     builders: creeps.filter((creep: Creep) => creep.memory.role === 'builder'),
@@ -87,6 +112,8 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
     mineralMiners: creeps.filter((creep: Creep) => creep.memory.role === 'mineralMiner')
   }
 
+  const isShortCreepRole = isShortCreepRoleGen(assortedCreeps, room.name)
+
   for (const spawn of spawns) {
     if (ENABLE_DEBUG_MODE) {
       const out = [
@@ -97,54 +124,35 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
       Logger.debug(out.join(' '))
     }
 
+    const spawnCreepWithRole = spawnCreepWithRoleGen(spawn, _spawnCreep)
+
     // There needs to be at least two harvesters AND one haulers
     // before we prioritise spawning anything else. If not, we'll prioritise
     // spawning harvesters first.
     if (assortedCreeps.harvesters.length > 1 && assortedCreeps.haulers.length >= 1) {
       // We already have two harvesters.
-      if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
-        // Create a new Hauler.
-        const role = 'hauler'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, 'hauler')
-      } else if (assortedCreeps.harvesters.length < Memory.rooms[room.name].jobs.harvester) {
-        // Create a new Harvester.
-        const role = 'harvester'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.upgraders.length < Memory.rooms[room.name].jobs.upgrader) {
-        // Create a new Upgrader.
-        const role = 'upgrader'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.builders.length < Memory.rooms[room.name].jobs.builder) {
-        // Create a new Builder.
-        const role = 'builder'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.repairers.length < Memory.rooms[room.name].jobs.repairer) {
-        // Create a new Builder.
-        const role = 'repairer'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.defenseRepairers.length < Memory.rooms[room.name].jobs.defenseRepairer) {
-        // Create a new Builder.
-        const role = 'defenseRepairer'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.roadMaintainers.length < Memory.rooms[room.name].jobs.roadMaintainer) {
-        // Create a new Builder.
-        const role = 'roadMaintainer'
-        const bodyParts = Orchestrator.getBodyParts(role, spawn)
-        _spawnCreep(spawn, bodyParts, role)
+      if (isShortCreepRole('hauler')) {
+        spawnCreepWithRole('hauler')
+      } else if (isShortCreepRole('harvester')) {
+        spawnCreepWithRole('harvester')
+      } else if (isShortCreepRole('upgrader')) {
+        spawnCreepWithRole('upgrader')
+      } else if (isShortCreepRole('builder')) {
+        spawnCreepWithRole('builder')
+      } else if (isShortCreepRole('repairer')) {
+        spawnCreepWithRole('repairer')
+      } else if (isShortCreepRole('defenseRepairer')) {
+        spawnCreepWithRole('defenseRepairer')
+      } else if (isShortCreepRole('roadMaintainer')) {
+        spawnCreepWithRole('roadMaintainer')
       }
     } else {
       // We don't have two harvesters yet.
-      if (assortedCreeps.harvesters.length < Memory.rooms[room.name].jobs.harvester) {
+      if (isShortCreepRole('harvester')) {
         const role = 'harvester'
         const bodyParts = [WORK, WORK, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
-      } else if (assortedCreeps.haulers.length < Memory.rooms[room.name].jobs.hauler) {
+      } else if (isShortCreepRole('hauler')) {
         const role = 'hauler'
         const bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE]
         _spawnCreep(spawn, bodyParts, role)
