@@ -38,4 +38,5 @@ interface RoomMemory {
 
 // ------- constants ------- //
 
-declare const __REVISION__: string | undefined
+declare const __BUILD_TIME__: string
+declare const __REVISION__: string
