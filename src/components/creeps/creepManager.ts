@@ -70,21 +70,9 @@ export function runCreeps(room: Room): void {
   })
 }
 
-/**
- * Determines if we need more creeps of a certain role.
- *
- * @param {SortedCreepObject} creeps Creep objects assorted into roles
- * @param {string} roomName Current room name
- */
 const isShortCreepRoleGen = (creeps: SortedCreepObject, roomName: string) =>
   (role: string) => creeps[role + 's'].length < Memory.rooms[roomName].jobs[role]
 
-/**
- * Spawns a creep with pre-generated body parts for the set role.
- *
- * @param {Spawn} spawn The spawn we're about to spawn a creep from
- * @param {(spawn: Spawn, bodyParts: string[], role: string) => number} spawnCreepFunc Callback function to spawn creep
- */
 const spawnCreepWithRoleGen = (spawn: Spawn, spawnCreepFunc: (spawn: Spawn, bodyParts: string[], role: string) => number) =>
   (role: string) => {
     const bodyParts = Orchestrator.getBodyParts(role, spawn)
@@ -161,14 +149,6 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
   }
 }
 
-/**
- * Spawns a new creep.
- *
- * @param {Spawn} spawn Target spawn of the creep spawning process
- * @param {string[]} bodyParts The body parts for the creep.
- * @param {string} role The creep's role.
- * @returns A status code.
- */
 function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
   const guid: number = Orchestrator.getGuid()
   const canCreateCreep = spawn.canCreateCreep(bodyParts)
