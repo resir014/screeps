@@ -1,10 +1,10 @@
-interface InscribeGlobal {
+interface ScreepsInscribe {
   /**
    * Decorates a string of text with color.
    *
    * @param {string} str The string to format.
    * @param {string} fontColor Any HTML color name (`teal`) or hex code (`#33b5e5`).
-   * @returns {string}
+   * @returns {string} A string output of the color-formatted text.
    * @memberof IInscribe
    */
   color(str: string, fontColor: string): string
@@ -13,7 +13,7 @@ interface InscribeGlobal {
    *
    * @param {string} href Any string-escaped link.
    * @param {string} title The link title.
-   * @returns {string}
+   * @returns {string} A console output string with link.
    * @memberof IInscribe
    */
   link(href: string, title: string): string
@@ -22,7 +22,7 @@ interface InscribeGlobal {
    *
    * @param {string} str The string to format
    * @param {string} tooltipText The tooltip text to give away
-   * @returns {string}
+   * @returns {string} The tooltipped text for the Screeps console.
    * @memberof IInscribe
    */
   tooltip(str: string, tooltipText: string): string
@@ -31,7 +31,7 @@ interface InscribeGlobal {
    *
    * @param {string} [color] Any HTML color name (`teal`) or hex code
    *   (`#33b5e5`). Defaults to `gray` if empty.
-   * @returns {string}
+   * @returns {string} A pretty-formatted `Game.time`.
    * @memberof Inscribe
    */
   time(color?: string): string

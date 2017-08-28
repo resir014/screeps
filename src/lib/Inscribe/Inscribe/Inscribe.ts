@@ -8,8 +8,8 @@
  *
  * @export
  */
-export function init() {
-  global.Inscribe = { color, link, tooltip, time }
+export function init(): ScreepsInscribe {
+  return { color, link, tooltip, time }
 }
 
 /**

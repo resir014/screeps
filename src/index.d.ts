@@ -7,7 +7,7 @@ declare namespace NodeJS {
    */
   interface Global {
     config: any
-    Inscribe: InscribeGlobal
+    Inscribe: ScreepsInscribe
     Orchestrator: IOrchestrator
   }
 }

@@ -11,7 +11,7 @@ import { DefenseRepairer } from './roles/defenseRepairer'
 
 // We use globals for these objects, so let's declare it.
 declare const Orchestrator: IOrchestrator
-declare const Inscribe: InscribeGlobal
+declare const Inscribe: ScreepsInscribe
 
 interface SortedCreepObject {
   [key: string]: Creep[]

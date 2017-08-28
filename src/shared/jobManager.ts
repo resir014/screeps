@@ -17,3 +17,7 @@ export function refreshJobAssignments(room: Room): void {
     }
   }
 }
+
+export function manageJobs(room: Room): void {
+  //
+}

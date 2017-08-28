@@ -16,7 +16,7 @@ import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 // initialise all CLI objects
 global.Orchestrator = new Orchestrator()
 global.config = Config
-Inscribe.init()
+global.Inscribe = Inscribe.init()
 
 // Prototype extensions
 loadCreepPrototypes()
