@@ -23,13 +23,13 @@ loadCreepPrototypes()
 loadStructureSpawnPrototypes()
 
 Logger.info(`[${Inscribe.color('main', 'skyblue')}] Scripts bootstrapped`);
+if (__REVISION__) {
+  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Revision: ${__REVISION__}`);
+}
 if (__BUILD_TIME__) {
   Logger.info(
     `[${Inscribe.color('main', 'skyblue')}] Build time: ${new Date(__BUILD_TIME__).toISOString()}`
   );
-}
-if (__REVISION__) {
-  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Revision: ${__REVISION__}`);
 }
 
 /**
