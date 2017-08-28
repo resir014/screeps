@@ -1,3 +1,15 @@
+// ------- objects ------- //
+
+interface JobQueueTarget {
+  room: string
+  id?: string
+}
+
+interface RoomJobQueue {
+  role: string
+  target: JobQueueTarget
+}
+
 // ------- global declarations ------- //
 
 // add objects to `global` here
@@ -32,6 +44,7 @@ interface CreepMemory {
 
 interface RoomMemory {
   jobs: { [key: string]: number }
+  queue: RoomJobQueue
   sources: string[]
   [key: string]: any
 }
