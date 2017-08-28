@@ -74,8 +74,8 @@ const isShortCreepRoleGen = (creeps: SortedCreepObject, roomName: string) =>
   (role: string) => creeps[role + 's'].length < Memory.rooms[roomName].jobs[role]
 
 const spawnCreepWithRoleGen = (spawn: Spawn, spawnCreepFunc: (spawn: Spawn, bodyParts: string[], role: string) => number) =>
-  (role: string) => {
-    const bodyParts = Orchestrator.getBodyParts(role, spawn)
+  (role: string, bp?: string[]) => {
+    const bodyParts = bp || Orchestrator.getBodyParts(role, spawn)
     spawnCreepFunc(spawn, bodyParts, role)
   }
 
@@ -137,13 +137,9 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
     } else {
       // We don't have two harvesters yet.
       if (isShortCreepRole('harvester')) {
-        const role = 'harvester'
-        const bodyParts = [WORK, WORK, MOVE, MOVE]
-        _spawnCreep(spawn, bodyParts, role)
+        spawnCreepWithRole('harvester', [WORK, WORK, MOVE, MOVE])
       } else if (isShortCreepRole('hauler')) {
-        const role = 'hauler'
-        const bodyParts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE]
-        _spawnCreep(spawn, bodyParts, role)
+        spawnCreepWithRole('hauler', [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE])
       }
     }
   }
