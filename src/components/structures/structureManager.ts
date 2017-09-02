@@ -63,7 +63,9 @@ export function getSourceWithdrawalPoints(room: Room): Structure[] {
 
   // First pass: prioritise StructureStorage.
   if (room.storage) {
-    targets.push(room.storage);
+    if (_.sum(room.storage.store) > 500) {
+      targets.push(room.storage);
+    }
   }
 
   // Second pass: if no StructureStorage is found, find any containers.
