@@ -1,5 +1,6 @@
+import * as Inscribe from 'screeps-inscribe'
+
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import * as Inscribe from '../../lib/Inscribe'
 import { Logger } from '../../utils/logger'
 
 /**

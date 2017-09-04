@@ -1,9 +1,10 @@
+import * as Inscribe from 'screeps-inscribe'
+
 import * as Config from './config/config'
 import { Orchestrator } from './utils/orchestrator'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 import { initialiseRooms } from './shared/roomManager'
 
-import * as Inscribe from './lib/Inscribe'
 import { Logger } from './utils/logger'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'

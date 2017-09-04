@@ -1,5 +1,6 @@
+import * as Inscribe from 'screeps-inscribe'
+
 import * as Config from '../../config/config'
-import * as Inscribe from '../../lib/Inscribe'
 import { LogLevel } from './logLevel'
 
 export namespace Logger {

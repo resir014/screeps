@@ -1,7 +1,8 @@
+import * as Inscribe from 'screeps-inscribe'
+
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { blacklistedSources } from '../../config/jobs'
 import { Logger } from '../../utils/logger'
-import * as Inscribe from '../../lib/Inscribe'
 
 /**
  * Create an array of all sources in the room and update job entries where

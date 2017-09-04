@@ -1,6 +1,7 @@
+import * as Inscribe from 'screeps-inscribe'
+
 import * as Config from '../../config/config'
 import { Logger } from '../../utils/logger'
-import * as Inscribe from '../../lib/Inscribe'
 import { bodyTemplates } from '../../config/jobs'
 
 /**
