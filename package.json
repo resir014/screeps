@@ -47,7 +47,7 @@
     "webpack-chain": "^3.2.0"
   },
   "dependencies": {
-    "screeps-inscribe": "^0.1.0",
+    "screeps-inscribe": "git://github.com/resir014/screeps-inscribe.git",
     "source-map": "^0.5.6"
   }
 }
