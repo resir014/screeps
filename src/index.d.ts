@@ -19,7 +19,6 @@ declare namespace NodeJS {
    */
   interface Global {
     config: any
-    Inscribe: any
     Orchestrator: IOrchestrator
   }
 }
