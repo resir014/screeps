@@ -6,21 +6,17 @@ import { Logger } from '../utils/logger'
  * @export
  */
 export function checkOutOfBoundsMemory(): void {
-  if (!Memory.uuid || Memory.uuid > 100) {
-    Memory.uuid = 0
-  }
+  _.defaultsDeep(Memory, {
+    creeps: {},
+    flags: {},
+    rooms: {},
+    spawns: {},
+    stats: {},
+    uuid: 0
+  })
 
-  if (!Memory.creeps) {
-    Memory.creeps = {}
-  }
-  if (!Memory.flags) {
-    Memory.flags = {}
-  }
-  if (!Memory.rooms) {
-    Memory.rooms = {}
-  }
-  if (!Memory.spawns) {
-    Memory.spawns = {}
+  if (!Memory.uuid || Memory.uuid > 10000) {
+    Memory.uuid = 0
   }
 }
 
@@ -31,13 +27,10 @@ export function checkOutOfBoundsMemory(): void {
  * @param {Room} room The current room.
  */
 export function initialiseRoomMemory(room: Room): void {
-  if (!room.memory.jobs) {
-    room.memory.jobs = {}
-  }
-
-  if (!room.memory.manualJobControl) {
-    room.memory.manualJobControl = true
-  }
+  _.defaultsDeep(room.memory, {
+    jobs: {},
+    manualJobControl: true
+  })
 }
 
 /**
@@ -47,9 +40,9 @@ export function initialiseRoomMemory(room: Room): void {
  * @param {Room} room The current room.
  */
 export function refreshMiningPositions(room: Room): void {
-  if (!room.memory.sources) {
-    room.memory.sources = []
-  }
+  _.defaultsDeep(room.memory, {
+    sources: []
+  })
 }
 
 /**
