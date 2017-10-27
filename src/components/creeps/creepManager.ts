@@ -72,7 +72,7 @@ export function runCreeps(room: Room): void {
 }
 
 const isShortCreepRoleGen = (creeps: SortedCreepObject, roomName: string) =>
-  (role: string) => creeps[role + 's'].length < Memory.rooms[roomName].jobs[role]
+  (role: string) => creeps[role].length < Memory.rooms[roomName].jobs[role]
 
 const spawnCreepWithRoleGen = (spawn: Spawn, spawnCreepFunc: (spawn: Spawn, bodyParts: string[], role: string) => number) =>
   (role: string, bp?: string[]) => {
@@ -89,16 +89,16 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
 
   // Iterate through each creep roles and push them into the assorted role object.
   const assortedCreeps: SortedCreepObject = {
-    harvesters: creeps.filter((creep: Creep) => creep.memory.role === 'harvester'),
-    haulers: creeps.filter((creep: Creep) => creep.memory.role === 'hauler'),
-    builders: creeps.filter((creep: Creep) => creep.memory.role === 'builder'),
-    upgraders: creeps.filter((creep: Creep) => creep.memory.role === 'upgrader'),
-    repairers: creeps.filter((creep: Creep) => creep.memory.role === 'repairer'),
-    wallMaintainers: creeps.filter((creep: Creep) => creep.memory.role === 'wallMaintainer'),
-    roadMaintainers: creeps.filter((creep: Creep) => creep.memory.role === 'roadMaintainer'),
-    defenseRepairers: creeps.filter((creep: Creep) => creep.memory.role === 'defenseRepairer'),
-    defenders: creeps.filter((creep: Creep) => creep.memory.role === 'defender'),
-    mineralMiners: creeps.filter((creep: Creep) => creep.memory.role === 'mineralMiner')
+    harvester: creeps.filter((creep: Creep) => creep.memory.role === 'harvester'),
+    hauler: creeps.filter((creep: Creep) => creep.memory.role === 'hauler'),
+    builder: creeps.filter((creep: Creep) => creep.memory.role === 'builder'),
+    upgrader: creeps.filter((creep: Creep) => creep.memory.role === 'upgrader'),
+    repairer: creeps.filter((creep: Creep) => creep.memory.role === 'repairer'),
+    wallMaintainer: creeps.filter((creep: Creep) => creep.memory.role === 'wallMaintainer'),
+    roadMaintainer: creeps.filter((creep: Creep) => creep.memory.role === 'roadMaintainer'),
+    defenseRepairer: creeps.filter((creep: Creep) => creep.memory.role === 'defenseRepairer'),
+    defender: creeps.filter((creep: Creep) => creep.memory.role === 'defender'),
+    mineralMiner: creeps.filter((creep: Creep) => creep.memory.role === 'mineralMiner')
   }
 
   const isShortCreepRole = isShortCreepRoleGen(assortedCreeps, room.name)
