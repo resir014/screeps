@@ -29,7 +29,7 @@ export function checkOutOfBoundsMemory(): void {
 export function initialiseRoomMemory(room: Room): void {
   _.defaultsDeep(room.memory, {
     jobs: {},
-    manualJobControl: true
+    queue: []
   })
 }
 

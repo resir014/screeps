@@ -5,7 +5,7 @@ interface JobQueueTarget {
   id?: string
 }
 
-interface RoomJobQueue {
+interface JobQueue {
   role: string
   target: JobQueueTarget
 }
@@ -43,7 +43,7 @@ interface CreepMemory {
 
 interface RoomMemory {
   jobs: { [key: string]: number }
-  queue: RoomJobQueue
+  queue: JobQueue[]
   sources: string[]
   [key: string]: any
 }
