@@ -88,7 +88,7 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
   })
 
   // Iterate through each creep roles and push them into the assorted role object.
-  const assortedCreeps: SortedCreepObject = {
+  const assortedCreeps = {
     harvester: creeps.filter((creep: Creep) => creep.memory.role === 'harvester'),
     hauler: creeps.filter((creep: Creep) => creep.memory.role === 'hauler'),
     builder: creeps.filter((creep: Creep) => creep.memory.role === 'builder'),
@@ -118,7 +118,7 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
     // There needs to be at least two harvesters AND one haulers
     // before we prioritise spawning anything else. If not, we'll prioritise
     // spawning harvesters first.
-    if (assortedCreeps.harvesters.length > 1 && assortedCreeps.haulers.length >= 1) {
+    if (assortedCreeps.harvester.length > 1 && assortedCreeps.hauler.length >= 1) {
       // We already have two harvesters.
       if (isShortCreepRole('hauler')) {
         spawnCreepWithRole('hauler')
