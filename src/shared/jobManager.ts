@@ -18,6 +18,14 @@ export function refreshJobAssignments(room: Room): void {
   }
 }
 
-export function manageJobs(room: Room): void {
-  //
+/**
+ * Refreshes the job assignment available in a room.
+ *
+ * @export
+ * @param {Room} room The target room.
+ */
+export function initialiseJobs(room: Room): void {
+  _.keys(room.memory.jobs).forEach((job) => {
+    console.log(`${room.name} needs ${(room.memory as RoomMemory).jobs[job]} ${job}s!`)
+  })
 }

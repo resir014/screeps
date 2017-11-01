@@ -25,7 +25,7 @@ interface SortedCreepObject {
  * @param {Room} room
  */
 export function runCreeps(room: Room): void {
-  const creeps: Creep[] = room.find<Creep>(FIND_MY_CREEPS)
+  const creeps: Creep[] = getCreepsInRoom(room)
 
   if (ENABLE_DEBUG_MODE) {
     const out = [
@@ -69,6 +69,14 @@ export function runCreeps(room: Room): void {
       defenseRepairer.run()
     }
   })
+}
+
+export function getCreepsInRoom(room: Room): Creep[] {
+  return room.find<Creep>(FIND_MY_CREEPS)
+}
+
+export function getCreepCount(room: Room): number {
+  return room.find<Creep>(FIND_MY_CREEPS).length
 }
 
 const isShortCreepRoleGen = (creeps: SortedCreepObject, roomName: string) =>
