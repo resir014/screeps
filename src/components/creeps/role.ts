@@ -1,5 +1,5 @@
 import * as StructureManager from '../structures/structureManager'
-import { Traveler } from '../../lib/Traveler/Traveler'
+import { TravelToOptions } from 'Traveler'
 
 /**
  * Shared role for all Creeps.
@@ -75,7 +75,7 @@ export class Role {
    */
   public moveToRenew(spawn: Spawn, options?: TravelToOptions): void {
     if (this.tryRenew(spawn) === ERR_NOT_IN_RANGE) {
-      Traveler.travelTo(this.creep, spawn, options)
+      this.creep.travelTo(spawn, options)
     }
   }
 

@@ -1,4 +1,4 @@
-import { Traveler } from '../lib/Traveler/Traveler'
+import { Traveler, TravelToOptions } from 'Traveler'
 
 /**
  * Loads all extended `Creep` prototypes.

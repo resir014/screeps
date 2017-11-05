@@ -146,11 +146,11 @@ function _manageCreeps(room: Room, creeps: Creep[]): void {
   }
 }
 
-function _spawnCreep(spawn: Spawn, bodyParts: string[], role: string): number {
+function _spawnCreep(spawn: Spawn, bodyParts: BodyPartConstant[], role: string): number {
   const guid: number = Orchestrator.getGuid()
   const canCreateCreep = spawn.canCreateCreep(bodyParts)
 
-  const properties: { [key: string]: any } = {
+  const properties: CreepMemory = {
     role,
     room: spawn.room.name,
   }

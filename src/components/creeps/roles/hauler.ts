@@ -53,7 +53,7 @@ export class Hauler extends Role {
         if (targetContainers.length > 0) {
           targetContainers.forEach((container: Container) => {
             if (this.creep.pos.isNearTo(container)) {
-              container.transfer(this.creep, RESOURCE_ENERGY)
+              this.creep.withdraw(container, RESOURCE_ENERGY)
             } else {
               this.moveTo(container)
             }
@@ -64,7 +64,7 @@ export class Hauler extends Role {
               return structure.structureType === STRUCTURE_CONTAINER
             }
           })
-          this.moveTo(targetContainer)
+          this.moveTo(targetContainer as RoomObject)
         }
       }
     } else {
@@ -90,52 +90,54 @@ export class Hauler extends Role {
         })
       } else {
         const targetSpawn = this.creep.pos.findClosestByRange<Spawn>(FIND_MY_SPAWNS)
-        if (targetSpawn.energy < targetSpawn.energyCapacity) {
-          if (this.creep.pos.isNearTo(targetSpawn)) {
-            this.creep.transfer(targetSpawn, RESOURCE_ENERGY)
-          } else {
-            this.moveTo(targetSpawn)
-          }
-        } else {
-          const targetExtensions = this.creep.room.find<Extension>(FIND_STRUCTURES, {
-            filter: (structure: Structure) => {
-              if (structure.structureType === STRUCTURE_EXTENSION) {
-                const extension = structure as Extension
-                if (extension.energy < extension.energyCapacity) {
-                  return extension
-                }
-              }
+        if (targetSpawn) {
+          if (targetSpawn.energy < targetSpawn.energyCapacity) {
+            if (this.creep.pos.isNearTo(targetSpawn)) {
+              this.creep.transfer(targetSpawn, RESOURCE_ENERGY)
+            } else {
+              this.moveTo(targetSpawn)
             }
-          })
-
-          if (targetExtensions.length > 0) {
-            targetExtensions.forEach((extension: Extension) => {
-              if (this.creep.pos.isNearTo(extension)) {
-                this.creep.transfer(extension, RESOURCE_ENERGY)
-              } else {
-                this.moveTo(extension)
-              }
-            })
           } else {
-            const targetStorages = this.creep.room.find<Storage>(FIND_STRUCTURES, {
+            const targetExtensions = this.creep.room.find<Extension>(FIND_STRUCTURES, {
               filter: (structure: Structure) => {
-                if (structure.structureType === STRUCTURE_STORAGE) {
-                  const storage = structure as Storage
-                  if (_.sum(storage.store) < storage.storeCapacity) {
-                    return storage
+                if (structure.structureType === STRUCTURE_EXTENSION) {
+                  const extension = structure as Extension
+                  if (extension.energy < extension.energyCapacity) {
+                    return extension
                   }
                 }
               }
             })
 
-            if (targetStorages.length > 0) {
-              targetStorages.forEach((storage: Storage) => {
-                if (this.creep.pos.isNearTo(storage)) {
-                  this.creep.transfer(storage, RESOURCE_ENERGY)
+            if (targetExtensions.length > 0) {
+              targetExtensions.forEach((extension: Extension) => {
+                if (this.creep.pos.isNearTo(extension)) {
+                  this.creep.transfer(extension, RESOURCE_ENERGY)
                 } else {
-                  this.moveTo(storage)
+                  this.moveTo(extension)
                 }
               })
+            } else {
+              const targetStorages = this.creep.room.find<Storage>(FIND_STRUCTURES, {
+                filter: (structure: Structure) => {
+                  if (structure.structureType === STRUCTURE_STORAGE) {
+                    const storage = structure as Storage
+                    if (_.sum(storage.store) < storage.storeCapacity) {
+                      return storage
+                    }
+                  }
+                }
+              })
+
+              if (targetStorages.length > 0) {
+                targetStorages.forEach((storage: Storage) => {
+                  if (this.creep.pos.isNearTo(storage)) {
+                    this.creep.transfer(storage, RESOURCE_ENERGY)
+                  } else {
+                    this.moveTo(storage)
+                  }
+                })
+              }
             }
           }
         }
