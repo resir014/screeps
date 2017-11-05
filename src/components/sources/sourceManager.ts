@@ -22,6 +22,13 @@ export function refreshAvailableSources(room: Room): void {
   if (roomMemory.sources.length === 0) {
     sources.forEach((source: Source) => {
       roomMemory.sources.push(source.id)
+      roomMemory.queue.push({
+        role: 'harvester',
+        target: {
+          room: room.name,
+          id: source.id
+        }
+      })
     })
   } else {
     // If sources array exists in memory, filter out blacklisted sources.
