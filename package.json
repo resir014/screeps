@@ -39,14 +39,14 @@
     "ts-node": "^3.0.4",
     "tslint": "^5.2.0",
     "tslint-eslint-rules": "^4.0.0",
+    "typed-screeps": "^1.0.3",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1",
     "webpack-chain": "^3.2.0"
   },
   "dependencies": {
     "Traveler": "apemanzilla/Traveler#testing",
-    "screeps-inscribe": "^0.1.1",
-    "source-map": "^0.5.6",
-    "typed-screeps": "screepers/typed-screeps"
+    "screeps-inscribe": "^0.2.0",
+    "source-map": "^0.5.6"
   }
 }

@@ -1663,9 +1663,9 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.1.0, 
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-screeps-inscribe@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/screeps-inscribe/-/screeps-inscribe-0.1.1.tgz#d5f8934ff73a807e3ed6851cd2dccfafaff57c77"
+screeps-inscribe@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/screeps-inscribe/-/screeps-inscribe-0.2.0.tgz#6281d7cfeeb7ecc77d8a84f9f6a70dddc54453ec"
 
 screeps-modules@^1.1.1:
   version "1.2.0"
@@ -1974,9 +1974,9 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
 
-typed-screeps@screepers/typed-screeps:
-  version "1.0.0"
-  resolved "https://codeload.github.com/screepers/typed-screeps/tar.gz/c521be7ad29c4166cde1fb2acdc81452425d4595"
+typed-screeps@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/typed-screeps/-/typed-screeps-1.0.3.tgz#8b3fcd5a12d7852da98f2ae85b825ee274ca7823"
 
 typescript@^2.3.2:
   version "2.5.1"
