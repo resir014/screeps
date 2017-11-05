@@ -1,5 +1,6 @@
 # Ignore basic folders
 /dist
+/tsc-out
 /node_modules
 
 # Typings definition files

@@ -10,7 +10,8 @@
     "noUnusedParameters": false,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "baseUrl": "./src/"
+    "baseUrl": "./src/",
+    "outDir": "./tsc-out"
   },
   "compileOnSave": false,
   "include": [
