@@ -18,6 +18,6 @@ export function refreshJobAssignments(room: Room): void {
   }
 }
 
-export function manageJobs(room: Room): void {
-  //
+export function pushJobQueue(room: Room, queue: JobQueue): void {
+  (room.memory as RoomMemory).queue.push(queue)
 }

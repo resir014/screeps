@@ -11,7 +11,8 @@
     "noUnusedLocals": true,
     "sourceMap": true,
     "baseUrl": "./src/",
-    "outDir": "./tsc-out"
+    "outDir": "./tsc-out",
+    "types": ["lodash", "typed-screeps"]
   },
   "compileOnSave": false,
   "include": [
