@@ -43,3 +43,6 @@ export const getQueueCount = (room: Room) => getSpawnQueue(room).length
 export const setSpawnQueue = (room: Room, queue: CreepSpawnQueue[]) => {
   room.memory.queue = queue
 }
+
+export const filterSpawnQueueByCreepRole = (room: Room, role: string) =>
+  room.memory.queue.filter((queue: CreepSpawnQueue) => queue.role === role)

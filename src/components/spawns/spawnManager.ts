@@ -4,12 +4,11 @@ import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { Logger } from '../../utils/logger'
 
 import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
-import { filterJobQueueByCreepRole } from '../../shared/jobManager'
 
 type SpawnCreepFunction = (spawn: Spawn, bodyParts: BodyPartConstant[], role: string) => number
 
 // We use globals for these objects, so let's declare it.
-declare const Orchestrator: IOrchestrator
+// declare const Orchestrator: IOrchestrator
 
 export const getSpawnsThatArentSpawning = (room: Room) => room.find<Spawn>(FIND_MY_SPAWNS, {
   filter: (spawn: Spawn) => spawn.spawning === null

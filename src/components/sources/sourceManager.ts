@@ -5,8 +5,7 @@ import { blacklistedSources } from '../../config/jobs'
 import { Logger } from '../../utils/logger'
 
 // import { filterCreepsByRole, getCreepsInRoom } from '../creeps/creepManager'
-import { enqueueSpawnRequest } from '../spawns/spawnQueue'
-import { filterJobQueueByCreepRole } from '../../shared/jobManager'
+import { enqueueSpawnRequest, filterSpawnQueueByCreepRole } from '../spawns/spawnQueue'
 
 /**
  * Create an array of all sources in the room and update job entries where
@@ -22,7 +21,7 @@ export function refreshAvailableSources(room: Room): void {
   const filteredSources = sources.filter((source: Source) =>
     _.includes(blacklistedSources, source.id) === false)
 
-  if (filterJobQueueByCreepRole(room, 'harvester').length === 0) {
+  if (filterSpawnQueueByCreepRole(room, 'harvester').length === 0) {
     filteredSources.forEach((source: Source) => {
       enqueueSpawnRequest(room, {
         role: 'harvester',
