@@ -60,12 +60,6 @@ export function cleanupCreepMemory(room: Room): void {
       if (creep.room === room.name) {
         if (!Game.creeps[name]) {
           Logger.info(`Clearing non-existing creep memory: ${name}`)
-
-          if (Memory.creeps[name].role === 'sourceMiner') {
-            // Push the now-dead creep's assigned source back to the sources array.
-            room.memory.sources.push(Memory.creeps[name].assignedSource)
-          }
-
           delete Memory.creeps[name]
         }
       } else if (_.keys(Memory.creeps[name]).length === 0) {

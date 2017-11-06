@@ -5,6 +5,7 @@ import { Orchestrator } from './utils/orchestrator'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import { runCreeps } from './components/creeps/creepManager'
+import { runSpawns } from './components/spawns/spawnManager'
 import { refreshAvailableSources } from './components/sources/sourceManager'
 import { runTowers } from './components/towers/towerManager'
 import { refreshJobAssignments } from './shared/jobManager'
@@ -64,6 +65,7 @@ export function loop(): void {
     refreshAvailableSources(room)
 
     // For each tick, run managed creeps/structures
+    runSpawns(room)
     runCreeps(room)
     runTowers(room)
   })
