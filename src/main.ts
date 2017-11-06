@@ -17,6 +17,7 @@ import {
 } from './shared/memoryManager'
 
 import { Logger } from './utils/logger'
+import recordStats from './utils/stats/recordStats'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
@@ -71,4 +72,6 @@ export function loop(): void {
     runCreeps(room)
     runTowers(room)
   })
+
+  recordStats()
 }
