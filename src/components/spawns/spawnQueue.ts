@@ -1,7 +1,7 @@
 import * as Inscribe from 'screeps-inscribe'
 
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { Logger } from '../../utils/logger'
+import * as Logger from '../../utils/logger'
 
 export const enqueueSpawnRequest = (room: Room, queue: CreepSpawnQueue) => {
   const list = getSpawnQueue(room)

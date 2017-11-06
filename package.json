@@ -38,6 +38,7 @@
     "ts-loader": "^3.1.0",
     "ts-node": "^3.0.4",
     "tslint": "^5.2.0",
+    "tslint-config-airbnb": "^5.3.0",
     "tslint-eslint-rules": "^4.0.0",
     "typed-screeps": "^1.0.3",
     "typescript": "^2.3.2",

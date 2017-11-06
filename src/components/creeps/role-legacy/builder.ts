@@ -1,7 +1,7 @@
 import * as Inscribe from 'screeps-inscribe'
 
 import * as Config from '../../../config/config'
-import { Logger } from '../../../utils/logger'
+import * as Logger from '../../../utils/logger'
 import { Role } from '../role'
 
 /**

@@ -1,4 +1,4 @@
-import { Logger } from '../utils/logger'
+import * as Logger from '../utils/logger'
 
 /**
  * Check memory for null or out of bounds custom objects

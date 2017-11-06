@@ -1,6 +1,4 @@
-
-
-import {TravelToOptions} from 'Traveler'
+import { TravelToOptions } from 'Traveler'
 
 // ------- extended prototypes ------- //
 

@@ -1,3 +1,5 @@
+// tslint:disable:no-increment-decrement
+
 /**
  * Loads all extended `StructureSpawn` prototypes.
  */
@@ -24,7 +26,7 @@ export function loadStructureSpawnPrototypes(): void {
   StructureSpawn.prototype.getLargestBuildableBodyFromTemplate = function (
     this: StructureSpawn,
     bodyTemplate: BodyPartConstant[],
-    maxIterations?: number,
+    maxIterations?: number
   ): BodyPartConstant[] {
     let result: BodyPartConstant[] = []
     let i: number

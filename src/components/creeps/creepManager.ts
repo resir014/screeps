@@ -1,7 +1,7 @@
 import * as Inscribe from 'screeps-inscribe'
 
 import { ENABLE_DEBUG_MODE } from '../../config/config'
-import { Logger } from '../../utils/logger'
+import * as Logger from '../../utils/logger'
 
 import { Harvester } from './role-legacy/harvester'
 import { Hauler } from './role-legacy/hauler'

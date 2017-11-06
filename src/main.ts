@@ -2,7 +2,12 @@ import * as Inscribe from 'screeps-inscribe'
 
 import * as Config from './config/config'
 import { Orchestrator } from './utils/orchestrator'
-import { checkOutOfBoundsMemory } from './shared/memoryManager'
+import {
+  checkOutOfBoundsMemory,
+  initialiseRoomMemory,
+  refreshMiningPositions,
+  cleanupCreepMemory
+} from './shared/memoryManager'
 
 import { runCreeps } from './components/creeps/creepManager'
 import { runSpawns } from './components/spawns/spawnManager'
@@ -10,13 +15,9 @@ import * as SpawnQueue from './components/spawns/spawnQueue'
 import { refreshAvailableSources } from './components/sources/sourceManager'
 import { runTowers } from './components/towers/towerManager'
 import { refreshJobAssignments } from './shared/jobManager'
-import {
-  initialiseRoomMemory,
-  refreshMiningPositions,
-  cleanupCreepMemory
-} from './shared/memoryManager'
 
-import { Logger } from './utils/logger'
+
+import * as Logger from './utils/logger'
 import recordStats from './utils/stats/recordStats'
 import { loadCreepPrototypes } from './prototypes/Creep'
 import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
@@ -35,13 +36,13 @@ global.Config = Config
 loadCreepPrototypes()
 loadStructureSpawnPrototypes()
 
-Logger.info(`[${Inscribe.color('main', 'skyblue')}] Scripts bootstrapped`);
+Logger.info(`[${Inscribe.color('main', 'skyblue')}] Scripts bootstrapped`)
 if (__REVISION__) {
-  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Revision: ${__REVISION__}`);
+  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Revision: ${__REVISION__}`)
 }
 if (__BUILD_TIME__) {
   const built = new Date(__BUILD_TIME__).toISOString()
-  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Build time: ${built}`);
+  Logger.info(`[${Inscribe.color('main', 'skyblue')}] Build time: ${built}`)
 }
 
 /**
