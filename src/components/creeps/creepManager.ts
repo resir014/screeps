@@ -3,13 +3,13 @@ import * as Inscribe from 'screeps-inscribe'
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { Logger } from '../../utils/logger'
 
-import { Harvester } from './roles/harvester'
-import { Hauler } from './roles/hauler'
-import { Upgrader } from './roles/upgrader'
-import { Builder } from './roles/builder'
-import { Repairer } from './roles/repairer'
-import { WallMaintainer } from './roles/wallMaintainer'
-import { DefenseRepairer } from './roles/defenseRepairer'
+import { Harvester } from './role-legacy/harvester'
+import { Hauler } from './role-legacy/hauler'
+import { Upgrader } from './role-legacy/upgrader'
+import { Builder } from './role-legacy/builder'
+import { Repairer } from './role-legacy/repairer'
+import { WallMaintainer } from './role-legacy/wallMaintainer'
+import { DefenseRepairer } from './role-legacy/defenseRepairer'
 
 // We use globals for these objects, so let's declare it.
 // declare const Orchestrator: IOrchestrator
