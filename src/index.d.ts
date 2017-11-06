@@ -69,7 +69,6 @@ interface CreepMemory {
   room: string
   target: JobQueueTarget
   state?: string
-  action?: CreepAction
   [key: string]: any
 }
 

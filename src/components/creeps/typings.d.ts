@@ -1,3 +1,0 @@
-interface CreepAction {
-  type: string
-}
