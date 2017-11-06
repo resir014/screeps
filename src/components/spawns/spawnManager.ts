@@ -3,12 +3,11 @@ import * as Inscribe from 'screeps-inscribe'
 import { ENABLE_DEBUG_MODE } from '../../config/config'
 import { Logger } from '../../utils/logger'
 
-import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
-
-type SpawnCreepFunction = (spawn: Spawn, bodyParts: BodyPartConstant[], role: string) => number
+// import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
+import { enqueueSpawnRequest, dequeueSpawnRequest } from './spawnQueue'
 
 // We use globals for these objects, so let's declare it.
-// declare const Orchestrator: IOrchestrator
+declare const Orchestrator: IOrchestrator
 
 export const getSpawnsThatArentSpawning = (room: Room) => room.find<Spawn>(FIND_MY_SPAWNS, {
   filter: (spawn: Spawn) => spawn.spawning === null
@@ -16,7 +15,6 @@ export const getSpawnsThatArentSpawning = (room: Room) => room.find<Spawn>(FIND_
 
 export const runSpawns = (room: Room) => {
   const spawns = getSpawnsThatArentSpawning(room)
-  const creeps = getCreepsInRoom(room)
 
   for (const spawn of spawns) {
     if (ENABLE_DEBUG_MODE) {
@@ -28,35 +26,90 @@ export const runSpawns = (room: Room) => {
       Logger.debug(out.join(' '))
     }
 
-    // There needs to be at least two harvesters AND one haulers
-    // before we prioritise spawning anything else. If not, we'll prioritise
-    // spawning harvesters first.
-    if (filterCreepsByRole(creeps, 'harvester').length > 1 && filterCreepsByRole(creeps, 'hauler').length > 1) {
-      if (canSpawnCreep(spawn)('hauler')) {
-        spawnCreepWithRole(spawn, _spawnCreep)('hauler')
-      }
-    } else {
-      if (isShortCreepRole(creeps, room.name)('harvester')) {
-        // spawnCreepWithRole(spawn, _spawnCreep)('hauler')
-      }
-    }
+    spawnCreepFromQueue(spawn, room)
   }
 }
 
+// Try to imitate the deprecated `spawn.canCreateCreep()` API.
 export const canSpawnCreep = (spawn: Spawn) =>
   (role: string, bp?: BodyPartConstant[]) => {
     const bodyParts = bp || getBodyPartsForCreep(role, spawn)
-    spawn.spawnCreep(bodyParts, 'test', { dryRun: true })
+    return spawn.spawnCreep(bodyParts, 'test', { dryRun: true })
   }
 
-export const spawnCreepWithRole = (spawn: Spawn, func: SpawnCreepFunction) =>
-  (role: string, bp?: BodyPartConstant[]) => {
-    const bodyParts = bp || getBodyPartsForCreep(role, spawn)
-    func(spawn, bodyParts, role)
-  }
+export const spawnCreepFromQueue = (spawn: Spawn, room: Room) => {
+  const guid: number = Orchestrator.getGuid()
+  const queue = dequeueSpawnRequest(room)
 
-const _spawnCreep = (spawn: Spawn, bodyParts: BodyPartConstant[], role: string) => {
-  return 0
+  if (queue) {
+    let status = canSpawnCreep(spawn)(queue.role)
+
+    if (status === OK) {
+      Memory.guid = guid + 1
+      const creepName: string = `[${guid}] ${spawn.room.name} - ${queue.role}`
+      const bodyParts = getBodyPartsForCreep(queue.role, spawn)
+
+      const memory: CreepMemory = {
+        role: queue.role,
+        room: room.name,
+        target: {
+          room: queue.target.room,
+          id: queue.target.id
+        }
+      }
+
+      const creepCreateStarted = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+        `Started creating new creep: ${Inscribe.color(creepName, 'hotpink')}`
+      ]
+      Logger.info(creepCreateStarted.join(' '))
+      if (ENABLE_DEBUG_MODE) {
+        const outBody = [
+          `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+          `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+          `Body: ${bodyParts}`
+        ]
+        const outGuid = [
+          `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+          `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+          `guid: ${guid}`
+        ]
+        Logger.debug(outBody.join(' '))
+        Logger.debug(outGuid.join(' '))
+      }
+
+      status = spawn.spawnCreep(bodyParts, creepName, { memory })
+
+      // `spawnCreep()` actually returns a return code instead of a string now,
+      // but just to make sure, we're going to put this here.
+      return _.isString(status) ? OK : status
+    } else {
+      if (ENABLE_DEBUG_MODE) {
+        const out = [
+          `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+          `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+          `Failed creating new creep: ${status}`
+        ]
+        Logger.error(out.join(' '))
+      }
+
+      // Don't forget to push failed jobs back to the queue.
+      enqueueSpawnRequest(room, queue)
+
+      return status
+    }
+  } else {
+    if (ENABLE_DEBUG_MODE) {
+      const out = [
+        `[${Inscribe.color('CreepManager', 'skyblue')}]`,
+        `[${Inscribe.color(spawn.name, 'hotpink')}]`,
+        `Failed creating new creep: No arguments set. (${ERR_INVALID_ARGS})`
+      ]
+      Logger.error(out.join(' '))
+    }
+    return ERR_INVALID_ARGS
+  }
 }
 
 export const getBodyPartsForCreep = (role: string, spawn: Spawn) => {
