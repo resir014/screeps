@@ -49,7 +49,8 @@ declare namespace NodeJS {
    * Interface for the global objects.
    */
   interface Global {
-    config: any
+    Config: any
+    SpawnQueue: any
     Orchestrator: IOrchestrator
   }
 }
