@@ -5,6 +5,8 @@ import { Orchestrator } from './utils/orchestrator'
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
 import { runCreeps } from './components/creeps/creepManager'
+import { runSpawns } from './components/spawns/spawnManager'
+import * as SpawnQueue from './components/spawns/spawnQueue'
 import { refreshAvailableSources } from './components/sources/sourceManager'
 import { runTowers } from './components/towers/towerManager'
 import { refreshJobAssignments } from './shared/jobManager'
@@ -25,7 +27,8 @@ import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 
 // initialise all CLI objects
 global.Orchestrator = new Orchestrator()
-global.config = Config
+global.SpawnQueue = SpawnQueue
+global.Config = Config
 
 // Prototype extensions
 loadCreepPrototypes()
@@ -64,6 +67,7 @@ export function loop(): void {
     refreshAvailableSources(room)
 
     // For each tick, run managed creeps/structures
+    runSpawns(room)
     runCreeps(room)
     runTowers(room)
   })

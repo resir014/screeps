@@ -1,12 +1,43 @@
 // ------- objects ------- //
 
 interface JobQueueTarget {
+  /**
+   * The room name of the creep's destination.
+   *
+   * @type {string}
+   * @memberof JobQueueTarget
+   */
   room: string
+  /**
+   * The object ID that the creep will interact with.
+   *
+   * @type {string}
+   * @memberof JobQueueTarget
+   */
   id?: string
 }
 
-interface JobQueue {
+interface CreepSpawnQueue {
+  /**
+   * The assigned creep role.
+   *
+   * @type {string}
+   * @memberof CreepSpawnQueue
+   */
   role: string
+  /**
+   * The creep priority. Lower number === higher priority.
+   *
+   * @type {number}
+   * @memberof CreepSpawnQueue
+   */
+  priority: number
+  /**
+   * The metadata of the enqueued creep.
+   *
+   * @type {JobQueueTarget}
+   * @memberof CreepSpawnQueue
+   */
   target: JobQueueTarget
 }
 
@@ -18,7 +49,8 @@ declare namespace NodeJS {
    * Interface for the global objects.
    */
   interface Global {
-    config: any
+    Config: any
+    SpawnQueue: any
     Orchestrator: IOrchestrator
   }
 }
@@ -35,7 +67,7 @@ interface Memory {
 interface CreepMemory {
   role: string
   room: string
-  assignedSource?: string
+  target: JobQueueTarget
   state?: string
   action?: CreepAction
   [key: string]: any
@@ -43,7 +75,7 @@ interface CreepMemory {
 
 interface RoomMemory {
   jobs: { [key: string]: number }
-  queue: JobQueue[]
+  queue: CreepSpawnQueue[]
   sources: string[]
   [key: string]: any
 }

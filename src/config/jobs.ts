@@ -10,7 +10,9 @@ export const bodyTemplates = {
 /**
  * List the object ids of the sources you want to blacklist here.
  */
-export const blacklistedSources: string[] = []
+export const blacklistedSources: string[] = [
+  'b115421395fc9a639e8eb65d'
+]
 
 /**
  * Job assignments for controlled room roles.
@@ -21,9 +23,9 @@ export const controlledRoomJobs: string[] = [
   'builder',
   'upgrader',
   'repairer',
-  'defenseRepairer',
   'wallMaintainer',
   'rampartMaintainer',
+  'roadMaintainer',
   'defender',
   'mineralMiner'
 ]
