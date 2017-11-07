@@ -46,7 +46,7 @@
     "webpack-chain": "^3.2.0"
   },
   "dependencies": {
-    "Traveler": "apemanzilla/Traveler#testing",
+    "Traveler": "github:bonzaiferroni/Traveler#testing",
     "screeps-inscribe": "^0.2.0",
     "source-map": "^0.5.6"
   }

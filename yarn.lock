@@ -58,9 +58,9 @@
     "@types/tapable" "*"
     "@types/uglify-js" "*"
 
-Traveler@apemanzilla/Traveler#testing:
+"Traveler@github:bonzaiferroni/Traveler#testing":
   version "0.0.1"
-  resolved "https://codeload.github.com/apemanzilla/Traveler/tar.gz/d6050d93c660b0d64f60b45d2a73f0a5ce8b5286"
+  resolved "https://codeload.github.com/bonzaiferroni/Traveler/tar.gz/c056cb4150347e91549d6bb8c4f008ce5e123c6f"
 
 abbrev@1:
   version "1.1.0"
