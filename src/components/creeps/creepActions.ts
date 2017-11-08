@@ -1,4 +1,4 @@
-import * as Config from '../../config/config'
+import * as Config from '../../config/constants'
 
 /**
  * Shorthand method for `Creep.moveTo()`.

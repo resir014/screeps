@@ -1,6 +1,6 @@
 import * as Inscribe from 'screeps-inscribe'
 
-import { ENABLE_DEBUG_MODE } from '../../config/config'
+import { ENABLE_DEBUG_MODE } from '../../config/constants'
 import * as Logger from '../../utils/logger'
 
 // import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'

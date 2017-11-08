@@ -1,6 +1,6 @@
 import * as Inscribe from 'screeps-inscribe'
 
-import * as Config from './config/config'
+import * as Config from './config/constants'
 import { Orchestrator } from './utils/orchestrator'
 import {
   checkOutOfBoundsMemory,

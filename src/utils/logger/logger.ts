@@ -1,6 +1,6 @@
 import * as Inscribe from 'screeps-inscribe'
 
-import * as Config from '../../config/config'
+import * as Config from '../../config/constants'
 import { LogLevel } from './logLevel'
 
 export function error(message: (() => string) | string) {
