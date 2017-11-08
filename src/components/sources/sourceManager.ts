@@ -21,6 +21,9 @@ export function refreshAvailableSources(room: Room): void {
   const filteredSources = sources.filter((source: Source) =>
     _.includes(blacklistedSources, source.id) === false)
 
+  // TODO: Better checking that's aware of harvesters + their assigned sources.
+  // - Can we push new jobs as soon as a harvester dies?
+  // - What about blacklisted resources?
   if (filterSpawnQueueByCreepRole(room, 'harvester').length === 0) {
     filteredSources.forEach((source: Source) => {
       enqueueSpawnRequest(room, {
