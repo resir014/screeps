@@ -8,7 +8,7 @@ export class Role {
   protected memory: CreepMemory
   protected creep: Creep
   protected room: Room
-  protected state: string
+  protected state: number
 
   /**
    * Creates an instance of Role.
@@ -20,7 +20,7 @@ export class Role {
     this.creep = creep
     this.room = this.creep.room
     this.memory = creep.memory
-    this.state = this.memory.state || 'idle'
+    this.state = this.memory.state || 0
   }
 
   /**

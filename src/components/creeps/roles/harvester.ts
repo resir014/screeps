@@ -1,18 +1,18 @@
-import * as StateCodes from './harvester/states'
-import runSpawning from './harvester/runSpawning'
-import runMoving from './harvester/runMoving'
+import * as StateCodes from '../stateCodes'
+import spawningState from '../states/spawningState'
+import movingState from '../states/movingState'
 
 export const run = (creep: Creep) => {
   if (!creep.memory.state) {
-    creep.memory.state
+    creep.memory.state = StateCodes.STATE_SPAWNING
   }
 
   switch (creep.memory.state) {
     case StateCodes.STATE_SPAWNING:
-      runSpawning(creep)
+      spawningState(creep)
       break
     case StateCodes.STATE_MOVING:
-      runMoving(creep, StateCodes.STATE_HARVESTING)
+      movingState(creep, StateCodes.STATE_HARVESTING)
       break
   }
 }

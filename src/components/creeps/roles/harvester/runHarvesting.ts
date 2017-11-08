@@ -1,3 +1,0 @@
-const runHarvesting = (creep: Creep) => {
-  //
-}
