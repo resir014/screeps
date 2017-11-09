@@ -1,21 +1,10 @@
 import * as Inscribe from 'screeps-inscribe'
 
-import * as Config from './config/constants'
-import { Orchestrator } from './utils/orchestrator'
-import {
-  checkOutOfBoundsMemory,
-  initialiseRoomMemory,
-  refreshMiningPositions,
-  cleanupCreepMemory
-} from './shared/memoryManager'
+import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
-import { runCreeps } from './components/creeps/creepManager'
-import { runSpawns } from './components/spawns/spawnManager'
-import * as SpawnQueue from './components/spawns/spawnQueue'
-import { refreshAvailableSources } from './components/sources/sourceManager'
-import { runTowers } from './components/towers/towerManager'
-import { refreshJobAssignments } from './shared/jobManager'
+import * as SpawnQueue from './queue/spawnQueue'
 
+import { runControlledRooms } from './shared/roomManager'
 
 import * as Logger from './utils/logger'
 import recordStats from './utils/stats/recordStats'
@@ -28,9 +17,7 @@ import { loadStructureSpawnPrototypes } from './prototypes/StructureSpawn'
 // You should extend prototypes before the game loop executes here.
 
 // initialise all CLI objects
-global.Orchestrator = new Orchestrator()
 global.SpawnQueue = SpawnQueue
-global.Config = Config
 
 // Prototype extensions
 loadCreepPrototypes()
@@ -59,19 +46,7 @@ export function loop(): void {
 
   // Initialise all controlled rooms.
   _.each(Game.rooms, (room: Room) => {
-    // Memory cleanup tasks
-    initialiseRoomMemory(room)
-    refreshMiningPositions(room)
-    cleanupCreepMemory(room)
-    refreshJobAssignments(room)
-
-    // Component initialisation tasks
-    refreshAvailableSources(room)
-
-    // For each tick, run managed creeps/structures
-    runSpawns(room)
-    runCreeps(room)
-    runTowers(room)
+    runControlledRooms(room)
   })
 
   recordStats()

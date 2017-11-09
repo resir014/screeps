@@ -5,7 +5,7 @@ import { blacklistedSources } from '../../config/jobs'
 import * as Logger from '../../utils/logger'
 
 // import { filterCreepsByRole, getCreepsInRoom } from '../creeps/creepManager'
-import { enqueueSpawnRequest, filterSpawnQueueByCreepRole } from '../spawns/spawnQueue'
+import { enqueueSpawnRequest, filterSpawnQueueByCreepRole } from '../../queue/spawnQueue'
 
 /**
  * Create an array of all sources in the room and update job entries where

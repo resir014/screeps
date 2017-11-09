@@ -8,14 +8,6 @@
  * @implements {IOrchestrator}
  */
 export class Orchestrator implements IOrchestrator {
-  public getGuid(): number {
-    if (!Memory.guid || Memory.guid > 10000) {
-      Memory.guid = 0
-    }
-
-    return Memory.guid
-  }
-
   public gclToControlPoints(gcl: number): number {
     return Math.pow(gcl - 1, GCL_POW) * GCL_MULTIPLY
   }

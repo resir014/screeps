@@ -3,11 +3,10 @@ import * as Inscribe from 'screeps-inscribe'
 import { ENABLE_DEBUG_MODE } from '../../config/constants'
 import * as Logger from '../../utils/logger'
 
-// import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
-import { enqueueSpawnRequest, dequeueSpawnRequest } from './spawnQueue'
+import { getGuid } from '../../shared/memoryManager'
 
-// We use globals for these objects, so let's declare it.
-declare const Orchestrator: IOrchestrator
+// import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
+import { enqueueSpawnRequest, dequeueSpawnRequest } from '../../queue/spawnQueue'
 
 export const getSpawnsThatArentSpawning = (room: Room) => room.find<Spawn>(FIND_MY_SPAWNS, {
   filter: (spawn: Spawn) => spawn.spawning === null
@@ -38,7 +37,7 @@ export const canSpawnCreep = (spawn: Spawn) =>
   }
 
 export const spawnCreepFromQueue = (spawn: Spawn, room: Room) => {
-  const guid: number = Orchestrator.getGuid()
+  const guid: number = getGuid()
   const queue = dequeueSpawnRequest(room)
 
   if (queue) {

@@ -12,12 +12,8 @@ export function checkOutOfBoundsMemory(): void {
     rooms: {},
     spawns: {},
     stats: {},
-    uuid: 0
+    guid: 0
   })
-
-  if (!Memory.uuid || Memory.uuid > 10000) {
-    Memory.uuid = 0
-  }
 }
 
 /**
@@ -31,6 +27,20 @@ export function initialiseRoomMemory(room: Room): void {
     jobs: {},
     queue: []
   })
+}
+
+/**
+ * Creates a guid as a global identifier for our creeps/room objects.
+ *
+ * @export
+ * @returns {number} The current free guid.
+ */
+export function getGuid(): number {
+  if (!Memory.guid || Memory.guid > 10000) {
+    Memory.guid = 0
+  }
+
+  return Memory.guid
 }
 
 /**
