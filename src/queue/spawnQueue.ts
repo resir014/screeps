@@ -14,8 +14,8 @@ export const enqueueSpawnRequest = (room: Room, queue: CreepSpawnQueue) => {
     return 0
   })
 
-  for (const item of list) {
-    if (ENABLE_DEBUG_MODE) {
+  if (ENABLE_DEBUG_MODE) {
+    for (const item of list) {
       const out = [
         `[${Inscribe.color('SpawnQueue', 'skyblue')}]`,
         `[${Inscribe.color(room.name, 'hotpink')}]`,
