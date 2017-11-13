@@ -25,16 +25,15 @@ export function loadStructures(room: Room): Structure[] {
 export function getStorageObjects(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
 
-  let targets: Structure[] = structures.filter((structure: StructureContainer) => {
-    return ((structure.structureType === STRUCTURE_CONTAINER)
-      && _.sum(structure.store) < structure.storeCapacity)
-  })
+  let targets: Structure[] = structures.filter((structure: Structure) =>
+    ((structure.structureType === STRUCTURE_CONTAINER)
+      && _.sum((structure as StructureContainer).store) < (structure as StructureContainer).storeCapacity))
 
   // if we can't find any storage containers, use either the extension or spawn.
   if (targets.length === 0) {
-    targets = structures.filter((structure: StructureExtension) => {
+    targets = structures.filter((structure: Structure) => {
       return ((structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN) &&
-        structure.energy < structure.energyCapacity)
+        (structure as StructureExtension).energy < (structure as StructureExtension).energyCapacity)
     })
   }
 

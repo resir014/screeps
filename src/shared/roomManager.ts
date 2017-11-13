@@ -1,7 +1,7 @@
-import { runCreeps } from '../components/creeps/creepManager'
+import { runCreeps } from '../controllers/creepController'
 import { refreshAvailableSources } from '../components/sources/sourceManager'
 import { runSpawns } from '../components/spawns/spawnManager'
-import { runTowers } from '../components/towers/towerManager'
+import { runTowers } from '../controllers/towerController'
 
 import {
   initialiseRoomMemory,
