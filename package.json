@@ -40,7 +40,7 @@
     "tslint": "^5.2.0",
     "tslint-config-airbnb": "^5.3.0",
     "tslint-eslint-rules": "^4.0.0",
-    "typed-screeps": "^1.0.3",
+    "typed-screeps": "github:screepers/typed-screeps#2.0.0",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1",
     "webpack-chain": "^3.2.0"
