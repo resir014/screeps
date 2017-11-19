@@ -67,25 +67,3 @@ export function getEnergy(creep: Creep, roomObject: RoomObject): void {
     }
   }
 }
-
-/**
- * Returns true if a creep's `working` memory entry is set to true, and false
- * otherwise.
- *
- * @export
- * @param {Creep} creep
- * @returns {boolean}
- */
-export function canWork(creep: Creep): boolean {
-  const working = creep.memory.working
-
-  if (working && _.sum(creep.carry) === 0) {
-    creep.memory.working = false
-    return false
-  } else if (!working && _.sum(creep.carry) === creep.carryCapacity) {
-    creep.memory.working = true
-    return true
-  } else {
-    return creep.memory.working
-  }
-}

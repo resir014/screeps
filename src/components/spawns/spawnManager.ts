@@ -6,7 +6,7 @@ import * as Logger from '../../utils/logger'
 import { getGuid } from '../../shared/memoryManager'
 
 // import { getCreepsInRoom, filterCreepsByRole, isShortCreepRole } from '../creeps/creepManager'
-import { enqueueSpawnRequest, dequeueSpawnRequest } from '../../queue/spawnQueue'
+import { enqueueSpawnRequest, dequeueSpawnRequest } from '../../utils/queue/spawnQueue'
 
 export const getSpawnsThatArentSpawning = (room: Room) => room.find<Spawn>(FIND_MY_SPAWNS, {
   filter: (spawn: Spawn) => spawn.spawning === null

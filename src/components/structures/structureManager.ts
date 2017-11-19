@@ -11,7 +11,20 @@ import * as Logger from '../../utils/logger'
  * @returns {Structure[]} an array of structures inside the room
  */
 export function loadStructures(room: Room): Structure[] {
-  return room.find<Structure>(FIND_STRUCTURES)
+  return room.find(FIND_MY_STRUCTURES)
+}
+
+/**
+ * Loads all the available structures within a room.
+ *
+ * @export
+ * @param {Room} room The current room.
+ * @returns {StructureTower[]} an array of towers inside the room
+ */
+export function getTowers(room: Room): StructureTower[] {
+  return room.find<StructureTower>(FIND_MY_STRUCTURES, {
+    filter: (structure: Structure) => structure.structureType === STRUCTURE_TOWER
+  })
 }
 
 /**
@@ -25,17 +38,28 @@ export function loadStructures(room: Room): Structure[] {
 export function getStorageObjects(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
 
-  let targets: Structure[] = structures.filter((structure: Structure) =>
-    ((structure.structureType === STRUCTURE_CONTAINER)
-      && _.sum((structure as StructureContainer).store) < (structure as StructureContainer).storeCapacity))
+  const targets = structures.filter((structure: Structure) => {
+    if (structure.structureType === STRUCTURE_CONTAINER) {
+      const storage = structure as StructureContainer
+      if (_.sum(storage.store) < storage.storeCapacity) {
+        return storage
+      }
+    }
+    if (structure.structureType === STRUCTURE_EXTENSION) {
+      const storage = structure as StructureExtension
+      if (storage.energy < storage.energyCapacity) {
+        return storage
+      }
+    }
+    if (structure.structureType === STRUCTURE_SPAWN) {
+      const storage = structure as StructureSpawn
+      if (storage.energy < storage.energyCapacity) {
+        return storage
+      }
+    }
+  })
 
-  // if we can't find any storage containers, use either the extension or spawn.
-  if (targets.length === 0) {
-    targets = structures.filter((structure: Structure) => {
-      return ((structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN) &&
-        (structure as StructureExtension).energy < (structure as StructureExtension).energyCapacity)
-    })
-  }
+  // let targets: StructureContainer = structures.filter((structure: Structure) => structure.structureType === STRUCTURE_CONTAINER)
 
   return targets
 }

@@ -5,7 +5,7 @@ import { blacklistedSources } from '../../config/jobs'
 import * as Logger from '../../utils/logger'
 
 // import { filterCreepsByRole, getCreepsInRoom } from '../creeps/creepManager'
-import { enqueueSpawnRequest, filterSpawnQueueByCreepRole } from '../../queue/spawnQueue'
+import { enqueueSpawnRequest, filterSpawnQueueByCreepRole } from '../../utils/queue/spawnQueue'
 
 /**
  * Create an array of all sources in the room and update job entries where
@@ -36,6 +36,8 @@ export function refreshAvailableSources(room: Room): void {
       })
     })
   }
+
+  room.memory.jobs.harvester = filteredSources.length
 
   if (ENABLE_DEBUG_MODE) {
     const out = [

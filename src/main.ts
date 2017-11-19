@@ -2,7 +2,7 @@ import * as Inscribe from 'screeps-inscribe'
 
 import { checkOutOfBoundsMemory } from './shared/memoryManager'
 
-import * as SpawnQueue from './queue/spawnQueue'
+import * as SpawnQueue from './utils/queue/spawnQueue'
 
 import { runControlledRooms } from './shared/roomManager'
 

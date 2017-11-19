@@ -2,6 +2,7 @@ import { runCreeps } from '../controllers/creepController'
 import { refreshAvailableSources } from '../components/sources/sourceManager'
 import { runSpawns } from '../components/spawns/spawnManager'
 import { runTowers } from '../controllers/towerController'
+import { refreshJobAssignments } from './jobManager'
 
 import {
   initialiseRoomMemory,
@@ -14,6 +15,7 @@ export const runControlledRooms = (room: Room) => {
   initialiseRoomMemory(room)
   refreshMiningPositions(room)
   cleanupCreepMemory(room)
+  refreshJobAssignments(room)
 
   // Component initialisation tasks
   refreshAvailableSources(room)
