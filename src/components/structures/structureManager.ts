@@ -22,7 +22,7 @@ export function loadStructures(room: Room): Structure[] {
  * @returns {StructureTower[]} an array of towers inside the room
  */
 export function getTowers(room: Room): StructureTower[] {
-  return room.find<StructureTower>(FIND_MY_STRUCTURES, {
+  return room.find(FIND_MY_STRUCTURES, {
     filter: (structure: Structure) => structure.structureType === STRUCTURE_TOWER
   })
 }
@@ -37,29 +37,33 @@ export function getTowers(room: Room): StructureTower[] {
  */
 export function getStorageObjects(room: Room): Structure[] {
   const structures: Structure[] = loadStructures(room)
+  let targets: Structure[]
 
-  const targets = structures.filter((structure: Structure) => {
-    if (structure.structureType === STRUCTURE_CONTAINER) {
-      const storage = structure as StructureContainer
-      if (_.sum(storage.store) < storage.storeCapacity) {
-        return storage
-      }
-    }
-    if (structure.structureType === STRUCTURE_EXTENSION) {
-      const storage = structure as StructureExtension
-      if (storage.energy < storage.energyCapacity) {
-        return storage
-      }
-    }
-    if (structure.structureType === STRUCTURE_SPAWN) {
-      const storage = structure as StructureSpawn
-      if (storage.energy < storage.energyCapacity) {
-        return storage
-      }
+  // Prioritise containers first.
+  targets = structures.filter((structure: Structure) => {
+    if (structure instanceof StructureContainer) {
+      return (structure.structureType === STRUCTURE_CONTAINER)
+        && (_.sum(structure.store) < structure.storeCapacity)
     }
   })
 
-  // let targets: StructureContainer = structures.filter((structure: Structure) => structure.structureType === STRUCTURE_CONTAINER)
+  // If nothing is found, expand search to include extensions
+  if (targets.length === 0) {
+    targets = structures.filter((structure: Structure) => {
+      if (structure instanceof StructureExtension) {
+        return structure.energy < structure.energyCapacity
+      }
+    })
+  }
+
+  // Otherwise, look for spawns
+  if (targets.length === 0) {
+    targets = structures.filter((structure: Structure) => {
+      if (structure instanceof StructureSpawn) {
+        return structure.energy < structure.energyCapacity
+      }
+    })
+  }
 
   return targets
 }
@@ -95,11 +99,8 @@ export function getSourceWithdrawalPoints(room: Room): Structure[] {
   // Second pass: if no StructureStorage is found, find any containers.
   if (targets.length === 0) {
     targets = structures.filter((structure: Structure) => {
-      if (structure.structureType === STRUCTURE_CONTAINER) {
-        const storage = structure as Container
-        if (_.sum(storage.store) > 500) {
-          return storage
-        }
+      if (structure instanceof StructureContainer) {
+        return _.sum(structure.store) > 500
       }
     })
   }
@@ -123,7 +124,7 @@ export function getDropOffPoints(room: Room): Structure[] {
   }
 
   let targets: Structure[] = structures.filter((structure: Structure) => {
-    if (structure instanceof Spawn) {
+    if (structure instanceof StructureSpawn) {
       return ((structure.structureType === STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity)
     }
   })
@@ -140,16 +141,20 @@ export function getDropOffPoints(room: Room): Structure[] {
 
   // Or if that's filled as well, look for towers.
   if (targets.length === 0) {
-    targets = structures.filter((structure: StructureTower) => {
-      return ((structure.structureType === STRUCTURE_TOWER)
-        && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.5))
+    targets = structures.filter((structure: Structure) => {
+      if (structure instanceof StructureTower) {
+        return ((structure.structureType === STRUCTURE_TOWER)
+          && structure.energy < structure.energyCapacity - (structure.energyCapacity * 0.5))
+      }
     })
   }
 
   // Otherwise, look for storage containers.
   if (targets.length === 0) {
-    targets = structures.filter((structure: StructureStorage) => {
-      return ((structure.structureType === STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity)
+    targets = structures.filter((structure: Structure) => {
+      if (structure instanceof StructureStorage) {
+        return ((structure.structureType === STRUCTURE_STORAGE) && _.sum(structure.store) < structure.storeCapacity)
+      }
     })
   }
 
