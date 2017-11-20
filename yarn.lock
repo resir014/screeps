@@ -2004,7 +2004,7 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
 
 "typed-screeps@github:screepers/typed-screeps#2.0.0":
   version "1.0.4"
-  resolved "https://codeload.github.com/screepers/typed-screeps/tar.gz/34924b61c27788497fe24d71f1257954d7024a80"
+  resolved "https://codeload.github.com/screepers/typed-screeps/tar.gz/6b834f01148791b0081509a918ef3a8c23133f5a"
 
 typescript@^2.6.1:
   version "2.6.1"
