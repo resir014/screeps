@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/screepers/screeps-typescript-starter#readme",
   "devDependencies": {
-    "@types/lodash": "^4.14.85",
+    "@types/lodash": "^3.10.1",
     "@types/node": "^8.0.53",
     "@types/rollup": "^0.51.1",
     "@types/source-map": "^0.5.2",
@@ -29,6 +29,7 @@
     "rollup-plugin-typescript2": "^0.8.1",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
+    "tslint-config-airbnb": "^5.4.2",
     "typed-screeps": "^1.0.4",
     "typescript": "^2.6.1"
   },

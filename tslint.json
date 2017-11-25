@@ -1,14 +1,21 @@
 {
-  "extends" : [
-    "tslint:recommended"
+  "extends": [
+    "tslint-config-airbnb"
   ],
   "rules": {
-    "forin": false,
-    "interface-name": [true, "never-prefix"],
-    "member-ordering": [false],
+    "interface-name": [false],
+    "max-line-length": [false],
     "no-console": [false],
+    "no-else-after-return": [false],
     "no-namespace": [true, "allow-declarations"],
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "semicolon": [true, "never"],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
     "variable-name": [
       true,
       "ban-keywords",
