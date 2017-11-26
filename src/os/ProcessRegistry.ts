@@ -25,7 +25,7 @@ export class ProcessRegistry implements StonehengeProcessRegistry {
       logger.error(`${imageName} is not registered.`)
       return undefined
     }
-    logger.debug(`Created${imageName}`)
-    return new this.registry[name](context) as StonehengeProcess<T>
+    logger.debug(`Created ${imageName}`)
+    return new this.registry[imageName](context) as StonehengeProcess<T>
   }
 }

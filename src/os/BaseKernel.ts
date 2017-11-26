@@ -9,15 +9,18 @@ export class BaseKernel implements StonehengeKernel {
   constructor(private processRegistry: ProcessRegistry) {}
 
   public get memory(): KernelMemory {
-    return Memory.kernel || { processTable: {}, processMemoryTable: {} }
+    Memory.kernel = Memory.kernel || { processTable: {}, processMemoryTable: {} }
+    return Memory.kernel
   }
 
   public get processTable(): StonehengeProcessTable {
-    return this.memory.processTable || {}
+    this.memory.processTable = this.memory.processTable || {}
+    return this.memory.processTable
   }
 
   public get processMemoryTable(): ProcessMemoryTable {
-    return this.memory.processMemoryTable || {}
+    this.memory.processMemoryTable = this.memory.processMemoryTable || {}
+    return this.memory.processMemoryTable
   }
 
   public start(): void {
@@ -25,11 +28,44 @@ export class BaseKernel implements StonehengeKernel {
   }
 
   public run(): void {
-    // TODO
+    const pids = Object.keys(this.processTable)
+    if (pids.length === 0) {
+      const proc = this.startProcess('init', {})
+      if (proc) pids.push(proc.pid.toString())
+    }
+    let runCount = 0
+    for (const i of pids) {
+      const cid = parseInt(i, 10)
+      const pinfo = this.processTable[cid]
+      if (pinfo.status !== ProcessStatus.RUNNING && pinfo.ended && pinfo.ended < Game.time - 100) {
+        delete this.processTable[cid]
+      }
+      if (pinfo.wake && pinfo.wake > Game.time) continue
+      if (pinfo.status !== ProcessStatus.RUNNING) continue
+      runCount += 1
+      try {
+        const proc = this.getProcessById(cid)
+        if (!proc) throw new Error(`Could not get process ${cid} ${pinfo.imageName}`)
+        this.currentId = cid
+        proc.run()
+        this.currentId = 0
+      } catch (e) {
+        this.killProcess(cid)
+        pinfo.status = ProcessStatus.DEAD
+        pinfo.error = e.stack || e.toString()
+        this.logger.error(() => `[${cid}] ${pinfo.imageName} crashed\n${e.stack}`)
+      }
+    }
+    if (runCount === 0) this.startProcess('init', {})
   }
 
   public shutdown(): void {
-    // TODO
+    // Clear non-existing creep memory.
+    for (const name in Memory.creeps) {
+      if (!Game.creeps[name]) {
+        delete Memory[name]
+      }
+    }
   }
 
   public startProcess<T extends ProcessMemory>(imageName: string, startContext: T): ProcessStart<T> | undefined {
@@ -136,9 +172,5 @@ export class BaseKernel implements StonehengeKernel {
 
     this.processCache[id] = process
     return process
-  }
-
-  private cleanupMemory(): void {
-    //
   }
 }
