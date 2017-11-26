@@ -9,6 +9,7 @@ import './globals'
 export const processRegistry = new ProcessRegistry()
 
 const kernel = new BaseKernel(processRegistry)
+global.kernel = kernel
 
 processRegistry.install(bin)
 
