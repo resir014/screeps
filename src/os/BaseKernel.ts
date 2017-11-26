@@ -1,4 +1,5 @@
 import { ProcessRegistry } from './ProcessRegistry'
+import { ExtensionRegistry } from './ExtensionRegistry'
 import { Logger } from '../lib/Logger'
 import { ErrorMapper } from '../lib/ErrorMapper'
 
@@ -7,7 +8,7 @@ export class BaseKernel implements StonehengeKernel {
   private processCache: StonehengeProcessCache = {}
   private logger = new Logger('[Kernel]')
 
-  constructor(private processRegistry: ProcessRegistry) {}
+  constructor(private processRegistry: ProcessRegistry, private extensionRegistry: ExtensionRegistry) {}
 
   public get memory(): KernelMemory {
     Memory.kernel = Memory.kernel || { processTable: {}, processMemoryTable: {} }
@@ -169,7 +170,8 @@ export class BaseKernel implements StonehengeKernel {
       get memory() {
         self.processMemoryTable[pinfo.id] = self.processMemoryTable[pinfo.id] || {}
         return self.processMemoryTable[pinfo.id] as T
-      }
+      },
+      queryPosisInterface: self.extensionRegistry.getExtension.bind(self.extensionRegistry)
     }
     Object.freeze(context)
 

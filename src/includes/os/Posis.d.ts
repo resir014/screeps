@@ -6,3 +6,9 @@ declare interface StonehengeBundle<M> {
   rootImageName?: string
   makeDefaultRootMemory?: (override?: M) => M
 }
+
+declare interface StonehengePosisInterfaces {
+  baseKernel: StonehengeKernel
+}
+
+declare interface StonehengeExtension {}
