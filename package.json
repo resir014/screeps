@@ -1,21 +1,21 @@
 {
-  "name": "screeps-typescript-starter",
+  "name": "@resir014/screeps",
   "version": "3.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Smart colony management for the game Screeps. Written in TypeScript.",
+  "main": "./dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/screepers/screeps-typescript-starter.git"
+    "url": "git+https://github.com/resir014/screeps.git"
   },
-  "author": "",
+  "author": "Resi Respati <resir014@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/screepers/screeps-typescript-starter/issues"
+    "url": "https://github.com/resir014/screeps/issues"
   },
-  "homepage": "https://github.com/screepers/screeps-typescript-starter#readme",
+  "homepage": "https://github.com/resir014/screeps#readme",
   "devDependencies": {
     "@types/lodash": "^3.10.1",
     "@types/node": "^8.0.53",
