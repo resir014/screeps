@@ -7,7 +7,7 @@ export enum LogLevel {
 
 const styles = {
   [LogLevel.DEBUG]: 'color: cyan',
-  [LogLevel.INFO]: 'color: turquoise',
+  [LogLevel.INFO]: 'color: green',
   [LogLevel.WARN]: 'color: yellow',
   [LogLevel.ERROR]: 'color: red'
 }

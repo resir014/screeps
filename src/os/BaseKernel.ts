@@ -1,5 +1,6 @@
 import { ProcessRegistry } from './ProcessRegistry'
 import { Logger } from '../utils/Logger'
+import { ErrorMapper } from '../utils/ErrorMapper'
 
 export class BaseKernel implements StonehengeKernel {
   private currentId: number = 0
@@ -52,7 +53,7 @@ export class BaseKernel implements StonehengeKernel {
       } catch (e) {
         this.killProcess(cid)
         pinfo.status = ProcessStatus.DEAD
-        pinfo.error = e.stack || e.toString()
+        pinfo.error = ErrorMapper.sourceMappedStackTrace(e.stack || e.toString())
         this.logger.error(() => `[${cid}] ${pinfo.imageName} crashed\n${e.stack}`)
       }
     }
