@@ -34,15 +34,19 @@ export class BaseKernel implements StonehengeKernel {
       const proc = this.startProcess('init', {})
       if (proc) pids.push(proc.pid.toString())
     }
+
     let runCount = 0
     for (const i of pids) {
       const cid = parseInt(i, 10)
       const pinfo = this.processTable[cid]
+
       if (pinfo.status !== ProcessStatus.RUNNING && pinfo.ended && pinfo.ended < Game.time - 100) {
         delete this.processTable[cid]
       }
+
       if (pinfo.wake && pinfo.wake > Game.time) continue
       if (pinfo.status !== ProcessStatus.RUNNING) continue
+
       runCount += 1
       try {
         const proc = this.getProcessById(cid)
@@ -57,6 +61,7 @@ export class BaseKernel implements StonehengeKernel {
         this.logger.error(() => `[${cid}] ${pinfo.imageName} crashed\n${e.stack}`)
       }
     }
+
     if (runCount === 0) this.startProcess('init', {})
   }
 
@@ -160,7 +165,7 @@ export class BaseKernel implements StonehengeKernel {
         return self.processTable[id] && self.processTable[id].pid || 0
       },
       imageName: pinfo.imageName,
-      log: new Logger(`${pinfo.id}: ${pinfo.imageName}`),
+      log: new Logger(`[${pinfo.id}: ${pinfo.imageName}]`),
       get memory() {
         self.processMemoryTable[pinfo.id] = self.processMemoryTable[pinfo.id] || {}
         return self.processMemoryTable[pinfo.id] as T
