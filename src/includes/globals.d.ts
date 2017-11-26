@@ -19,4 +19,5 @@ declare namespace NodeJS {
 interface Memory {
   pidCounter: number
   kernel: KernelMemory
+  stats: any
 }

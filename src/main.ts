@@ -3,7 +3,7 @@ import { BaseKernel } from 'os/BaseKernel'
 import { ProcessRegistry } from 'os/ProcessRegistry'
 import { ExtensionRegistry } from 'os/ExtensionRegistry'
 
-import { bundle as bin } from './bin'
+import { bundle as bin } from 'bin'
 
 import './globals'
 
@@ -12,6 +12,8 @@ export const extensionRegistry = new ExtensionRegistry()
 
 const kernel = new BaseKernel(processRegistry, extensionRegistry)
 global.kernel = kernel
+
+extensionRegistry.register('BaseKernel', kernel)
 
 processRegistry.install(bin)
 

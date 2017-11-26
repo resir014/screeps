@@ -7,8 +7,4 @@ declare interface StonehengeBundle<M> {
   makeDefaultRootMemory?: (override?: M) => M
 }
 
-declare interface StonehengePosisInterfaces {
-  baseKernel: StonehengeKernel
-}
-
 declare interface StonehengeExtension {}

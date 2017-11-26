@@ -1,7 +1,8 @@
-import { ProcessRegistry } from './ProcessRegistry'
-import { ExtensionRegistry } from './ExtensionRegistry'
-import { Logger } from '../lib/Logger'
-import { ErrorMapper } from '../lib/ErrorMapper'
+import { ProcessRegistry } from 'os/ProcessRegistry'
+import { ExtensionRegistry } from 'os/ExtensionRegistry'
+import { Logger } from 'lib/Logger'
+import { ErrorMapper } from 'lib/ErrorMapper'
+import * as StatsRecorder from 'lib/StatsRecorder'
 
 export class BaseKernel implements StonehengeKernel {
   private currentId: number = 0
@@ -26,7 +27,7 @@ export class BaseKernel implements StonehengeKernel {
   }
 
   public start(): void {
-    // TODO
+    StatsRecorder.init()
   }
 
   public run(): void {
@@ -73,6 +74,9 @@ export class BaseKernel implements StonehengeKernel {
         delete Memory[name]
       }
     }
+
+    // Record stats for grafana
+    StatsRecorder.record()
   }
 
   public startProcess<T extends ProcessMemory>(imageName: string, startContext: T): ProcessStart<T> | undefined {

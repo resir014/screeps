@@ -1,4 +1,4 @@
-import { Logger, LogLevel } from '../lib/Logger'
+import { Logger, LogLevel } from 'lib/Logger'
 
 const logger = new Logger('[ProcessRegistry]')
 logger.level = LogLevel.DEBUG

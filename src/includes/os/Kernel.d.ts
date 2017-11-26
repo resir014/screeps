@@ -62,7 +62,7 @@ declare interface StonehengeProcessContext<T extends ProcessMemory> {
   readonly imageName: string
   readonly memory: T
   readonly log: StonehengeLogger
-  queryPosisInterface<T extends keyof StonehengePosisInterfaces>(interfaceId: T): StonehengePosisInterfaces[T] | undefined
+  queryPosisInterface<T extends StonehengeExtension>(interfaceId: string): T | undefined
 }
 
 declare interface StonehengeProcessConstructor<T extends ProcessMemory> {
