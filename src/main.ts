@@ -1,4 +1,4 @@
-import { Logger } from 'utils/Logger'
+import { Logger } from 'lib/Logger'
 import { BaseKernel } from 'os/BaseKernel'
 import { ProcessRegistry } from 'os/ProcessRegistry'
 

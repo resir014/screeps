@@ -9,7 +9,7 @@ declare interface StonehengeOpts {
 declare namespace NodeJS {
   interface Global {
     kernel: StonehengeKernel
-    os: StonehengeOpts
+    opts: StonehengeOpts
     hardReset: () => void
   }
 }

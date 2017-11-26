@@ -1,6 +1,6 @@
 import { ProcessRegistry } from './ProcessRegistry'
-import { Logger } from '../utils/Logger'
-import { ErrorMapper } from '../utils/ErrorMapper'
+import { Logger } from '../lib/Logger'
+import { ErrorMapper } from '../lib/ErrorMapper'
 
 export class BaseKernel implements StonehengeKernel {
   private currentId: number = 0

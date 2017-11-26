@@ -1,4 +1,4 @@
-import { Logger } from 'utils/Logger'
+import { Logger } from 'lib/Logger'
 
 const logger = new Logger('[global]')
 
