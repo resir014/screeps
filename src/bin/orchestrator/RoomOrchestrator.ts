@@ -6,10 +6,11 @@ export class RoomOrchestratorProcess implements StonehengeProcess<RoomOrchestrat
 
   constructor (private context: StonehengeProcessContext<RoomOrchestratorMemory>) {
     const registry = context.queryPosisInterface<ExtensionRegistry>('extensions/ExtensionRegistry') as ExtensionRegistry
-    const registered = registry.register('orchestrator/RoomExtension', new RoomExtension({
+    const registered = registry.register(RoomExtension.imageName, new RoomExtension({
       get memory() { return context.memory },
       get log() { return context.log }
     }))
+    if (!registered) throw new Error(`Could not register ${RoomExtension.imageName}`)
   }
 
   private get log() {
@@ -21,9 +22,13 @@ export class RoomOrchestratorProcess implements StonehengeProcess<RoomOrchestrat
   private get kernel() {
     return this.context.queryPosisInterface('BaseKernel') as StonehengeKernel
   }
+  private get roomExtension() {
+    return this.context.queryPosisInterface(RoomExtension.imageName) as RoomExtension
+  }
 
   public run() {
     this.log.info(`RoomOrchestrator is running.`)
+    this.roomExtension.manageRooms()
   }
 }
 

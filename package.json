@@ -6,9 +6,9 @@
   "scripts": {
     "deploy-main": "rollup -c --dest main",
     "deploy-sim": "rollup -c --dest sim",
-    "start": "npm run watch -- --dest sim",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "rollup -cw"
+    "watch-main": "rollup -cw --dest main",
+    "watch-sim": "rollup -cw --dest sim"
   },
   "repository": {
     "type": "git",
