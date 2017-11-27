@@ -4,7 +4,11 @@
   "description": "Smart colony management for the game Screeps. Written in TypeScript.",
   "main": "./dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy-main": "rollup -c --dest main",
+    "deploy-sim": "rollup -c --dest sim",
+    "start": "npm run watch -- --dest sim",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "rollup -cw"
   },
   "repository": {
     "type": "git",
@@ -25,7 +29,7 @@
     "rollup-plugin-clean": "^1.0.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-screeps": "0.0.0",
+    "rollup-plugin-screeps": "0.0.1",
     "rollup-plugin-typescript2": "^0.8.1",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
