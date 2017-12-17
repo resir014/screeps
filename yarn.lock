@@ -1018,9 +1018,9 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-typed-screeps@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/typed-screeps/-/typed-screeps-1.0.4.tgz#67f5baea4d76594a32130b9943f9aca66fa7e91a"
+typed-screeps@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/typed-screeps/-/typed-screeps-2.0.1.tgz#fffaf8fa802bc017c37999a975cc2f964d4f6cfd"
 
 typescript@^2.6.1:
   version "2.6.1"
