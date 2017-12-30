@@ -6,7 +6,7 @@ export class ErrorMapper {
   private static _consumer?: SourceMapConsumer
 
   public static get consumer(): SourceMapConsumer {
-    if (!this._consumer) {
+    if (this._consumer == null) {
       this._consumer = new SourceMapConsumer(require('main.js.map'))
     }
 
@@ -38,8 +38,8 @@ export class ErrorMapper {
     while (match = re.exec(stack)) {
       if (match[2] === 'main') {
         const pos = this.consumer.originalPositionFor({
-          line: parseInt(match[3], 10),
-          column: parseInt(match[4], 10)
+          column: parseInt(match[4], 10),
+          line: parseInt(match[3], 10)
         })
 
         if (pos.line != null) {
@@ -66,5 +66,25 @@ export class ErrorMapper {
 
     this.cache[stack] = outStack
     return outStack
+  }
+
+  public static wrapLoop(loop: () => void): () => void {
+    return () => {
+      try {
+        loop()
+      } catch (e) {
+        if (e instanceof Error) {
+          if ('sim' in Game.rooms) {
+            const message = `Source maps don't work in the simulator - displaying original error`
+            console.log(`<span style='color:red'>${message}<br>${_.escape(e.stack)}</span>`)
+          } else {
+            console.log(`<span style='color:red'>${_.escape(this.sourceMappedStackTrace(e))}</span>`)
+          }
+        } else {
+          // can't handle it
+          throw e
+        }
+      }
+    }
   }
 }

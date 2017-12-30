@@ -1,4 +1,5 @@
 import { Logger, LogLevel } from 'lib/Logger'
+import { ErrorMapper } from 'lib/ErrorMapper'
 import { BaseKernel } from 'os/BaseKernel'
 import { ProcessRegistry } from 'os/ProcessRegistry'
 import { ExtensionRegistry } from 'os/ExtensionRegistry'
@@ -27,8 +28,10 @@ processRegistry.install(bin)
 
 log.debug('Kernel bootstrapped.')
 
-export function loop() {
+const kloop = () => {
   kernel.start()
   kernel.run()
   kernel.shutdown()
 }
+
+export const loop = ErrorMapper.wrapLoop(kloop)
