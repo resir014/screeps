@@ -156,7 +156,7 @@ export class BaseKernel implements StonehengeKernel {
   }
 
   private createProcess<T extends ProcessMemory>(id: number, imageName: string, startContext: T): StonehengeProcess<T> {
-    // tslint:disable-next-line:no-var-self
+    // tslint:disable-next-line:no-this-assignment
     const self = this
     this.logger.debug(() => `createProcess ${id}`)
     const pinfo = this.processTable[id]

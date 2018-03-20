@@ -9,10 +9,18 @@ export class RoomExtension implements StonehengeRoomExtension {
   private get memory(): RoomOrchestratorMemory {
     return this.context.memory
   }
+  private get rooms(): { [key: string]: RoomMemory } {
+    return this.memory.rooms
+  }
 
   public manageRooms() {
-    _.each(Game.rooms, (room: Room) => {
+    for (const spawn in Game.spawns) {
+      const room = Game.spawns[spawn].room
       this.log.info(`Room ${room.name} is available`)
-    })
+
+      if (!this.rooms[room.name]) {
+        //
+      }
+    }
   }
 }

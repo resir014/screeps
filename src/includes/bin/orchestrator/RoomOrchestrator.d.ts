@@ -8,6 +8,10 @@ declare interface RoomOrchestratorMemory extends ProcessMemory {
   }
 }
 
+declare interface RoomMemory {
+  isRegistered: boolean
+}
+
 declare interface RoomExtensionContext {
   readonly memory: RoomOrchestratorMemory
   readonly log: StonehengeLogger
