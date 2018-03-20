@@ -26,6 +26,10 @@
   dependencies:
     rollup "*"
 
+"@types/screeps@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/screeps/-/screeps-2.2.0.tgz#a36fecf95611df292b5b246cea431dd95a2a6531"
+
 "Traveler@git://github.com/bonzaiferroni/Traveler.git#testing":
   version "0.0.1"
   resolved "git://github.com/bonzaiferroni/Traveler.git#c056cb4150347e91549d6bb8c4f008ce5e123c6f"
@@ -1173,10 +1177,6 @@ tunnel-agent@^0.6.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
   dependencies:
     safe-buffer "^5.0.1"
-
-typed-screeps@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/typed-screeps/-/typed-screeps-2.2.2.tgz#a8dbd686834ed36575cbe3b6b9b183b0ee4e1fb1"
 
 typescript@^2.7.2:
   version "2.7.2"

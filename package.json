@@ -24,6 +24,7 @@
     "@types/lodash": "^3.10.1",
     "@types/node": "^9.4.7",
     "@types/rollup": "^0.54.0",
+    "@types/screeps": "^2.2.0",
     "cross-env": "^5.1.4",
     "rollup": "^0.57.1",
     "rollup-plugin-clean": "^1.0.0",
@@ -35,7 +36,6 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",
-    "typed-screeps": "^2.2.2",
     "typescript": "^2.7.2"
   },
   "dependencies": {

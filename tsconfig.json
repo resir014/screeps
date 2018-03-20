@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
+    "moduleResolution": "node",
     "target": "es5",
     "outDir": "dist",
     "rootDir": "src",
@@ -11,11 +12,7 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
-    "types": [
-      "node",
-      "lodash",
-      "typed-screeps"
-    ]
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules"
