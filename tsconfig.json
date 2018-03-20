@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es5",
     "outDir": "dist",
-    "baseUrl": "src/",
+    "rootDir": "src",
+    "baseUrl": "src",
     "sourceMap": true,
     "strict": true,
     "experimentalDecorators": true,

@@ -4,7 +4,7 @@ import { BaseKernel } from 'os/BaseKernel'
 import { ProcessRegistry } from 'os/ProcessRegistry'
 import { ExtensionRegistry } from 'os/ExtensionRegistry'
 
-import { bundle as bin } from 'bin'
+import { bundle as bin } from 'bin/index'
 
 import './globals'
 
