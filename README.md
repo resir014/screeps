@@ -1,28 +1,15 @@
-# Screeps Typescript Starter
+# Stonehenge
 
-Screeps Typescript Starter is a starting point for a Screeps AI written in Typescript. It provides everything you need to start writing your AI whilst leaving `main.ts` as empty as possible.
+> Smart colony management for the game [Screeps](https://screeps.com/). Written in [TypeScript](http://www.typescriptlang.org/).
 
-## Usage
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-You will need:
+Stonehenge is a proof-of-concept of a smart, robust, and maintainable [Screeps](https://screeps.com/) codebase. It is developed in [TypeScript](https://www.typescriptlang.org/), and designed with modularity in mind.
 
- - Node.JS (Latest LTS is recommended)
- - A Package Manager (Yarn or NPM)
+## Developing
 
-Download the latest source [here](https://github.com/screepers/screeps-typescript-starter/archive/v3.0.zip) and extract it to a folder.
+TODO!
 
-Open the folder in your terminal and run `npm install` (or `yarn`) to install the dependencies.
+## Special Thanks
 
-Fire up your preferred editor with typescript installed and you are good to go!
-
-### Rollup
-
-Screeps Typescript Starter uses rollup to compile your typescript and upload it to a screeps server.
-
-Change `screeps.sample.json` to `screeps.json` and update the settings.
-
-Running `rollup -c` will compile and upload your code.
-
-## Typings
-
-The typings for Screeps comes from [typed-screeps](https://github.com/screepers/typed-screeps), if you have an issue with incorrect typings open an issue there.
+The architecture of the kernel is heavily based off of ags131's [PosisKernel](https://github.com/ags131/PosisKernel) and thaelina's [ThaeOS](https://github.com/thaelina/Screeps-ThaeOS).
