@@ -1,6 +1,6 @@
 "use strict";
 
-import clean from "rollup-plugin-clean";
+import clear from "rollup-plugin-clear";
 import replace from "rollup-plugin-replace";
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
@@ -18,7 +18,7 @@ export default {
   },
 
   plugins: [
-    clean(),
+    clear({ targets: ["dist"] }),
     replace({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
