@@ -30,9 +30,9 @@
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@types/screeps/-/screeps-2.2.0.tgz#a36fecf95611df292b5b246cea431dd95a2a6531"
 
-"Traveler@git://github.com/bonzaiferroni/Traveler.git#testing":
+"Traveler@github:bonzaiferroni/Traveler.git#testing":
   version "0.0.1"
-  resolved "git://github.com/bonzaiferroni/Traveler.git#c056cb4150347e91549d6bb8c4f008ce5e123c6f"
+  resolved "https://codeload.github.com/bonzaiferroni/Traveler/tar.gz/c056cb4150347e91549d6bb8c4f008ce5e123c6f"
 
 acorn-dynamic-import@^3.0.0:
   version "3.0.0"

@@ -39,7 +39,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "Traveler": "git://github.com/bonzaiferroni/Traveler.git#testing",
+    "Traveler": "github:bonzaiferroni/Traveler.git#testing",
     "source-map": "~0.6.1"
   }
 }
