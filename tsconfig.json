@@ -8,6 +8,7 @@
     "baseUrl": "src",
     "sourceMap": true,
     "strict": true,
+    "strictBindCallApply": false,
     "experimentalDecorators": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,

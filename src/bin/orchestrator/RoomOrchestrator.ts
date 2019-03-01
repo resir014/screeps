@@ -27,7 +27,7 @@ export class RoomOrchestratorProcess implements StonehengeProcess<RoomOrchestrat
   }
 
   public run() {
-    this.log.info(`RoomOrchestrator is running.`)
+    this.log.info('RoomOrchestrator is running.')
     this.roomExtension.manageRooms()
   }
 }

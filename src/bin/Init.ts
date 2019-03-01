@@ -19,7 +19,7 @@ export class InitProcess implements StonehengeProcess<InitProcessMemory> {
     this.log.info(`Current tick is ${Game.time}`)
     if (!this.memory.ran) {
       if (this.kernel) {
-        this.log.info(`Kernel is loaded.`)
+        this.log.info('Kernel is loaded.')
         this.kernel.startProcess<RoomOrchestratorMemory>('orchestrator/RoomOrchestrator', {
           rooms: {}
         })
